@@ -1,0 +1,80 @@
+addUser {"email": "sara@ut.ac.ir", "password": "sara1234", "name": "Sara", "nickname": "sara", "birthDate": "1998-03-11"}
+// {"success": true, "data": "user added successfully"}
+
+addUser {"email": "sajjad@ut.ac.ir", "password": "sajjad1234", "name": "Sajjad", "nickname": "sajjad", "birthDate": "2000-06-14"}
+// {"success": true, "data": "user added successfully"}
+
+addUser {"email": "saman@ut.ac.ir", "password": "saman1234", "name": "Saman", "nickname": "saman", "birthDate": "2014-01-01"}
+// {"success": true, "data": "user added successfully"}
+
+addActor {"id": 1, "name": "Marlon Brando", "birthDate": "1924-04-03", "nationality": "American"}
+// {"success": true, "data": "actor added successfully"}
+
+addActor {"id": 2, "name": "Al Pacino", "birthDate": "1940-04-25", "nationality": "American"}
+// {"success": true, "data": "actor added successfully"}
+
+addActor {"id": 3, "name": "James Caan", "birthDate": "1940-03-26", "nationality": "American"}
+// {"success": true, "data": "actor added successfully"}
+
+addActor {"id": 4, "name": "Adrien Brody", "birthDate": "1973-04-14", "nationality": "American"}
+// {"success": true, "data": "actor added successfully"}
+
+addActor {"id": 5, "name": "Thomas Kretschmann", "birthDate": "1962-09-08", "nationality": "German"}
+// {"success": true, "data": "actor added successfully"}
+
+addActor {"id": 6, "name": "Frank Finlay", "birthDate": "1926-08-06", "nationality": "British"}
+// {"success": true, "data": "actor added successfully"}
+
+addMovie {"id": 1, "name": "The Godfather", "summary": "The aging patriarch of an organized crime dynasty in postwar New York City transfers control of his clandestine empire to his reluctant youngest son.", "releaseDate": "1972-03-14", "director": "Francis Ford Coppola", "writers": ["Mario Puzo", "Francis Ford Coppola"], "genres": ["Crime", "Drama"], "cast": [1, 2, 3], "imdbRate": 9.2, "duration": 175, "ageLimit": 14}
+// {"success": true, "data": "movie added successfully"}
+
+addMovie {"id": 2, "name": "The Pianist", "summary": "A Polish Jewish musician struggles to survive the destruction of the Warsaw ghetto of World War II.", "releaseDate": "2002-05-24", "director": "Roman Polanski", "writers": ["Ronald Harwood", "Wladyslaw Szpilman"], "genres": ["Biography", "Drama", "Music"], "cast": [4, 5, 6], "imdbRate": 8.5, "duration": 150, "ageLimit": 12}
+// {"success": true, "data": "movie added successfully"}
+
+rateMovie {"userEmail": "sajjad@ut.ac.ir", "movieId": 1, "score": 8}
+// {"success": true, "data": "movie rated successfully"}
+
+rateMovie {"userEmail": "saman@ut.ac.ir", "movieId": 1, "score": 10}
+// {"success": true, "data": "movie rated successfully"}
+
+rateMovie {"userEmail": "sara@ut.ac.ir", "movieId": 1, "score": 7}
+// {"success": true, "data": "movie rated successfully"}
+
+addComment {"userEmail": "saman@ut.ac.ir", "movieId": 1, "text": "Interesting Movie"}
+// {"success": true, "data": "comment with id 1 added successfully"}
+
+voteComment {"userEmail": "sara@ut.ac.ir", "commentId": 1, "vote": 1}
+// {"success": true, "data": "comment voted successfully"}
+
+getMovieById {"movieId": 1}
+// {"success": true, "data": {"movieId": 1, "name": "The Godfather", "summary": "The aging patriarch of an organized crime dynasty in postwar New York City transfers control of his clandestine empire to his reluctant youngest son.", "releaseDate": "1972-03-14", "director": "Francis Ford Coppola", "writers": ["Mario Puzo", "Francis Ford Coppola"], "genres": ["Crime", "Drama"], "cast": [{"actorId": 1, "name": "Marlon Brando"}, {"actorId": 2, "name": "Al Pacino"}, {"actorId": 3, "name": "James Caan"}], "rating": 8.3, "duration": 175, "ageLimit": 14, "comments": [{"commentId": 1, "userEmail": "saman@ut.ac.ir", "text": "Interesting Movie", "like": 1, "dislike": 0}]}}
+
+addToWatchList {"userEmail": "saman@ut.ac.ir", "movieId": 2}
+// {"success": false, "data": "AgeLimitError"}
+
+getWatchList {"userEmail": "saman@ut.ac.ir"}
+// {"success": true, "data": {"WatchList": []}}
+
+addToWatchList {"userEmail": "sajjad@ut.ac.ir", "movieId": 2}
+// {"success": true, "data": "movie added to watchlist successfully"}
+
+getWatchList {"userEmail": "sajjad@ut.ac.ir"}
+// {"success": true, "data": {"WatchList": [{"movieId": 2, "name": "The Pianist", "director": "Roman Polanski", "genres": ["Biography", "Drama", "Music"], rating: null}]}}
+
+removeFromWatchList {"userEmail": "sajjad@ut.ac.ir", "movieId": 2}
+// {"success": true, "data": "movie removed from watchlist successfully"}
+
+getWatchList {"userEmail": "sajjad@ut.ac.ir"}
+// {"success": true, "data": {"WatchList": []}}
+
+addComment {"userEmail": "sara@ut.ac.ir", "movieId": 2, "text": "I like it"}
+// {"success": true, "data": "comment with id 2 added successfully"}
+
+voteComment {"userEmail": "saman@ut.ac.ir", "commentId": 2, "vote": -1}
+// {"success": true, "data": "comment voted successfully"}
+
+voteComment {"userEmail": "sajjad@ut.ac.ir", "commentId": 2, "vote": 1}
+// {"success": true, "data": "comment voted successfully"}
+
+getMovieById {"movieId": 2}
+// {"success": true, "data": {"movieId": 2, "name": "The Pianist", "summary": "A Polish Jewish musician struggles to survive the destruction of the Warsaw ghetto of World War II.", "releaseDate": "2002-05-24", "director": "Roman Polanski", "writers": ["Ronald Harwood", "Wladyslaw Szpilman"], "genres": ["Biography", "Drama", "Music"], "cast": [{"actorId": 4, "name": "Adrien Brody"}, {"actorId": 5, "name": "Thomas Kretschmann"}, {"actorId": 6, "name": "Frank Finlay"}], "rating": null, "duration": 150, "ageLimit": 12, "comments": [{"commentId": 2, "userEmail": "sara@ut.ac.ir", "text": "I like it", "like": 1, "dislike": 1}]}}

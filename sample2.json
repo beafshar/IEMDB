@@ -1,0 +1,74 @@
+addUser {"email": "Mahdi@gmail.com", "password": "1234", "nickname": "mahdi", "name": "mahdi mahdavi", "birthDate": "2000-02-01"}
+// {"success": true, "data": "user added successfully"}
+
+addUser {"email": "Mahdiye@gmail.com", "password": "4321", "nickname": "mahdiye", "name": "mahdiye mahdiyan", "birthDate": "2000-05-01"}
+// {"success": true, "data": "user added successfully"}
+
+addActor {"id": 1, "name": "Christian Bale", "birthDate": "1974-01-30", "nationality": "British"}
+// {"success": true, "data": "actor added successfully"}
+
+addActor {"id": 2, "name": "Hugh Jackman", "birthDate": "1968-10-12", "nationality": "Australian"}
+// {"success": true, "data": "actor added successfully"}
+
+addActor {"id": 3, "name": "Scarlett Johansson", "birthDate": "1984-11-22", "nationality": "American"}
+// {"success": true, "data": "actor added successfully"}
+
+addActor {"id": 4, "name": "Brad Pitt", "birthDate": "1963-12-18", "nationality": "American"}
+// {"success": true, "data": "actor added successfully"}
+
+addActor {"id": 5, "name": "Edward Norton", "birthDate": "1969-8-18", "nationality": "American"}
+// {"success": true, "data": "actor added successfully"}
+
+addMovie {"id": 1, "name": "Fight Club", "summary": "An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into much more.", "releaseDate":"1999-11-11", "director": "David Fincher", "writers":["Chuck Palahniuk", "Jim Uhls"], "genres": ["Drama"], "cast": [4, 5], "imdbRate": 8.8, "duration": "139", "ageLimit": 16}
+// {"success": true, "data": "movie added successfully"}
+
+addMovie {"id": 2, "name": "The Prestige", "summary": "After a tragic accident, two stage magicians in 1890s London engage in a battle to create the ultimate illusion while sacrificing everything they have to outwit each other.", "releaseDate":"2006-10-20", "director": "Christopher Nolan", "writers":["Christopher Nolan", "Jonathan Nolan", "Christopher priest"], "genres": ["Drama", "Mystery", "Thriller"], "cast": [1, 2, 3], "imdbRate": 8.5, "duration": "130", "ageLimit": 13}
+// {"success": true, "data": "movie added successfully"}
+
+getMoviesList
+//{"success": true , "data": {"MoviesList": [{"movieId": 1, "name": "Fight Club", "director": "David Fincher", "genres": ["Drama"], "rating": null}, {"movieId": 2, "name": "The Prestige", "director": "Christopher Nolan", "genres": ["Drama", "Mystery", "Thriller"], "rating": null}]}}
+
+addComment {"userEmail": "sina@gmail.com", "movieId": 1, "text": "Hi"}
+//{"success": false , "data": "UserNotFound"}
+
+addActor {"id": 6, "name": "Morgan Freeman", "birthDate": "1937-06-01", "nationality": "American"}
+// {"success": true, "data": "actor added successfully"}
+
+addMovie {"id": 3, "name": "Seven", "summary": "Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives.", "releaseDate":"1995-09-22", "director": "David Fincher", "writers":["Andrew Kevin Walker"], "genres": ["Drama", "Crime", "Mystery"], "cast": [4, 6], "imdbRate": 8.6, "duration": "127", "ageLimit": 16}
+// {"success": true, "data": "movie added successfully"}
+
+getMovieById {"MovieId": 8}
+//{"success": false , "data": "MovieNotFound"}
+
+addMovie {"id": 4, "name": "Life is Beautiful", "summary": "When an open-minded Jewish waiter and his son become victims of the Holocaust, he uses a perfect mixture of will, humor, and imagination to protect his son from the dangers around their camp.", "releaseDate":"1997-07-06", "director": "Roberto Benigni", "writers":["Vincenzo Cerami", "Roberto Benigni"], "genres": ["Drama", "Romance", "Comedy"], "cast": [11], "imdbRate": 8.6, "duration": "116", "ageLimit": 9}
+//{"success": false , "data": "ActorNotFound"}
+
+getMoviesList
+//{"success": true , "data": {"MoviesList": [{"movieId": 1, "name": "Fight Club", "director": "David Fincher", "genres": ["Drama"], "rating": null}, {"movieId": 2, "name": "The Prestige", "director": "Christopher Nolan", "genres": ["Drama", "Mystery", "Thriller"], "rating": null}, {"movieId": 3, "name": "Seven", "director": "David Fincher", "genres": ["Crime", "Drama", "Mystery"], "rating": null}]}}
+
+addComment {"userEmail": "Mahdiye@gmail.com", "movieId": 3, "text": "I love this movie."}
+// {"success": true, "data": "comment with id 1 added successfully"}
+
+addToWatchList {"userEmail": "Mahdi@gmail.com", "movieId": 3}
+// {"success": true, "data": "movie added to watchlist successfully"}
+
+voteComment {"userEmail": "Mahdi@gmail.com", "commentId": 2, "vote": 1}
+//{"success": false , "data": "CommentNotFound"}
+
+getMoviesByID {"movieId": 3}
+//{"success": false , "data": "InvalidCommand"}
+
+addToWatchList {"userEmail": "Mahdi@gmail.com", "movieId": 3}
+//{"success": false , "data": "MovieAlreadyExists"}
+
+rateMovie {"userEmail": "Mahdi@gmail.com", "movieId": 3, "score": 100}
+//{"success": false , "data": "InvalidRateScore"}
+
+voteComment {"userEmail": "Mahdi@gmail.com", "commentId": 1, "vote": "like"}
+//{"success": false , "data": "InvalidVoteValue"}
+
+getMoviesByGenre {"genre": "Mystery"}
+//{"success": true , "data": {"MoviesListByGenre": [{"movieId": 2, "name": "The Prestige", "director": "Christopher Nolan", "genres": ["Drama", "Mystery", "Thriller"], "rating": null}, {"movieId": 3, "name": "Seven", "director": "David Fincher", "genres": ["Crime", "Drama", "Mystery"], "rating": null}]}}
+
+voteComment {"userEmail": "Mahdi@gmail.com", "commentId": 1}
+//{"success": false , "data": "InvalidCommand"}
