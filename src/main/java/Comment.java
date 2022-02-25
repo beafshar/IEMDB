@@ -17,7 +17,6 @@ public class Comment {
 
     public Comment() {
         id = CommentHandler.comment_id;
-        CommentHandler.comment_id++;
         recordTime = LocalDateTime.now();
     }
     public Comment(String _userEmail, int _movieId, String _text) {

@@ -62,7 +62,7 @@ public class User {
                 }
                 AgeLimitError err = new AgeLimitError();
                 response.put("success", false);
-                response.put("error", err.message());
+                response.put("data", err.message());
                 return response;
             }
         }

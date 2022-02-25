@@ -44,8 +44,8 @@ public class Handler {
                 case "removeFromWatchList":
                     response = UserHandler.removeFromWatchList(arrOfStr[1]);
                     break;
-                case "getMovieList":
-                    response = MovieHandler.getMovieList(arrOfStr[1]);
+                case "getMoviesList":
+                    response = MovieHandler.getMovieList();
                     break;
                 case "getMovieById":
                     response = MovieHandler.getMovieById(arrOfStr[1]);

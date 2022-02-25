@@ -1,9 +1,9 @@
-
-import Command.Command;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
+import Error.*;
+import java.io.IOException;
 
 public class addActor {
     public JSONObject execute(String jsonData) throws JSONException {
@@ -32,9 +32,11 @@ public class addActor {
             ActorHandler.actors.add(actor);
             return response;
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (JSONException | IOException e) {
+            InvalidCommand err = new InvalidCommand();
+            response.put("success", false);
+            response.put("data", err.message());
+            return response;
         }
-        return null;
     }
 }

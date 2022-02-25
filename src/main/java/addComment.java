@@ -5,13 +5,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class addComment {
-    public JSONObject execute(String jsonData) {
-
+    public JSONObject execute(String jsonData) throws JSONException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JSONObject response = new JSONObject();
         try {
             Comment comment = objectMapper.readValue(jsonData, Comment.class);
-            JSONObject response = new JSONObject();
+
             response = checkUser(comment);
             if (response != null)
                 return response;
@@ -22,14 +22,17 @@ public class addComment {
 
             response = new JSONObject();
             CommentHandler.comments.add(comment);
+            CommentHandler.comment_id++;
             response.put("success", true);
             String res = "comment with id " + comment.getId().toString() + " added successfully";
             response.put("data", res);
             return response;
         } catch (Exception e) {
-            e.printStackTrace();
+            InvalidCommand err = new InvalidCommand();
+            response.put("success", false);
+            response.put("data", err.message());
+            return response;
         }
-        return null;
     }
 
     private JSONObject checkUser(Comment comment) throws JSONException {
