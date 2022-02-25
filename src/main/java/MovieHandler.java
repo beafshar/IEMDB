@@ -8,6 +8,15 @@ import java.util.Set;
 public class MovieHandler {
     public static Set<Movie> movies = new HashSet<Movie>();
 
+
+    public MovieHandler()
+    {
+
+    }
+    public void setMovies(Set<Movie> _movies)
+    {
+        movies = _movies;
+    }
     public JSONObject addMovie(String jsonData) throws JSONException {
         addMovie AM = new addMovie();
         return AM.execute(jsonData);

@@ -16,7 +16,6 @@ public class CommentTest {
     {
         user = new User("Mahdi@gmail.com","1234", "mahdi", "mahdi mahdavi","2000-02-01");
         users = new UserHandler();
-//        users.addUser(user);
         comment = new Comment();
     }
 
@@ -48,21 +47,7 @@ public class CommentTest {
         assertEquals(dislikes + 1, comment.getDislikes());
     }
 
-    @Test
-    public void userNotFound() throws JSONException {
-        int likes = comment.getLikes();
-        int dislikes = comment.getDislikes();
-        JSONObject response = comment.addVote("beafshar@gmail.com", 1);
-        //assert response
-        assertEquals(likes, comment.getLikes());
-        assertEquals(dislikes, comment.getDislikes());
-    }
 
-    @Test
-    public void givenCommentNotFound()
-    {
-
-    }
 
     @Test
     public void InvalidVoteScore() throws JSONException {

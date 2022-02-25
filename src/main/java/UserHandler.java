@@ -12,6 +12,10 @@ public class UserHandler {
 
     public static Set<User> users= new HashSet<User>();
 
+    public void setUsers(Set<User> _users)
+    {
+        users = _users;
+    }
     public JSONObject addUser(String jsonData) throws JSONException {
         addUser AU = new addUser();
         return AU.execute(jsonData);

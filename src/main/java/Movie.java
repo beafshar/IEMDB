@@ -29,6 +29,19 @@ public class Movie {
     {
 
     }
+    public Movie(int _id, String _name, String _director, JSONArray _genres, double _imdbRate, int _age)
+            throws JSONException
+    {
+        id = _id;
+        name = _name;
+
+        director = _director;
+        for(int i = 0; i < _genres.length(); i++){
+            genres.add(_genres.getString(i));
+        }
+        imdbRate = _imdbRate;
+        ageLimit = _age;
+    }
 
     public Movie(int _id, String _name, String _summary, String _releaseDate,
                  String _director, JSONArray _writers, JSONArray _genres, JSONArray _cast,
@@ -99,7 +112,11 @@ public class Movie {
     }
     public JSONObject rateMovie(String userEmail, int score) throws JSONException {
         if(map.containsKey(userEmail)) {
-            rating = (rating*ratingCount - map.get(userEmail))/(ratingCount - 1);
+            if (ratingCount == 1)
+                rating = 0;
+            else
+                rating = (rating*ratingCount - map.get(userEmail))/(ratingCount - 1);
+            ratingCount--;
         }
         map.put(userEmail, score);
         ratingCount += 1;
