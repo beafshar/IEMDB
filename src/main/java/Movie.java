@@ -52,6 +52,28 @@ public class Movie {
         ageLimit = _ageLimit;
     }
 
+    public void updateMovie(int _id, String _name, String _summary, String _releaseDate,
+                            String _director, JSONArray _writers, JSONArray _genres, JSONArray _cast,
+                            double _imdbRate, long _duration, int _ageLimit) throws JSONException {
+        id = _id;
+        name = _name;
+        summary = _summary;
+        releaseDate = _releaseDate;
+        director = _director;
+        for(int i = 0; i < _writers.length(); i++){
+            writers.add(_writers.getString(i));
+        }
+        for(int i = 0; i < _genres.length(); i++){
+            genres.add(_genres.getString(i));
+        }
+        for(int i = 0; i < _cast.length(); i++){
+            cast.add(_cast.getInt(i));
+        }
+        imdbRate = _imdbRate;
+        duration = _duration;
+        ageLimit = _ageLimit;
+    }
+
     public int getId()
     {
         return id;

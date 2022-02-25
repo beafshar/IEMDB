@@ -1,3 +1,4 @@
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashSet;
@@ -10,7 +11,7 @@ public class ActorHandler {
 
     }
 
-    public JSONObject addActor(String jsonData) {
+    public JSONObject addActor(String jsonData) throws JSONException {
         addActor AA = new addActor();
         return AA.execute(jsonData);
     }

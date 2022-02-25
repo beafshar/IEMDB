@@ -11,7 +11,18 @@ public class addMovie implements Command {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             JSONObject json = new JSONObject(jsonData);
-            Movie movie = new Movie(json.getInt("id"), json.getString("name"), json.getString("summary"), json.getString("releaseDate"), json.getString("director"), json.getJSONArray("writers"), json.getJSONArray("genres"),json.getJSONArray("cast"), json.getDouble("imdbRate"), json.getInt("duration"), json.getInt("ageLimit"));
+            int up = 0;
+            Movie movie = null;
+            for(Movie m: MovieHandler.movies){
+                if(m.getId() == json.getInt("id")){
+                    MovieHandler.movies.remove(m);
+                    up = 1;
+                    m.updateMovie(json.getInt("id"), json.getString("name"), json.getString("summary"), json.getString("releaseDate"), json.getString("director"), json.getJSONArray("writers"), json.getJSONArray("genres"),json.getJSONArray("cast"), json.getDouble("imdbRate"), json.getInt("duration"), json.getInt("ageLimit"));
+                    movie = m;
+                }
+            }
+            if(up == 0)
+                movie = new Movie(json.getInt("id"), json.getString("name"), json.getString("summary"), json.getString("releaseDate"), json.getString("director"), json.getJSONArray("writers"), json.getJSONArray("genres"),json.getJSONArray("cast"), json.getDouble("imdbRate"), json.getInt("duration"), json.getInt("ageLimit"));
 
             int flag = movie.getCast().size();
             for (int i = 0; i < movie.getCast().size(); i++) {
@@ -29,9 +40,13 @@ public class addMovie implements Command {
                 return response;
             }
 
+
             MovieHandler.movies.add(movie);
             response.put("success", true);
-            response.put("data", "movie added successfully");
+            if(up == 0)
+                response.put("data", "movie added successfully");
+            else
+                response.put("data", "movie updated successfully");
             return response;
         }
         catch (Exception e) {
