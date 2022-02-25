@@ -16,7 +16,7 @@ public class Handler {
         while ((line = reader.readLine()) != null)
         {
             String[] arrOfStr = line.split(" ", 2);
-            String response = "";
+            JSONObject response = new JSONObject();
 
             switch(arrOfStr[0]) {
 

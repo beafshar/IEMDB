@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,12 +12,12 @@ public class UserHandler {
 
     public static Set<User> users= new HashSet<User>();
 
-    public String addUser(String jsonData) {
+    public JSONObject addUser(String jsonData) {
         addUser AU = new addUser();
         return AU.execute(jsonData);
     }
 
-    public static String addToWatchList(String jsonData) throws JSONException {
+    public static JSONObject addToWatchList(String jsonData) throws JSONException {
         JSONObject json = new JSONObject(jsonData);
         String userEmail = json.getString("userEmail");
         Integer movieId = json.getInt("movieId");
@@ -25,10 +27,13 @@ public class UserHandler {
             }
         }
         UserNotFound err = new UserNotFound();
-        return "{\"success\": false, \"data\": " + err.message() + "\"}";
+        JSONObject response = new JSONObject();
+        response.put("success", false);
+        response.put("data", err.message());
+        return response;
     }
 
-    public static String removeFromWatchList(String jsonData) throws JSONException {
+    public static JSONObject removeFromWatchList(String jsonData) throws JSONException {
         JSONObject json = new JSONObject(jsonData);
         String userEmail = json.getString("userEmail");
         Integer movieId = json.getInt("movieId");
@@ -38,10 +43,13 @@ public class UserHandler {
             }
         }
         UserNotFound err = new UserNotFound();
-        return "{\"success\": false, \"data\": " + err.message() + "\"}";
+        JSONObject response = new JSONObject();
+        response.put("success", false);
+        response.put("data", err.message());
+        return response;
     }
 
-    public static String getWatchList(String jsonData) throws JSONException {
+    public static JSONObject getWatchList(String jsonData) throws JSONException {
         JSONObject json = new JSONObject(jsonData);
         String userEmail = json.getString("userEmail");
         for(User user : users) {
@@ -50,6 +58,9 @@ public class UserHandler {
             }
         }
         UserNotFound err = new UserNotFound();
-        return "{\"success\": false, \"data\": " + err.message() + "\"}";
+        JSONObject response = new JSONObject();
+        response.put("success", false);
+        response.put("data", err.message());
+        return response;
     }
 }

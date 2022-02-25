@@ -19,8 +19,7 @@ public class Actor {
         birthDate = _birthDate;
         nationality = _nationality;
     }
-    public String getNationality()
-    {
+    public String getNationality() {
         return nationality;
     }
     public String getBirthDate()

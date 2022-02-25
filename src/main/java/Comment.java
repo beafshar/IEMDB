@@ -1,3 +1,6 @@
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +43,7 @@ public class Comment {
         return recordTime;
     }
 
-    public String addVote(String userEmail, int vote) {
+    public JSONObject addVote(String userEmail, int vote) throws JSONException {
         if(map.containsKey(userEmail)) {
             if(map.get(userEmail) == 1)
                 likes--;
@@ -52,7 +55,10 @@ public class Comment {
             likes++;
         if(vote == -1)
             dislikes++;
-        return "{\"success\": true, \"data\": \"comment voted successfully\"}";
+        JSONObject response = new JSONObject();
+        response.put("success", true);
+        response.put("data", "comment voted successfully");
+        return response;
     }
 
     public int getLikes() {

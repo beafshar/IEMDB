@@ -1,6 +1,8 @@
 package Command;
 
+import org.json.JSONObject;
+
 public interface Command {
 
-    String execute(String jsonData);
+    JSONObject execute(String jsonData);
 }

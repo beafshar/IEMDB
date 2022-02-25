@@ -8,12 +8,12 @@ import java.util.Set;
 public class MovieHandler {
     public static Set<Movie> movies = new HashSet<Movie>();
 
-    public String addMovie(String jsonData) {
+    public JSONObject addMovie(String jsonData) {
         addMovie AM = new addMovie();
         return AM.execute(jsonData);
     }
 
-    public static String getMovieList(String jsonData) throws JSONException {
+    public static JSONObject getMovieList(String jsonData) throws JSONException {
         JSONObject jo = new JSONObject();
         JSONArray ja = new JSONArray();
         for(Movie movie : movies) {
@@ -31,10 +31,14 @@ public class MovieHandler {
         }
         jo.put("MovieListByGenre", ja);
         String data = jo.toString();
-        return "{\"success\": ture, \"data\": " + data + "}";
+        JSONObject response = new JSONObject();
+        response.put("success", true);
+        response.put("data", data);
+        return response;
     }
 
-    public static String getMovieById(String jsonData) throws JSONException {
+    public static JSONObject getMovieById(String jsonData) throws JSONException {
+        JSONObject response = new JSONObject();
         JSONObject json = new JSONObject(jsonData);
         int movie_id = json.getInt("movieId");
         for(Movie movie: movies) {
@@ -80,14 +84,18 @@ public class MovieHandler {
                 }
                 jo.put("comments", comm);
                 String data = jo.toString();
-                return "{\"success\": ture, \"data\": " + data + "}";
+                response.put("success", true);
+                response.put("data", data);
+                return response;
             }
         }
         MovieNotFound err = new MovieNotFound();
-        return "{\"success\": false, \"data\": " + err.message() + "\"}";
+        response.put("success", false);
+        response.put("data", err.message());
+        return response;
     }
 
-    public static String getMovieByGenre(String jsonData) throws JSONException {
+    public static JSONObject getMovieByGenre(String jsonData) throws JSONException {
         JSONObject json = new JSONObject(jsonData);
         String movie_genre = json.getString("genre");
         JSONObject jo = new JSONObject();
@@ -111,10 +119,14 @@ public class MovieHandler {
         }
         jo.put("MovieListByGenre", ja);
         String data = jo.toString();
-        return "{\"success\": ture, \"data\": " + data + "}";
+        JSONObject response = new JSONObject();
+        response.put("success", true);
+        response.put("data", data);
+        return response;
     }
 
-    public static String rateMovie(String jsonData) throws JSONException {
+    public static JSONObject rateMovie(String jsonData) throws JSONException {
+        JSONObject response = new JSONObject();
         JSONObject json = new JSONObject(jsonData);
         int movie_id = json.getInt("movieId");
         int score = json.getInt("score");
@@ -127,15 +139,21 @@ public class MovieHandler {
                             return movie.rateMovie(user.getEmail(), score);
                         }
                         InvalidRateScore err = new InvalidRateScore();
-                        return "{\"success\": false, \"data\": " + err.message() + "\"}";
+                        response.put("success", false);
+                        response.put("data", err.message());
+                        return response;
                     }
                 }
                 MovieNotFound err = new MovieNotFound();
-                return "{\"success\": false, \"data\": " + err.message() + "\"}";
+                response.put("success", false);
+                response.put("data", err.message());
+                return response;
             }
         }
         UserNotFound err = new UserNotFound();
-        return "{\"success\": false, \"data\": " + err.message() + "\"}";
+        response.put("success", false);
+        response.put("data", err.message());
+        return response;
     }
 
 }

@@ -44,39 +44,49 @@ public class User {
         return curDate.getYear() - birth.getYear();
     }
 
-    public String addToWatchList(int movieId) {
-
+    public JSONObject addToWatchList(int movieId) throws JSONException {
+        JSONObject response = new JSONObject();
         for(Movie movie: MovieHandler.movies) {
             if(movie.getId() == movieId) {
                 if(calculateUserAge() >= movie.getAgeLimit()) {
                     if(WatchList.contains(movie)) {
                         MovieAlreadyExists err = new MovieAlreadyExists();
-                        return "{\"success\": false, \"data\": " + err.message() + "\"}";
+                        response.put("success", false);
+                        response.put("error", err.message());
+                        return response;
                     }
                     WatchList.add(movie);
-                    return "{\"success\": ture, \"data\": \"movie added to watchlist successfully\"}";
+                    response.put("success", true);
+                    response.put("data", "movie added to watchlist successfully");
+                    return response;
                 }
                 AgeLimitError err = new AgeLimitError();
-                return "{\"success\": false, \"data\": " + err.message() + "\"}";
+                response.put("success", false);
+                response.put("error", err.message());
+                return response;
             }
         }
         MovieNotFound err = new MovieNotFound();
-
-        return "{\"success\": false, \"data\": " + err.message() + "\"}";
+        response.put("success", false);
+        response.put("error", err.message());
+        return response;
     }
 
-    public String removeFromWatchlist(int movieId) {
+    public JSONObject removeFromWatchlist(int movieId) throws JSONException {
         for(Movie movie : WatchList) {
             if(movie.getId() == movieId) {
                 WatchList.remove(movie);
-                return "{\"success\": ture, \"data\": \"movie removed from watchlist successfully\"}";
+                JSONObject response = new JSONObject();
+                response.put("success", true);
+                response.put("data", "movie removed from watchlist successfully");
+                return response;
             }
         }
 
         return null;
     }
 
-    public String getWatchList() throws JSONException {
+    public JSONObject getWatchList() throws JSONException {
         JSONObject jo = new JSONObject();
         JSONArray ja = new JSONArray();
         for(Movie movie : WatchList) {
@@ -94,7 +104,9 @@ public class User {
         }
         jo.put("WatchList", ja);
         String data = jo.toString();
-
-        return "{\"success\": ture, \"data\": " + data + "}";
+        JSONObject response = new JSONObject();
+        response.put("success", true);
+        response.put("data", data);
+        return response;
     }
 }

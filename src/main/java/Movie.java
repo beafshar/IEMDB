@@ -1,5 +1,6 @@
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -74,8 +75,7 @@ public class Movie {
     public void addComment(Comment comment) {
         comments.add(comment);
     }
-    public String rateMovie(String userEmail, int score)
-    {
+    public JSONObject rateMovie(String userEmail, int score) throws JSONException {
         if(map.containsKey(userEmail)) {
             rating = (rating*ratingCount - map.get(userEmail))/(ratingCount - 1);
         }
@@ -83,7 +83,10 @@ public class Movie {
         ratingCount += 1;
         rating = (rating*(ratingCount-1) + score)/ratingCount;
         rating = Double.parseDouble(new DecimalFormat("##.#").format(rating));
-        return "{\"success\": true, \"data\": \"movie rated successfully\"}";
+        JSONObject response = new JSONObject();
+        response.put("success", true);
+        response.put("data", "movie rated successfully");
+        return response;
     }
     public double getRating() {return rating;}
     public double getRatingCount() {return ratingCount;}

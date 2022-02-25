@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 public class addMovie implements Command {
     @Override
-    public String execute(String jsonData) {
+    public JSONObject execute(String jsonData) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
@@ -21,14 +21,18 @@ public class addMovie implements Command {
                     }
                 }
             }
+            JSONObject response = new JSONObject();
             if(flag != 0) {
                 ActorNotFound err = new ActorNotFound();
-                return "{\"success\": false, \"data\": " + err.message()+ "\"}";
+                response.put("success", false);
+                response.put("data", err.message());
+                return response;
             }
 
             MovieHandler.movies.add(movie);
-
-            return "{\"success\": true, \"data\": \"movie added successfully\"}";
+            response.put("success", true);
+            response.put("data", "movie added successfully");
+            return response;
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -8,12 +8,14 @@ public class CommentHandler {
     public static Set<Comment> comments = new HashSet<Comment>();
     public static Integer comment_id = 1;
 
-    public static String addComment(String jsonData) {
+    public static JSONObject addComment(String jsonData) {
         addComment AC = new addComment();
         return AC.execute(jsonData);
     }
 
-    public static String voteComment(String jsonData) throws JSONException {
+    public static JSONObject voteComment(String jsonData) throws JSONException {
+        JSONObject response = new JSONObject();
+        response.put("success", false);
         JSONObject json = new JSONObject(jsonData);
         for(User user: UserHandler.users) {
             if(user.getEmail().equals(json.getString("userEmail"))) {
@@ -23,14 +25,17 @@ public class CommentHandler {
                             return comment.addVote(user.getEmail(), json.getInt("vote"));
                         }
                         InvalidVoteValue err = new InvalidVoteValue();
-                        return "{\"success\": false, \"data\": " + err.message() + "\"}";
+                        response.put("data", err.message());
+                        return response;
                     }
                 }
                 CommentNotFound err = new CommentNotFound();
-                return "{\"success\": false, \"data\": " + err.message() + "\"}";
+                response.put("data", err.message());
+                return response;
             }
         }
         UserNotFound err = new UserNotFound();
-        return "{\"success\": false, \"data\": " + err.message() + "\"}";
+        response.put("data", err.message());
+        return response;
     }
 }
