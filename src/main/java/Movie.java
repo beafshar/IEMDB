@@ -1,3 +1,7 @@
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Movie {
@@ -6,9 +10,9 @@ public class Movie {
     private String summary;
     private String releaseDate;
     private String director;
-    private String[] writers;
-    private String[] genres;
-    private int[] cast;
+    List<String> writers = new ArrayList<String>();
+    List<String> genres = new ArrayList<String>();
+    List<Integer> cast = new ArrayList<Integer>();
     private double imdbRate;
     private long duration;
     private int ageLimit;
@@ -22,32 +26,45 @@ public class Movie {
     }
 
     public Movie(int _id, String _name, String _summary, String _releaseDate,
-                 String _director, String[] _writers, String[] _genres, int[] _cast,
-                 double _imdbRate, long _duration, int _ageLimit)
-    {
+                 String _director, JSONArray _writers, JSONArray _genres, JSONArray _cast,
+                 double _imdbRate, long _duration, int _ageLimit) throws JSONException {
         id = _id;
         name = _name;
         summary = _summary;
         releaseDate = _releaseDate;
         director = _director;
-        writers = _writers;
-        genres = _genres;
-        cast = _cast;
+        for(int i = 0; i < _writers.length(); i++){
+            writers.add(_writers.getString(i));
+        }
+        for(int i = 0; i < _genres.length(); i++){
+            genres.add(_genres.getString(i));
+        }
+        for(int i = 0; i < _cast.length(); i++){
+            cast.add(_cast.getInt(i));
+        }
         imdbRate = _imdbRate;
         duration = _duration;
         ageLimit = _ageLimit;
     }
 
-    public String getName()
-    {
-        return name;
-    }
     public int getId()
     {
         return id;
     }
-    public int[] getCast()
+    public String getName()
+    {
+        return name;
+    }
+    public String getSummary() {return summary;}
+    public String getReleaseDate() {return releaseDate;}
+    public String getDirector() {return director;}
+    public List<String> getWriters() {return writers;}
+    public List<String> getGenres() {return genres;}
+    public List<Integer> getCast()
     {
         return cast;
     }
+    public double getImdbRate() {return imdbRate;}
+    public long getDuration() {return duration;}
+    public int getAgeLimit() {return ageLimit;}
 }

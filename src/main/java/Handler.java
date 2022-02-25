@@ -3,34 +3,33 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
+import org.json.*;
 
 public class Handler {
 
-    public static Set<Actor> actors = new HashSet<Actor>();
-    public static Set<User> Users= new HashSet<User>();
-    public static Set<Movie> Movies = new HashSet<Movie>();
+    private static ActorHandler actorHandler = new ActorHandler();
+    private static UserHandler userHandler = new UserHandler();
+    private static MovieHandler movieHandler = new MovieHandler();
 
-    public static void main(String[] args) throws IOException
-    {
+
+    public static void main(String[] args) throws IOException, JSONException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while ((line = reader.readLine()) != null)
         {
             String[] arrOfStr = line.split(" ", 2);
             String response = "";
+
             switch(arrOfStr[0]) {
 
                 case "addActor":
-                    addActor AA = new addActor();
-                    response = AA.execute(arrOfStr[1]);
+                    response = actorHandler.addActor(arrOfStr[1]);
                     break;
                 case "addMovie":
-                    addMovie AM = new addMovie();
-                    response = AM.execute(arrOfStr[1]);
+                    response = movieHandler.addMovie(arrOfStr[1]);
                     break;
                 case "addUser":
-                    addUser AU = new addUser();
-                    response = AU.execute(arrOfStr[1]);
+                    response = userHandler.addUser(arrOfStr[1]);
                     break;
                 case "addComment":
                     System.out.println(arrOfStr[1]);

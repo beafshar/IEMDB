@@ -12,7 +12,7 @@ public class addUser implements Command {
             System.out.println(user.getName());
             System.out.println(user.getEmail());
 
-            Handler.Users.add(user);
+            UserHandler.users.add(user);
 
             return "{\"success\":true \"data\": \"user added successfully\"}";
         }
