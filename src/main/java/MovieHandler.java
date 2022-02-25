@@ -13,6 +13,14 @@ public class MovieHandler {
         return AM.execute(jsonData);
     }
 
+    public Movie returnMovieObjectGivenId(int id){
+        for (Movie movie : movies) {
+            if (movie.getId() == id) {
+                return movie;
+            }
+        }
+            return null;
+    }
     public static JSONObject getMovieList() throws JSONException {
         JSONObject jo = new JSONObject();
         JSONArray ja = new JSONArray();
