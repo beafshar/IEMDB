@@ -4,6 +4,7 @@ import Error.*;
 
 public class addComment {
     public String execute(String jsonData) {
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
@@ -12,9 +13,11 @@ public class addComment {
             if (response != null)
                 return response;
             response = checkMovie(comment);
+
             if (response != null)
                 return response;
 
+            CommentHandler.comments.add(comment);
             return "{\"success\": ture, \"data\": \"comment with id " + comment.getId().toString() + " added successfully\"}";
         } catch (Exception e) {
             e.printStackTrace();

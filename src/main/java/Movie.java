@@ -1,8 +1,11 @@
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Movie {
     private int id;
@@ -16,9 +19,10 @@ public class Movie {
     private double imdbRate;
     private long duration;
     private int ageLimit;
-    private double rating;
-    private double ratingCount;
-    private List<Comment> comments;
+    private double rating = 0;
+    private double ratingCount = 0;
+    private List<Comment> comments = new ArrayList<>();
+    private Map<String, Integer> map = new HashMap<String, Integer>();
 
     public Movie()
     {
@@ -70,4 +74,18 @@ public class Movie {
     public void addComment(Comment comment) {
         comments.add(comment);
     }
+    public String rateMovie(String userEmail, int score)
+    {
+        if(map.containsKey(userEmail)) {
+            rating = (rating*ratingCount - map.get(userEmail))/(ratingCount - 1);
+        }
+        map.put(userEmail, score);
+        ratingCount += 1;
+        rating = (rating*(ratingCount-1) + score)/ratingCount;
+        rating = Double.parseDouble(new DecimalFormat("##.#").format(rating));
+        return "{\"success\": true, \"data\": \"movie rated successfully\"}";
+    }
+    public double getRating() {return rating;}
+    public double getRatingCount() {return ratingCount;}
+    public List<Comment> getComments() {return comments;}
 }

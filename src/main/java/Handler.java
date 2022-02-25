@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
 import org.json.*;
 
 public class Handler {
@@ -10,7 +8,7 @@ public class Handler {
     private static ActorHandler actorHandler = new ActorHandler();
     private static UserHandler userHandler = new UserHandler();
     private static MovieHandler movieHandler = new MovieHandler();
-    public static Integer comment_id = 1;
+    private static CommentHandler commentHandler = new CommentHandler();
 
     public static void main(String[] args) throws IOException, JSONException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -32,31 +30,31 @@ public class Handler {
                     response = userHandler.addUser(arrOfStr[1]);
                     break;
                 case "addComment":
-                    response = MovieHandler.addComment(arrOfStr[1]);
+                    response = commentHandler.addComment(arrOfStr[1]);
                     break;
                 case "rateMovie":
-                    System.out.println(arrOfStr[1]);
+                    response = movieHandler.rateMovie(arrOfStr[1]);
                     break;
                 case "voteComment":
-                    System.out.println(arrOfStr[1]);
+                    response = CommentHandler.voteComment(arrOfStr[1]);
                     break;
                 case "addToWatchList":
-                    System.out.println(arrOfStr[1]);
+                    response = UserHandler.addToWatchList(arrOfStr[1]);
                     break;
                 case "removeFromWatchList":
-                    System.out.println(arrOfStr[1]);
+                    response = UserHandler.removeFromWatchList(arrOfStr[1]);
                     break;
                 case "getMovieList":
-                    System.out.println(arrOfStr[0]);
+                    response = MovieHandler.getMovieList(arrOfStr[1]);
                     break;
                 case "getMovieById":
-                    System.out.println(arrOfStr[1]);
+                    response = MovieHandler.getMovieById(arrOfStr[1]);
                     break;
                 case "getMoviesByGenre":
-                    System.out.println(arrOfStr[1]);
+                    response = MovieHandler.getMovieByGenre(arrOfStr[1]);
                     break;
                 case "getWatchList":
-                    System.out.println(arrOfStr[1]);
+                    response = UserHandler.getWatchList(arrOfStr[1]);
                     break;
                 default:
                     System.out.println("Error.InvalidCommand");

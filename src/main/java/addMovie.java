@@ -23,12 +23,12 @@ public class addMovie implements Command {
             }
             if(flag != 0) {
                 ActorNotFound err = new ActorNotFound();
-                return "{\"success\":false, \"data\": " + err.message()+ "\"}";
+                return "{\"success\": false, \"data\": " + err.message()+ "\"}";
             }
 
             MovieHandler.movies.add(movie);
 
-            return "{\"success\":true, \"data\": \"movie added successfully\"}";
+            return "{\"success\": true, \"data\": \"movie added successfully\"}";
         }
         catch (Exception e) {
             e.printStackTrace();

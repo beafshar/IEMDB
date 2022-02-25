@@ -9,7 +9,7 @@ public class addActor {
         try {
             Actor actor = objectMapper.readValue(jsonData, Actor.class);
             ActorHandler.actors.add(actor);
-            return "{\"success\":ture, \"data\": \"actor added successfully\"}";
+            return "{\"success\": ture, \"data\": \"actor added successfully\"}";
         }
         catch (Exception e) {
             e.printStackTrace();
