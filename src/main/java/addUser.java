@@ -9,12 +9,8 @@ public class addUser implements Command {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             User user = objectMapper.readValue(jsonData, User.class);
-            System.out.println(user.getName());
-            System.out.println(user.getEmail());
-
             UserHandler.users.add(user);
-
-            return "{\"success\":true \"data\": \"user added successfully\"}";
+            return "{\"success\": true, \"data\": \"user added successfully\"}";
         }
         catch (Exception e) {
             e.printStackTrace();

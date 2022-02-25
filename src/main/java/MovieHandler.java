@@ -9,4 +9,9 @@ public class MovieHandler {
         return AM.execute(jsonData);
     }
 
+    public static String addComment(String jsonData) {
+        addComment AC = new addComment();
+        return AC.execute(jsonData);
+    }
+
 }

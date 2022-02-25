@@ -10,7 +10,7 @@ public class Handler {
     private static ActorHandler actorHandler = new ActorHandler();
     private static UserHandler userHandler = new UserHandler();
     private static MovieHandler movieHandler = new MovieHandler();
-
+    public static Integer comment_id = 1;
 
     public static void main(String[] args) throws IOException, JSONException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -32,7 +32,7 @@ public class Handler {
                     response = userHandler.addUser(arrOfStr[1]);
                     break;
                 case "addComment":
-                    System.out.println(arrOfStr[1]);
+                    response = MovieHandler.addComment(arrOfStr[1]);
                     break;
                 case "rateMovie":
                     System.out.println(arrOfStr[1]);

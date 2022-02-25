@@ -67,4 +67,7 @@ public class Movie {
     public double getImdbRate() {return imdbRate;}
     public long getDuration() {return duration;}
     public int getAgeLimit() {return ageLimit;}
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
 }
