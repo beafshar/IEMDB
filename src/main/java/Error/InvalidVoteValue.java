@@ -1,9 +1,7 @@
 package Error;
 
-public class InvalidVoteValue implements Error {
-    @Override
-    public String message() {
-        return "InvalidVoteValue";
+public class InvalidVoteValue extends Exception {
+    public InvalidVoteValue() {
+        super("InvalidVoteValue");
     }
 }
-

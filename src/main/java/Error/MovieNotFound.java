@@ -1,9 +1,7 @@
 package Error;
 
-public class MovieNotFound implements Error {
-    @Override
-    public String message() {
-        return "MovieNotFound";
+public class MovieNotFound extends Exception {
+    public MovieNotFound() {
+        super("MovieNotFound");
     }
 }
-

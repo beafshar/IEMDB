@@ -1,8 +1,7 @@
 package Error;
 
-public class InvalidRateScore implements Error {
-    @Override
-    public String message() {
-        return "InvalidRateScore";
+public class InvalidRateScore extends Exception {
+    public InvalidRateScore() {
+        super("InvalidRateScore");
     }
 }

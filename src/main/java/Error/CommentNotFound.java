@@ -1,9 +1,8 @@
 package Error;
 
-public class CommentNotFound implements Error {
-    @Override
-    public String message() {
-        return "CommentNotFound";
+public class CommentNotFound extends Exception {
+    public CommentNotFound() {
+        super("CommentNotFound");
     }
 }
 

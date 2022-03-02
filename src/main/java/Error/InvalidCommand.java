@@ -1,8 +1,8 @@
 package Error;
 
-public class InvalidCommand implements Error {
-    @Override
-    public String message() {
-        return "InvalidCommand";
+public class InvalidCommand extends Exception {
+    public InvalidCommand() {
+        super("InvalidCommand");
     }
 }
+

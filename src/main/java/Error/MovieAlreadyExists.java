@@ -1,8 +1,7 @@
 package Error;
 
-public class MovieAlreadyExists implements Error {
-    @Override
-    public String message() {
-        return "MovieAlreadyExists";
+public class MovieAlreadyExists extends Exception {
+    public MovieAlreadyExists() {
+        super("MovieAlreadyExists");
     }
 }

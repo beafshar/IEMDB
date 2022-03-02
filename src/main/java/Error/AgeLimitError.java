@@ -1,8 +1,7 @@
 package Error;
 
-public class AgeLimitError implements Error {
-    @Override
-    public String message() {
-        return "AgeLimitError";
+public class AgeLimitError extends Exception {
+    public AgeLimitError() {
+        super("AgeLimitError");
     }
 }
