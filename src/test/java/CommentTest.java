@@ -14,7 +14,7 @@ public class CommentTest {
     {
         user = new User("Mahdi@gmail.com","1234", "mahdi", "mahdi mahdavi","2000-02-01");
         users = new UserHandler();
-        comment = new Comment();
+//        comment = new Comment();
     }
 
     @After

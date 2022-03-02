@@ -15,7 +15,6 @@ public class CommentHandler {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         ObjectNode response = objectMapper.createObjectNode();
         Comment comment = objectMapper.readValue(jsonData, Comment.class);
-
         if(UserHandler.findUser(comment.getUserEmail()) == null)
             return UserHandler.UserNotFound();
         if(MovieHandler.returnMovieObjectGivenId(comment.getMovieId()) == null)

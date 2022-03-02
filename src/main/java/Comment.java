@@ -1,5 +1,9 @@
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,21 +18,22 @@ public class Comment {
     private int likes = 0;
     private int dislikes = 0;
 
-    public Comment() {
-        id = CommentHandler.comment_id;
-        recordTime = LocalDateTime.now();
+    @ConstructorProperties({"userEmail","movieId","text"})
+    @JsonCreator
+    public Comment(@JsonProperty(value = "userEmail", required = true) String userEmail,
+                   @JsonProperty(value = "movieId", required = true) int movieId,
+                   @JsonProperty(value = "text", required = true) String text) {
+        this.userEmail = userEmail;
+        this.movieId = movieId;
+        this.text = text;
+        this.id = CommentHandler.comment_id;
+        this.recordTime = LocalDateTime.now();
     }
-    public Comment(String _userEmail, int _movieId, String _text) {
-        userEmail = _userEmail;
-        movieId = _movieId;
-        text = _text;
-
-    }
-    public Integer getId() { return id; }
-    public String getText() { return text; }
-    public String getUserEmail() { return userEmail; }
-    public int getMovieId() { return movieId; }
-    public LocalDateTime getRecordTime() { return recordTime; }
+    public Integer getId() { return this.id; }
+    public String getText() { return this.text; }
+    public String getUserEmail() { return this.userEmail; }
+    public int getMovieId() { return this.movieId; }
+    public LocalDateTime getRecordTime() { return this.recordTime; }
 
     public ObjectNode addVote(String userEmail, int vote) {
         if(map.containsKey(userEmail)) {
