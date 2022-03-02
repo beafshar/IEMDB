@@ -1,6 +1,7 @@
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-
+import java.beans.ConstructorProperties;
 
 public class Actor {
     private int id;
@@ -8,39 +9,29 @@ public class Actor {
     private String birthDate;
     private String nationality;
 
-    public Actor()
+    @ConstructorProperties({"id","name","birthDate","nationality"})
+    @JsonCreator
+    public Actor(int id, String name, String birthDate, @JsonProperty(value = "nationality", required = true) String nationality)
     {
-
-    }
-    public Actor(int _id, String _name, String _birthDate, String _nationality)
-    {
-        id = _id;
-        name = _name;
-        birthDate = _birthDate;
-        nationality = _nationality;
-    }
-
-    public void updateActor(int _id, String _name, String _birthDate, String _nationality)
-    {
-        id = _id;
-        name = _name;
-        birthDate = _birthDate;
-        nationality = _nationality;
+        this.id = id;
+        this.name = name;
+        this.birthDate = birthDate;
+        this.nationality = nationality;
     }
 
     public String getNationality() {
-        return nationality;
+        return this.nationality;
     }
     public String getBirthDate()
     {
-        return birthDate;
+        return this.birthDate;
     }
     public String getName()
     {
-        return name;
+        return this.name;
     }
     public int getId()
     {
-        return id;
+        return this.id;
     }
 }
