@@ -17,16 +17,16 @@ public class Movie {
     private String summary;
     private String releaseDate;
     private String director;
-    List<String> writers = new ArrayList<String>();
-    List<String> genres = new ArrayList<String>();
-    List<Integer> cast = new ArrayList<Integer>();
+    List<String> writers = new ArrayList<>();
+    List<String> genres = new ArrayList<>();
+    List<Integer> cast = new ArrayList<>();
     private double imdbRate;
     private long duration;
     private int ageLimit;
     private double rating = 0;
     private double ratingCount = 0;
     private List<Comment> comments = new ArrayList<>();
-    private Map<String, Integer> map = new HashMap<String, Integer>();
+    private Map<String, Integer> map = new HashMap<>();
 
     @ConstructorProperties({"id","name","summary", "releaseDate", "director", "writers", "genres", "cast", "imdbRate", "duration", "ageLimit"})
     @JsonCreator
@@ -35,7 +35,7 @@ public class Movie {
                  @JsonProperty(value = "director", required = true) String director, @JsonProperty(value = "writers", required = true) ArrayNode writers,
                  @JsonProperty(value = "genres", required = true) ArrayNode genres, @JsonProperty(value = "cast", required = true) ArrayNode cast,
                  @JsonProperty(value = "imdbRate", required = true) double imdbRate, @JsonProperty(value = "duration", required = true) long duration,
-                 @JsonProperty(value = "ageLimit", required = true) int ageLimit) throws Exception {
+                 @JsonProperty(value = "ageLimit", required = true) int ageLimit) {
         this.id = id;
         this.name = name;
         this.summary = summary;
@@ -71,7 +71,7 @@ public class Movie {
         comments.add(comment);
     }
 
-    public ObjectNode rateMovie(String userEmail, int score) throws Exception {
+    public ObjectNode rateMovie(String userEmail, int score) {
         if(map.containsKey(userEmail)) {
             if (ratingCount == 1)
                 rating = 0;

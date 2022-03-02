@@ -36,39 +36,27 @@ public class UserHandler {
 
     public ObjectNode addToWatchList(String jsonData) throws Exception {
         JSONObject json = new JSONObject(jsonData);
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode response = objectMapper.createObjectNode();
-
         String userEmail = json.getString("userEmail");
         int movieId = json.getInt("movieId");
-
         if(users.containsKey(userEmail))
             return users.get(userEmail).addToWatchList(movieId);
-
         return UserNotFound();
     }
 
     public static ObjectNode removeFromWatchList(String jsonData) throws Exception {
         JSONObject json = new JSONObject(jsonData);
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode response = objectMapper.createObjectNode();
         String userEmail = json.getString("userEmail");
         int movieId = json.getInt("movieId");
         if(users.containsKey(userEmail))
             return users.get(userEmail).removeFromWatchList(movieId);
-
         return UserNotFound();
     }
 
     public static ObjectNode getWatchList(String jsonData) throws Exception {
         JSONObject json = new JSONObject(jsonData);
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode response = objectMapper.createObjectNode();
-
         String userEmail = json.getString("userEmail");
-        if (users.containsKey(userEmail)){
+        if (users.containsKey(userEmail))
             return users.get(userEmail).getWatchList();
-        }
         return UserNotFound();
     }
 }

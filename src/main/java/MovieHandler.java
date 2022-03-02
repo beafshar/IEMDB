@@ -21,8 +21,7 @@ public class MovieHandler {
         ObjectNode response = om.createObjectNode();
 
         JSONObject json = new JSONObject(jsonData);
-        if (movies.containsKey(json.getInt("id")))
-            movies.remove(json.getInt("id"));
+        movies.remove(json.getInt("id"));
         Movie movie = objectMapper.readValue(jsonData, Movie.class);
         if (ActorHandler.actors.keySet().containsAll(movie.getCast())) {
             MovieHandler.movies.put(json.getInt("id"), movie);
@@ -47,7 +46,7 @@ public class MovieHandler {
         response.put("error", err.getMessage());
         return response;
     }
-    public static ObjectNode getMovieList() throws Exception {
+    public static ObjectNode getMovieList() {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode response = objectMapper.createObjectNode();
         ObjectNode jo = objectMapper.createObjectNode();
@@ -66,9 +65,8 @@ public class MovieHandler {
                     ja.add(jo1);
         }
         jo.putArray("MovieListByGenre").addAll(ja);
-        String data = jo.toString();
         response.put("success", true);
-        response.put("data", data);
+        response.set("data", jo);
         return response;
     }
 
@@ -117,9 +115,8 @@ public class MovieHandler {
                 comm.add(cc);
             }
             jo.putArray("comments").addAll(comm);
-            String data = jo.toString();
             response.put("success", true);
-            response.put("data", data);
+            response.set("data", jo);
             return response;
         }
         return MovieNotFound();
@@ -150,9 +147,8 @@ public class MovieHandler {
             }
         }
         jo.putArray("MovieListByGenre").addAll(ja);
-        String data = jo.toString();
         response.put("success", true);
-        response.put("data", data);
+        response.set("data", jo);
         return response;
     }
 

@@ -6,10 +6,10 @@ import Error.*;
 
 public class Handler {
 
-    private static ActorHandler actorHandler = new ActorHandler();
-    private static UserHandler userHandler = new UserHandler();
-    private static MovieHandler movieHandler = new MovieHandler();
-    private static CommentHandler commentHandler = new CommentHandler();
+    private static final ActorHandler actorHandler = new ActorHandler();
+    private static final UserHandler userHandler = new UserHandler();
+    private static final MovieHandler movieHandler = new MovieHandler();
+    private static final CommentHandler commentHandler = new CommentHandler();
 
     public static void main(String[] args) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -22,48 +22,23 @@ public class Handler {
             try {
                 String[] arrOfStr = line.split(" ", 2);
                 switch (arrOfStr[0]) {
-
-                    case "addActor":
-                        response = actorHandler.addActor(arrOfStr[1]);
-                        break;
-                    case "addMovie":
-                        response = movieHandler.addMovie(arrOfStr[1]);
-                        break;
-                    case "addUser":
-                        response = userHandler.addUser(arrOfStr[1]);
-                        break;
-                case "addComment":
-                    response = commentHandler.addComment(arrOfStr[1]);
-                    break;
-                case "rateMovie":
-                    response = movieHandler.rateMovie(arrOfStr[1]);
-                    break;
-                case "voteComment":
-                    response = commentHandler.voteComment(arrOfStr[1]);
-                    break;
-                case "addToWatchList":
-                    response = userHandler.addToWatchList(arrOfStr[1]);
-                    break;
-                case "removeFromWatchList":
-                    response = userHandler.removeFromWatchList(arrOfStr[1]);
-                    break;
-                case "getMoviesList":
-                    response = movieHandler.getMovieList();
-                    break;
-                case "getMovieById":
-                    response = movieHandler.getMovieById(arrOfStr[1]);
-                    break;
-                case "getMoviesByGenre":
-                    response = movieHandler.getMovieByGenre(arrOfStr[1]);
-                    break;
-                case "getWatchList":
-                    response = userHandler.getWatchList(arrOfStr[1]);
-                    break;
-                    default:
+                    case "addActor" -> response = actorHandler.addActor(arrOfStr[1]);
+                    case "addMovie" -> response = movieHandler.addMovie(arrOfStr[1]);
+                    case "addUser" -> response = userHandler.addUser(arrOfStr[1]);
+                    case "addComment" -> response = commentHandler.addComment(arrOfStr[1]);
+                    case "rateMovie" -> response = movieHandler.rateMovie(arrOfStr[1]);
+                    case "voteComment" -> response = commentHandler.voteComment(arrOfStr[1]);
+                    case "addToWatchList" -> response = userHandler.addToWatchList(arrOfStr[1]);
+                    case "removeFromWatchList" -> response = userHandler.removeFromWatchList(arrOfStr[1]);
+                    case "getMoviesList" -> response = movieHandler.getMovieList();
+                    case "getMovieById" -> response = movieHandler.getMovieById(arrOfStr[1]);
+                    case "getMoviesByGenre" -> response = movieHandler.getMovieByGenre(arrOfStr[1]);
+                    case "getWatchList" -> response = userHandler.getWatchList(arrOfStr[1]);
+                    default -> {
                         InvalidCommand err = new InvalidCommand();
                         response.put("success", false);
                         response.put("data", err.getMessage());
-                        break;
+                    }
                 }
             }
             catch (Exception e) {

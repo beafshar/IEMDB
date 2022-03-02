@@ -10,7 +10,7 @@ public class Comment {
     private int movieId;
     private int id;
     private LocalDateTime recordTime;
-    private Map<String, Integer> map = new HashMap<String, Integer>();
+    private Map<String, Integer> map = new HashMap<>();
     private int likes = 0;
     private int dislikes = 0;
 
@@ -30,7 +30,7 @@ public class Comment {
     public int getMovieId() { return movieId; }
     public LocalDateTime getRecordTime() { return recordTime; }
 
-    public ObjectNode addVote(String userEmail, int vote) throws Exception {
+    public ObjectNode addVote(String userEmail, int vote) {
         if(map.containsKey(userEmail)) {
             if(map.get(userEmail) == 1)
                 likes--;

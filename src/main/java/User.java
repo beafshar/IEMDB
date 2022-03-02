@@ -42,7 +42,7 @@ public class User {
         return curDate.getYear() - birth.getYear();
     }
 
-    public ObjectNode addToWatchList(int movieId) throws Exception {
+    public ObjectNode addToWatchList(int movieId) {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode response = objectMapper.createObjectNode();
         Movie movie = MovieHandler.returnMovieObjectGivenId(movieId);
@@ -68,12 +68,11 @@ public class User {
         return MovieHandler.MovieNotFound();
     }
 
-    public ObjectNode removeFromWatchList(int movieId) throws Exception {
+    public ObjectNode removeFromWatchList(int movieId) {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode response = objectMapper.createObjectNode();
-        Movie movie = MovieHandler.returnMovieObjectGivenId(movieId);
-        if (movie == null) {
-            WatchList.remove(movie.getId());
+        if (WatchList.contains(movieId)) {
+            WatchList.remove((Integer) movieId);
             response.put("success", true);
             response.put("data", "movie removed from watchlist successfully");
             return response;
@@ -81,7 +80,7 @@ public class User {
         return MovieHandler.MovieNotFound();
     }
 
-    public ObjectNode getWatchList() throws Exception {
+    public ObjectNode getWatchList() {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode response = objectMapper.createObjectNode();
         ObjectNode root = objectMapper.createObjectNode();
@@ -102,7 +101,7 @@ public class User {
         }
         root.putArray("WatchList").addAll(arrayNode);
         response.put("success", true);
-        response.put("data", root.toString());
+        response.set("data", root);
         return response;
     }
 }

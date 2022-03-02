@@ -14,8 +14,7 @@ public class ActorHandler {
         ObjectNode response = om.createObjectNode();
 
         JSONObject json = new JSONObject(jsonData);
-        if(actors.containsKey(json.getInt("id")))
-            actors.remove(json.getInt("id"));
+        actors.remove(json.getInt("id"));
         Actor actor = objectMapper.readValue(jsonData, Actor.class);
         response.put("success", true);
         response.put("data", "actor added successfully");
