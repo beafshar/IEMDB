@@ -11,7 +11,10 @@ public class Actor {
 
     @ConstructorProperties({"id","name","birthDate","nationality"})
     @JsonCreator
-    public Actor(int id, String name, String birthDate, @JsonProperty(value = "nationality", required = true) String nationality)
+    public Actor(@JsonProperty(value = "id", required = true) int id,
+                 @JsonProperty(value = "name", required = true) String name,
+                 @JsonProperty(value = "birthDate", required = true) String birthDate,
+                 @JsonProperty(value = "nationality", required = true) String nationality)
     {
         this.id = id;
         this.name = name;

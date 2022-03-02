@@ -1,133 +1,95 @@
-//import org.json.JSONArray;
-//import org.json.JSONException;
-//import org.json.JSONObject;
-//
-//import java.text.DecimalFormat;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-//public class Movie {
-//    private int id;
-//    private String name;
-//    private String summary;
-//    private String releaseDate;
-//    private String director;
-//    List<String> writers = new ArrayList<String>();
-//    List<String> genres = new ArrayList<String>();
-//    List<Integer> cast = new ArrayList<Integer>();
-//    private double imdbRate;
-//    private long duration;
-//    private int ageLimit;
-//    private double rating = 0;
-//    private double ratingCount = 0;
-//    private List<Comment> comments = new ArrayList<>();
-//    private Map<String, Integer> map = new HashMap<String, Integer>();
-//
-//    public Movie()
-//    {
-//
-//    }
-//    public Movie(int _id, String _name, String _director, JSONArray _genres, double _imdbRate, int _age)
-//            throws JSONException
-//    {
-//        id = _id;
-//        name = _name;
-//
-//        director = _director;
-//        for(int i = 0; i < _genres.length(); i++){
-//            genres.add(_genres.getString(i));
-//        }
-//        imdbRate = _imdbRate;
-//        ageLimit = _age;
-//    }
-//
-//    public Movie(int _id, String _name, String _summary, String _releaseDate,
-//                 String _director, JSONArray _writers, JSONArray _genres, JSONArray _cast,
-//                 double _imdbRate, long _duration, int _ageLimit) throws JSONException {
-//        id = _id;
-//        name = _name;
-//        summary = _summary;
-//        releaseDate = _releaseDate;
-//        director = _director;
-//        for(int i = 0; i < _writers.length(); i++){
-//            writers.add(_writers.getString(i));
-//        }
-//        for(int i = 0; i < _genres.length(); i++){
-//            genres.add(_genres.getString(i));
-//        }
-//        for(int i = 0; i < _cast.length(); i++){
-//            cast.add(_cast.getInt(i));
-//        }
-//        imdbRate = _imdbRate;
-//        duration = _duration;
-//        ageLimit = _ageLimit;
-//    }
-//
-//    public void updateMovie(int _id, String _name, String _summary, String _releaseDate,
-//                            String _director, JSONArray _writers, JSONArray _genres, JSONArray _cast,
-//                            double _imdbRate, long _duration, int _ageLimit) throws JSONException {
-//        id = _id;
-//        name = _name;
-//        summary = _summary;
-//        releaseDate = _releaseDate;
-//        director = _director;
-//        for(int i = 0; i < _writers.length(); i++){
-//            writers.add(_writers.getString(i));
-//        }
-//        for(int i = 0; i < _genres.length(); i++){
-//            genres.add(_genres.getString(i));
-//        }
-//        for(int i = 0; i < _cast.length(); i++){
-//            cast.add(_cast.getInt(i));
-//        }
-//        imdbRate = _imdbRate;
-//        duration = _duration;
-//        ageLimit = _ageLimit;
-//    }
-//
-//    public int getId()
-//    {
-//        return id;
-//    }
-//    public String getName()
-//    {
-//        return name;
-//    }
-//    public String getSummary() {return summary;}
-//    public String getReleaseDate() {return releaseDate;}
-//    public String getDirector() {return director;}
-//    public List<String> getWriters() {return writers;}
-//    public List<String> getGenres() {return genres;}
-//    public List<Integer> getCast()
-//    {
-//        return cast;
-//    }
-//    public double getImdbRate() {return imdbRate;}
-//    public long getDuration() {return duration;}
-//    public int getAgeLimit() {return ageLimit;}
-//    public void addComment(Comment comment) {
-//        comments.add(comment);
-//    }
-//    public JSONObject rateMovie(String userEmail, int score) throws JSONException {
-//        if(map.containsKey(userEmail)) {
-//            if (ratingCount == 1)
-//                rating = 0;
-//            else
-//                rating = (rating*ratingCount - map.get(userEmail))/(ratingCount - 1);
-//            ratingCount--;
-//        }
-//        map.put(userEmail, score);
-//        ratingCount += 1;
-//        rating = (rating*(ratingCount-1) + score)/ratingCount;
-//        rating = Double.parseDouble(new DecimalFormat("##.#").format(rating));
-//        JSONObject response = new JSONObject();
-//        response.put("success", true);
-//        response.put("data", "movie rated successfully");
-//        return response;
-//    }
-//    public double getRating() {return rating;}
-//    public double getRatingCount() {return ratingCount;}
-//    public List<Comment> getComments() {return comments;}
-//}
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.beans.ConstructorProperties;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Movie {
+    private int id;
+    private String name;
+    private String summary;
+    private String releaseDate;
+    private String director;
+    List<String> writers = new ArrayList<String>();
+    List<String> genres = new ArrayList<String>();
+    List<Integer> cast = new ArrayList<Integer>();
+    private double imdbRate;
+    private long duration;
+    private int ageLimit;
+    private double rating = 0;
+    private double ratingCount = 0;
+    private List<Comment> comments = new ArrayList<>();
+    private Map<String, Integer> map = new HashMap<String, Integer>();
+
+    @ConstructorProperties({"id","name","summary", "releaseDate", "director", "writers", "genres", "cast", "imdbRate", "duration", "ageLimit"})
+    @JsonCreator
+    public Movie(@JsonProperty(value = "id", required = true) int id, @JsonProperty(value = "name", required = true) String name,
+                 @JsonProperty(value = "summary", required = true) String summary, @JsonProperty(value = "releaseDate", required = true) String releaseDate,
+                 @JsonProperty(value = "director", required = true) String director, @JsonProperty(value = "writers", required = true) ArrayNode writers,
+                 @JsonProperty(value = "genres", required = true) ArrayNode genres, @JsonProperty(value = "cast", required = true) ArrayNode cast,
+                 @JsonProperty(value = "imdbRate", required = true) double imdbRate, @JsonProperty(value = "duration", required = true) long duration,
+                 @JsonProperty(value = "ageLimit", required = true) int ageLimit) throws Exception {
+        this.id = id;
+        this.name = name;
+        this.summary = summary;
+        this.releaseDate = releaseDate;
+        this.director = director;
+        for(int i = 0; i < writers.size(); i++){
+            this.writers.add(String.valueOf(writers.get(i)));
+        }
+        for(int i = 0; i < genres.size(); i++){
+            this.genres.add(String.valueOf(genres.get(i)));
+        }
+        for(int i = 0; i < cast.size(); i++){
+            this.cast.add(cast.get(i).intValue());
+        }
+        this.imdbRate = imdbRate;
+        this.duration = duration;
+        this.ageLimit = ageLimit;
+    }
+
+    public int getId() { return this.id; }
+    public String getName() { return this.name; }
+    public String getSummary() {return this.summary; }
+    public String getReleaseDate() {return this.releaseDate; }
+    public String getDirector() {return this.director; }
+    public List<String> getWriters() {return this.writers; }
+    public List<String> getGenres() {return this.genres; }
+    public List<Integer> getCast() { return this.cast; }
+    public double getImdbRate() {return this.imdbRate;}
+    public long getDuration() {return this.duration;}
+    public int getAgeLimit() {return this.ageLimit;}
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public ObjectNode rateMovie(String userEmail, int score) throws Exception {
+        if(map.containsKey(userEmail)) {
+            if (ratingCount == 1)
+                rating = 0;
+            else
+                rating = (rating*ratingCount - map.get(userEmail))/(ratingCount - 1);
+            ratingCount--;
+        }
+        map.put(userEmail, score);
+        ratingCount += 1;
+        rating = (rating*(ratingCount-1) + score)/ratingCount;
+        rating = Double.parseDouble(new DecimalFormat("##.#").format(rating));
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode response = objectMapper.createObjectNode();
+        response.put("success", true);
+        response.put("data", "movie rated successfully");
+        return response;
+    }
+    public double getRating() {return rating;}
+    public double getRatingCount() {return ratingCount;}
+    public List<Comment> getComments() {return comments;}
+}
