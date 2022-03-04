@@ -1,5 +1,8 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.Javalin;
+import io.javalin.http.Handler;
 
+import javax.naming.Context;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -24,6 +27,18 @@ public class IEMDBController {
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        setDatasets();
+
+        Javalin app = Javalin.create().start(7070);
+//        app.get("/movies");
+
+
+    }
+
+    private void handleRequest(Context ctx) throws IOException {
+
+    }
+    public static void setDatasets() throws IOException, InterruptedException {
         actorHandler.setActors(getActorsFromAPI());
         movieHandler.setMovies(getMoviesFromAPI());
         userHandler.setUsers(getUsersFromAPI());
