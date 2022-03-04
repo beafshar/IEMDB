@@ -127,41 +127,35 @@ public class IEMDBController {
             Element tr = new Element("tr");
             tr.append("<td> " + userHandler.users.get(comment.getUserEmail()).getNickname() + "</td>");
             tr.append("<td> " + comment.getText() + "</td>");
-            String like = """
-                    <td>
-                              <form action="" method="POST">
-                                <label for="">""";
+            String like = "<td>"
+                    +          "<form action=\"\" method=\"POST\">"
+                    +            "<label for=\"\">";
             like += comment.getLikes();
-            like += """
-                    </label>
-                                <input
-                                  id="form_comment_id"
-                                  type="hidden"
-                                  name="comment_id\"""";
+            like += "</label>"
+                    +            "<input"
+                    +              "id=\"form_comment_id\""
+                    +              "type=\"hidden\""
+                    +              "name=\"comment_id\"";
             like += " value=\"" + comment.getId() + "\"";
-            like += """
-                    />
-                                <button type="submit">like</button>
-                              </form>
-                            </td>""";
+            like += "/>"
+                    +            "<button type=\"submit\">like</button>"
+                    +          "</form>"
+                    +        "</td>";
             tr.append(like);
-            String dislike = """
-                    <td>
-                              <form action="" method="POST">
-                                <label for="">""";
+            String dislike = "<td>"
+                    +          "<form action=\"\" method=\"POST\">"
+                    +            "<label for=\"\">";
             dislike += comment.getDislikes();
-            dislike += """
-                    </label>
-                                <input
-                                  id="form_comment_id"
-                                  type="hidden"
-                                  name="comment_id\"""";
+            dislike += "</label>"
+                    +            "<input"
+                    +              "id=\"form_comment_id\""
+                    +              "type=\"hidden\""
+                    +              "name=\"comment_id\"";
             dislike += " value=\"" + comment.getId() + "\"";
-            dislike += """
-                    />
-                                <button type="submit">dislike</button>
-                              </form>
-                            </td>""";
+            dislike += "/>"
+                    +            "<button type=\"submit\">dislike</button>"
+                    +          "</form>"
+                    +        "</td>";
             tr.append(dislike);
             table.append(tr.html());
         }
@@ -209,16 +203,14 @@ public class IEMDBController {
             row.append("<td>" + movie.getRating() + "</td>");
             row.append("<td>" + movie.getDuration() + "</td>");
             row.append("<td><a href=\"/movies/" + new DecimalFormat("00").format(movie.getId()) +"\">Link</a></td>");
-            String remove = """
-                    <td>
-                    <form action="" method="POST" >
-                    <input id="form_movie_id" type="hidden" name="movie_id" value=\"""";
+            String remove = "<td>"
+                    + "<form action=\"\" method=\"POST\" >"
+                    + "<input id=\"form_movie_id\" type=\"hidden\" name=\"movie_id\" value=\"";
             remove += movie.getId();
-            remove += """
-                    ">
-                    <button type="submit">Remove</button>
-                    </form>
-                    </td>""";
+            remove += "\">"
+                    + "<button type=\"submit\">Remove</button>"
+                    + "</form>"
+                    + "</td>";
             row.append(remove);
             table.append(row.html());
         }
