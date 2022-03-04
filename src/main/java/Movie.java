@@ -42,10 +42,10 @@ public class Movie {
         this.releaseDate = releaseDate;
         this.director = director;
         for(int i = 0; i < writers.size(); i++){
-            this.writers.add(String.valueOf(writers.get(i)));
+            this.writers.add(writers.get(i).asText());
         }
         for(int i = 0; i < genres.size(); i++){
-            this.genres.add(String.valueOf(genres.get(i)));
+            this.genres.add(genres.get(i).asText());
         }
         for(int i = 0; i < cast.size(); i++){
             this.cast.add(cast.get(i).intValue());
