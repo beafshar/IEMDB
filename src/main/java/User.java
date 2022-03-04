@@ -44,30 +44,32 @@ public class User {
         return curDate.getYear() - birth.getYear();
     }
 
-    public ObjectNode addToWatchList(int movieId) {
+    public ObjectNode addToWatchList(int movieId) throws MovieAlreadyExists, AgeLimitError, MovieNotFound {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode response = objectMapper.createObjectNode();
         Movie movie = MovieHandler.returnMovieObjectGivenId(movieId);
         if(movie != null) {
             if(calculateUserAge() >= movie.getAgeLimit()) {
                 if(WatchList.contains(movie.getId())) {
-                    MovieAlreadyExists err = new MovieAlreadyExists();
-                    response.put("success", false);
-                    response.put("error", err.getMessage());
-                    return response;
+                    throw new MovieAlreadyExists();
+//                    MovieAlreadyExists err = new MovieAlreadyExists();
+//                    response.put("success", false);
+//                    response.put("error", err.getMessage());
+//                    return response;
                 }
                 WatchList.add(movie.getId());
                 response.put("success", true);
                 response.put("data", "movie added to watchlist successfully");
                 return response;
             }
-            AgeLimitError err = new AgeLimitError();
-            response.put("success", false);
-            response.put("data", err.getMessage());
-            return response;
+            throw new AgeLimitError();
+//            AgeLimitError err = new AgeLimitError();
+//            response.put("success", false);
+//            response.put("data", err.getMessage());
+//            return response;
         }
-
-        return MovieHandler.MovieNotFound();
+            throw new MovieNotFound();
+//        return MovieHandler.MovieNotFound();
     }
 
     public ObjectNode removeFromWatchList(int movieId) {

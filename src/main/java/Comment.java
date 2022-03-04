@@ -7,6 +7,7 @@ import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import Error.*;
 
 public class Comment {
     private String text;
@@ -39,23 +40,27 @@ public class Comment {
     public int getMovieId() { return this.movieId; }
     public LocalDateTime getRecordTime() { return this.recordTime; }
 
-    public ObjectNode addVote(String userEmail, int vote) {
-        if(map.containsKey(userEmail)) {
-            if(map.get(userEmail) == 1)
-                likes--;
-            if(map.get(userEmail) == -1)
-                dislikes--;
+    public ObjectNode addVote(String userEmail, int vote) throws InvalidVoteValue {
+        if (vote == 0 || vote == 1 || vote == -1) {
+            if(map.containsKey(userEmail)) {
+                if(map.get(userEmail) == 1)
+                    likes--;
+                if(map.get(userEmail) == -1)
+                    dislikes--;
+            }
+            map.put(userEmail, vote);
+            if(vote == 1)
+                likes++;
+            else if(vote == -1)
+                dislikes++;
+            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode response = objectMapper.createObjectNode();
+            response.put("success", true);
+            response.put("data", "comment voted successfully");
+            return response;
         }
-        map.put(userEmail, vote);
-        if(vote == 1)
-            likes++;
-        else if(vote == -1)
-            dislikes++;
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode response = objectMapper.createObjectNode();
-        response.put("success", true);
-        response.put("data", "comment voted successfully");
-        return response;
+        throw new InvalidVoteValue();
+
     }
 
     public int getLikes() { return likes; }

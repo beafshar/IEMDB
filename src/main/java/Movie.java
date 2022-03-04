@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import Error.*;
 
 public class Movie {
     private int id;
@@ -72,7 +73,10 @@ public class Movie {
         comments.add(comment);
     }
 
-    public ObjectNode rateMovie(String userEmail, int score) {
+    public ObjectNode rateMovie(String userEmail, int score) throws InvalidRateScore {
+        if (score > 10 || score <= 0) {
+            throw new InvalidRateScore();
+        }
         if(map.containsKey(userEmail)) {
             if (ratingCount == 1)
                 rating = 0;

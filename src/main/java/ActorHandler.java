@@ -13,7 +13,12 @@ public class ActorHandler {
         for (Actor actor : actors)
             this.actors.put(actor.getId(), actor);
     }
-
+    public static Actor findActor(Integer id) throws ActorNotFound{
+        if (actors.containsKey(id))
+            return actors.get(id);
+        else
+            throw new ActorNotFound();
+    }
     public ObjectNode addActor(String jsonData) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectMapper om = new ObjectMapper();

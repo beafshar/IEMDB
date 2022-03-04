@@ -18,6 +18,12 @@ public class MovieHandler {
             this.movies.put(movie.getId(), movie);
     }
 
+    public static Movie findMovie(int movie_id) throws MovieNotFound {
+        if (movies.containsKey(movie_id))
+            return movies.get(movie_id);
+        else
+            throw new MovieNotFound();
+    }
     public ObjectNode addMovie(String jsonData) throws JSONException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

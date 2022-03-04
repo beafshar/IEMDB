@@ -26,8 +26,11 @@ public class UserHandler {
         return response;
     }
 
-    public static User findUser(String email) {
-        return users.get(email);
+    public static User findUser(String email) throws UserNotFound {
+        if (users.containsKey(email))
+            return users.get(email);
+        else
+            throw new UserNotFound();
     }
 
     public static ObjectNode UserNotFound() {
