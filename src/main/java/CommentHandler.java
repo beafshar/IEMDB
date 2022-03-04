@@ -14,11 +14,9 @@ public class CommentHandler {
         for (Comment comment : comments) {
             comment.setId(comment_id);
             this.comments.put(comment.getId(), comment);
-            System.out.println(comment.getId());
             MovieHandler.movies.get(comment.getMovieId()).addComment(comment);
             CommentHandler.comment_id++;
         }
-
     }
     public static ObjectNode addComment(String jsonData) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
