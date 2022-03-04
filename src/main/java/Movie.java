@@ -49,6 +49,7 @@ public class Movie {
         }
         for(int i = 0; i < cast.size(); i++){
             this.cast.add(cast.get(i).intValue());
+            IEMDBController.actorHandler.actors.get(cast.get(i).intValue()).addMovie(this);
         }
         this.imdbRate = imdbRate;
         this.duration = duration;

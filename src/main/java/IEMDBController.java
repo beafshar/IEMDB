@@ -20,7 +20,7 @@ public class IEMDBController {
     private static final String USERS_API = SERVICE_API + "/api/users";
     private static final String COMMENTS_API = SERVICE_API + "/api/comments";
 
-    private static final ActorHandler actorHandler = new ActorHandler();
+    static final ActorHandler actorHandler = new ActorHandler();
     private static final UserHandler userHandler = new UserHandler();
     private static final MovieHandler movieHandler = new MovieHandler();
     private static final CommentHandler commentHandler = new CommentHandler();
@@ -37,8 +37,53 @@ public class IEMDBController {
             Document template = getMovie(context.pathParam("movie_id"));
             context.html(template.html());
         });
+        app.get("/actors/{actor_id}", context -> {
+            Document template = getActor(context.pathParam("actor_id"));
+            context.html(template.html());
+        });
+        app.get("/watchList/{user_id}", context -> {
+            Document template = getWatchList(context.pathParam("user_id"));
+            context.html(template.html());
+        });
     }
 
+    private static Document getMovies() throws IOException {
+        Document template = Jsoup.parse(new File("src/main/template/movies.html"), "utf-8");
+        Element table = template.selectFirst("tbody");
+        for (Movie movie : movieHandler.movies.values()) {
+            Element row = new Element("tr");
+            row.append("<td>" + movie.getName() + "</td>");
+            row.append("<td>" + movie.getSummary() + "</td>");
+            row.append("<td>" + movie.getReleaseDate() + "</td>");
+            row.append("<td>" + movie.getDirector() + "</td>");
+            String writers = "<td>";
+            for (String writer : movie.getWriters()) {
+                writers += writer + ", ";
+            }
+            writers += "</td>";
+            row.append(writers);
+            String genres = "<td>";
+            for (String genre : movie.getGenres()) {
+                genres += genre + ", ";
+            }
+            genres += "</td>";
+            row.append(genres);
+            String casts = "<td>";
+            for (Integer cast : movie.getCast()) {
+                casts += actorHandler.actors.get(cast).getName() + ", ";
+            }
+            casts += "</td>";
+            row.append(casts);
+            row.append("<td>" + movie.getImdbRate() + "</td>");
+            row.append("<td>" + movie.getRating() + "</td>");
+            row.append("<td>" + movie.getDuration() + "</td>");
+            row.append("<td>" + movie.getAgeLimit() + "</td>");
+            row.append("<td><a href=\"/movies/" + new DecimalFormat("00").format(movie.getId()) +"\">Link</a></td>");
+            table.append(row.html());
+        }
+
+        return template;
+    }
 
     private static Document getMovie(String movie_id) throws IOException {
         Document template = Jsoup.parse(new File("src/main/template/movie.html"), "utf-8");
@@ -106,41 +151,58 @@ public class IEMDBController {
         return template;
     }
 
-    private static Document getMovies() throws IOException {
-        Document template = Jsoup.parse(new File("src/main/template/movies.html"), "utf-8");
+    private static Document getActor(String actor_id) throws IOException {
+        Document template = Jsoup.parse(new File("src/main/template/actor.html"), "utf-8");
+        Actor actor = actorHandler.actors.get(valueOf(actor_id));
+        template.selectFirst("#name").html(actor.getName());
+        template.selectFirst("#birthDate").html(actor.getBirthDate());
+        template.selectFirst("#nationality").html(actor.getNationality());
+        template.selectFirst("#tma").html(Integer.toString(actor.getMovies().size()));
         Element table = template.selectFirst("tbody");
-        for (Movie movie : movieHandler.movies.values()) {
+        for (Movie movie : actor.getMovies()) {
+            Element tr = new Element("tr");
+            tr.append("<td> " + movie.getName() + "</td>");
+            tr.append("<td> " + movie.getImdbRate() + "</td>");
+            tr.append("<td> " + movie.getRating() + "</td>");
+            tr.append("<td><a href=\"/movies/" + new DecimalFormat("00").format(movie.getId()) +"\">Link</a></td>");
+            table.append(tr.html());
+        }
+        return template;
+    }
+
+    private static Document getWatchList(String user_id) throws IOException {
+        Document template = Jsoup.parse(new File("src/main/template/watchlist.html"), "utf-8");
+        User user = userHandler.users.get(user_id);
+        template.selectFirst("#name").html(user.getName());
+        template.selectFirst("#nickname").html(user.getNickname());
+        Element table = template.selectFirst("tbody");
+        for (Integer id : user.getWatch()) {
+            Movie movie = movieHandler.movies.get(id);
             Element row = new Element("tr");
             row.append("<td>" + movie.getName() + "</td>");
-            row.append("<td>" + movie.getSummary() + "</td>");
             row.append("<td>" + movie.getReleaseDate() + "</td>");
             row.append("<td>" + movie.getDirector() + "</td>");
-            String writers = "<td>";
-            for (String writer : movie.getWriters()) {
-                writers += writer + ", ";
-            }
-            writers += "</td>";
-            row.append(writers);
             String genres = "<td>";
             for (String genre : movie.getGenres()) {
                 genres += genre + ", ";
             }
             genres += "</td>";
             row.append(genres);
-            String casts = "<td>";
-            for (Integer cast : movie.getCast()) {
-                casts += actorHandler.actors.get(cast).getName() + ", ";
-            }
-            casts += "</td>";
-            row.append(casts);
             row.append("<td>" + movie.getImdbRate() + "</td>");
             row.append("<td>" + movie.getRating() + "</td>");
             row.append("<td>" + movie.getDuration() + "</td>");
-            row.append("<td>" + movie.getAgeLimit() + "</td>");
             row.append("<td><a href=\"/movies/" + new DecimalFormat("00").format(movie.getId()) +"\">Link</a></td>");
+            String remove = "<td>\n" +
+                    "<form action=\"\" method=\"POST\" >\n" +
+                    "<input id=\"form_movie_id\" type=\"hidden\" name=\"movie_id\" value=\"";
+            remove += movie.getId();
+            remove += "\">\n" +
+                    "<button type=\"submit\">Remove</button>\n" +
+                    "</form>\n" +
+                    "</td>";
+            row.append(remove);
             table.append(row.html());
         }
-
         return template;
     }
 

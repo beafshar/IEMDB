@@ -36,6 +36,7 @@ public class User {
     public String getName() { return this.name; }
     public String getBirthDate() {return this.birthDate;}
     public String getNickname() {return this.nickname;}
+    public List<Integer> getWatch() {return this.WatchList;}
 
     private int calculateUserAge() {
         LocalDate birth = LocalDate.parse(this.birthDate);

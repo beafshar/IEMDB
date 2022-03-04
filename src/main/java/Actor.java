@@ -2,12 +2,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.beans.ConstructorProperties;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Actor {
     private int id;
     private String name;
     private String birthDate;
     private String nationality;
+    private List<Movie> movies = new ArrayList<>();
 
     @ConstructorProperties({"id","name","birthDate","nationality"})
     @JsonCreator
@@ -36,5 +39,13 @@ public class Actor {
     public int getId()
     {
         return this.id;
+    }
+    public void addMovie(Movie movie)
+    {
+        this.movies.add(movie);
+    }
+    public List<Movie> getMovies()
+    {
+        return this.movies;
     }
 }
