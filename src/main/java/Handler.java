@@ -11,7 +11,8 @@ public class Handler {
     private static final MovieHandler movieHandler = new MovieHandler();
     private static final CommentHandler commentHandler = new CommentHandler();
 
-    public static void main(String[] args) throws Exception {
+    public static void Handler(String[] args) throws Exception {
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while ((line = reader.readLine()) != null)

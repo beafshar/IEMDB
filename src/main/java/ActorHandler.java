@@ -8,6 +8,12 @@ import Error.*;
 public class ActorHandler {
     public static Map<Integer, Actor> actors = new HashMap<>();
 
+
+    public void setActors(Actor[] actors) {
+        for (Actor actor : actors)
+            this.actors.put(actor.getId(), actor);
+    }
+
     public ObjectNode addActor(String jsonData) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectMapper om = new ObjectMapper();

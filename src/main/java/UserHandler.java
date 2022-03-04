@@ -9,6 +9,11 @@ public class UserHandler {
 
     public static Map<String, User> users = new HashMap<>();
 
+    public void setUsers(User[] users) {
+        for (User user : users)
+            this.users.put(user.getEmail(), user);
+    }
+
     public ObjectNode addUser(String jsonData) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectMapper om = new ObjectMapper();

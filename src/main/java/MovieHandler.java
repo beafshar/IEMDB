@@ -13,6 +13,11 @@ import java.util.Map;
 public class MovieHandler {
     public static Map<Integer, Movie> movies = new HashMap<>();
 
+    public void setMovies(Movie[] movies) {
+        for (Movie movie : movies)
+            this.movies.put(movie.getId(), movie);
+    }
+
     public ObjectNode addMovie(String jsonData) throws JSONException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

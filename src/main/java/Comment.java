@@ -29,6 +29,10 @@ public class Comment {
         this.id = CommentHandler.comment_id;
         this.recordTime = LocalDateTime.now();
     }
+
+    public void setId(Integer id){
+        this.id = id;
+    }
     public Integer getId() { return this.id; }
     public String getText() { return this.text; }
     public String getUserEmail() { return this.userEmail; }

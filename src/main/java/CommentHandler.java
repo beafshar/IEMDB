@@ -10,6 +10,16 @@ public class CommentHandler {
     public static Map<Integer, Comment> comments = new HashMap<>();
     public static Integer comment_id = 1;
 
+    public void setComments(Comment[] comments) {
+        for (Comment comment : comments) {
+            comment.setId(comment_id);
+            this.comments.put(comment.getId(), comment);
+            System.out.println(comment.getId());
+            MovieHandler.movies.get(comment.getMovieId()).addComment(comment);
+            CommentHandler.comment_id++;
+        }
+
+    }
     public static ObjectNode addComment(String jsonData) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
