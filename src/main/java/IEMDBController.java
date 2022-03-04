@@ -1,14 +1,15 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
-import io.javalin.http.Handler;
-
-import javax.naming.Context;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.URI;
 import java.net.http.HttpResponse;
-import java.util.List;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import java.io.File;
+import java.text.DecimalFormat;
 
 public class IEMDBController {
     private static final String SERVICE_API = "http://138.197.181.131:5000";
@@ -23,16 +24,53 @@ public class IEMDBController {
     private static final CommentHandler commentHandler = new CommentHandler();
 
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        setDatasets();
-
+    private static void handleRequest() {
         Javalin app = Javalin.create().start(8081);
         app.get("/", ctx -> ctx.result("Hello World!"));
+        app.get("/movies", context -> {
+            Document template = getMovies();
+            context.html(template.html());
+        });
     }
 
-    private void handleRequest(Context ctx) throws IOException {
+    private static Document getMovies() throws IOException {
+        Document template = Jsoup.parse(new File("src/main/template/movies.html"), "utf-8");
+        Element table = template.selectFirst("tbody");
+        for (Movie movie : movieHandler.movies.values()) {
+            Element row = new Element("tr");
+            row.append("<td>" + movie.getName() + "</td>");
+            row.append("<td>" + movie.getSummary() + "</td>");
+            row.append("<td>" + movie.getReleaseDate() + "</td>");
+            row.append("<td>" + movie.getDirector() + "</td>");
+            String writers = "<td>";
+            for (String writer : movie.getWriters()) {
+                writers += writer + ", ";
+            }
+            writers += "</td>";
+            row.append(writers);
+            String genres = "<td>";
+            for (String genre : movie.getGenres()) {
+                genres += genre + ", ";
+            }
+            genres += "</td>";
+            row.append(genres);
+            String casts = "<td>";
+            for (Integer cast : movie.getCast()) {
+                casts += actorHandler.actors.get(cast).getName() + ", ";
+            }
+            casts += "</td>";
+            row.append(casts);
+            row.append("<td>" + movie.getImdbRate() + "</td>");
+            row.append("<td>" + movie.getRating() + "</td>");
+            row.append("<td>" + movie.getDuration() + "</td>");
+            row.append("<td>" + movie.getAgeLimit() + "</td>");
+            row.append("<td><a href=\"/movies/" + new DecimalFormat("00").format(movie.getId()) +"\">Link</a></td>");
+            table.append(row.html());
+        }
 
+        return template;
     }
+
     public static void setDatasets() throws IOException, InterruptedException {
         actorHandler.setActors(getActorsFromAPI());
         movieHandler.setMovies(getMoviesFromAPI());
@@ -47,8 +85,7 @@ public class IEMDBController {
         HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
         ObjectMapper objectMapper = new ObjectMapper();
-        Movie[] movies = objectMapper.readValue(response.body(), Movie[].class);
-        return movies;
+        return objectMapper.readValue(response.body(), Movie[].class);
     }
 
     public static Actor[] getActorsFromAPI() throws IOException, InterruptedException {
@@ -59,8 +96,7 @@ public class IEMDBController {
         HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
         ObjectMapper objectMapper = new ObjectMapper();
-        Actor[] actors = objectMapper.readValue(response.body(), Actor[].class);
-        return actors;
+        return objectMapper.readValue(response.body(), Actor[].class);
     }
 
     public static User[] getUsersFromAPI() throws IOException, InterruptedException {
@@ -71,8 +107,7 @@ public class IEMDBController {
         HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
         ObjectMapper objectMapper = new ObjectMapper();
-        User[] users = objectMapper.readValue(response.body(), User[].class);
-        return users;
+        return objectMapper.readValue(response.body(), User[].class);
 
     }
     public static Comment[] getCommentsFromAPI() throws IOException, InterruptedException {
@@ -83,9 +118,11 @@ public class IEMDBController {
         HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
         ObjectMapper objectMapper = new ObjectMapper();
-        Comment[] comments = objectMapper.readValue(response.body(), Comment[].class);
-        return comments;
+        return objectMapper.readValue(response.body(), Comment[].class);
     }
 
-
+    public static void main(String[] args) throws IOException, InterruptedException {
+        setDatasets();
+        handleRequest();
+    }
 }
