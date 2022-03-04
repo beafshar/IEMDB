@@ -11,6 +11,8 @@ import org.jsoup.nodes.Element;
 import java.io.File;
 import java.text.DecimalFormat;
 
+import static java.lang.Integer.valueOf;
+
 public class IEMDBController {
     private static final String SERVICE_API = "http://138.197.181.131:5000";
     private static final String MOVIES_API = SERVICE_API + "/api/movies";
@@ -31,6 +33,77 @@ public class IEMDBController {
             Document template = getMovies();
             context.html(template.html());
         });
+        app.get("/movies/{movie_id}", context -> {
+            Document template = getMovie(context.pathParam("movie_id"));
+            context.html(template.html());
+        });
+    }
+
+
+    private static Document getMovie(String movie_id) throws IOException {
+        Document template = Jsoup.parse(new File("src/main/template/movie.html"), "utf-8");
+        Movie movie = movieHandler.movies.get(valueOf(movie_id));
+        template.selectFirst("#name").html(movie.getName());
+        template.selectFirst("#summary").html(movie.getSummary());
+        template.selectFirst("#releaseDate").html(movie.getReleaseDate());
+        template.selectFirst("#director").html(movie.getDirector());
+        String writers = "";
+        for (String writer : movie.getWriters()) {
+            writers += writer + ", ";
+        }
+        template.selectFirst("#writers").html(writers);
+        String genres = "";
+        for (String genre : movie.getGenres()) {
+            genres += genre + ", ";
+        }
+        template.selectFirst("#genres").html(genres);
+        String casts = "";
+        for (Integer cast : movie.getCast()) {
+            casts += actorHandler.actors.get(cast).getName() + ", ";
+        }
+        template.selectFirst("#cast").html(casts);
+        template.selectFirst("#imdbRate").html(Double.toString(movie.getImdbRate()));
+        template.selectFirst("#rating").html(Double.toString(movie.getRating()));
+        template.selectFirst("#duration").html(Long.toString(movie.getDuration()));
+        template.selectFirst("#ageLimit").html(Integer.toString(movie.getAgeLimit()));
+        Element table = template.selectFirst("tbody");
+        for (Comment comment : movie.getComments()) {
+            Element tr = new Element("tr");
+            tr.append("<td> " + userHandler.users.get(comment.getUserEmail()).getNickname() + "</td>");
+            tr.append("<td> " + comment.getText() + "</td>");
+            String like = "<td>\n" +
+                    "          <form action=\"\" method=\"POST\">\n" +
+                    "            <label for=\"\">";
+            like += comment.getLikes();
+            like += "</label>\n" +
+                    "            <input\n" +
+                    "              id=\"form_comment_id\"\n" +
+                    "              type=\"hidden\"\n" +
+                    "              name=\"comment_id\"";
+            like += " value=\"" + comment.getId() + "\"";
+            like += "/>\n" +
+                    "            <button type=\"submit\">like</button>\n" +
+                    "          </form>\n" +
+                    "        </td>";
+            tr.append(like);
+            String dislike = "<td>\n" +
+                    "          <form action=\"\" method=\"POST\">\n" +
+                    "            <label for=\"\">";
+            dislike += comment.getDislikes();
+            dislike += "</label>\n" +
+                    "            <input\n" +
+                    "              id=\"form_comment_id\"\n" +
+                    "              type=\"hidden\"\n" +
+                    "              name=\"comment_id\"";
+            dislike += " value=\"" + comment.getId() + "\"";
+            dislike += "/>\n" +
+                    "            <button type=\"submit\">dislike</button>\n" +
+                    "          </form>\n" +
+                    "        </td>";
+            tr.append(dislike);
+            table.append(tr.html());
+        }
+        return template;
     }
 
     private static Document getMovies() throws IOException {

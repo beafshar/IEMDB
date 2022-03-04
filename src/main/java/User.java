@@ -34,7 +34,8 @@ public class User {
 
     public String getEmail() { return this.email; }
     public String getName() { return this.name; }
-    public String getBirthDate() {return birthDate;}
+    public String getBirthDate() {return this.birthDate;}
+    public String getNickname() {return this.nickname;}
 
     private int calculateUserAge() {
         LocalDate birth = LocalDate.parse(this.birthDate);
