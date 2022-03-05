@@ -3,10 +3,7 @@ import org.jsoup.nodes.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import Error.*;
-
 import java.io.File;
-
 import static org.junit.Assert.assertEquals;
 
 public class MovieTest {
@@ -53,5 +50,12 @@ public class MovieTest {
     public void movieNotFound() throws Exception {
         Document doc = Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
         assertEquals(doc.toString(), imdb.rateMovie("sara@ut.ac.ir", "50", "4").toString());
+    }
+
+    @Test
+    public void getMovieByYear() throws Exception {
+        int startYear = 2000;
+        int endYear = 2010;
+        assertEquals(6, imdb.movieHandler.getMovieByYear(startYear, endYear).size());
     }
 }

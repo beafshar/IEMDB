@@ -6,7 +6,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import Error.*;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +27,7 @@ public class MovieHandler {
         else
             throw new MovieNotFound();
     }
+
     public ObjectNode addMovie(String jsonData) throws JSONException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -44,7 +48,15 @@ public class MovieHandler {
         return ActorHandler.ActorNotFound();
     }
 
-
+    public static List<Movie> getMovieByYear(int start_year, int end_year) {
+        List<Movie> mov = new ArrayList<>();
+        for (Movie movie : movies.values()) {
+            LocalDate movie_year = LocalDate.parse(movie.getReleaseDate());
+            if (movie_year.getYear() >= start_year && movie_year.getYear() <= end_year)
+                mov.add(movie);
+        }
+        return mov;
+    }
     public static Movie returnMovieObjectGivenId(int id){
         return movies.get(id);
     }

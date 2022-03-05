@@ -12,6 +12,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.List;
+
 import static java.lang.Integer.valueOf;
 
 public class IEMDBController {
@@ -390,14 +392,12 @@ public class IEMDBController {
         return template;
     }
 
-    private static Document getMovieByYear(String start_year, String end_year) throws IOException {
+    static Document getMovieByYear(String start_year, String end_year) throws IOException {
         Document template = Jsoup.parse(new File("src/main/template/movies.html"), "utf-8");
         Element table = template.selectFirst("tbody");
-        for (Movie movie : movieHandler.movies.values()) {
-            LocalDate movie_year = LocalDate.parse(movie.getReleaseDate());
-            if (movie_year.getYear() >= Integer.parseInt(start_year) && movie_year.getYear() <= Integer.parseInt(end_year))
+        List<Movie> movies = movieHandler.getMovieByYear(Integer.parseInt(start_year), Integer.parseInt(end_year));
+        for (Movie movie : movies)
                 table.append(showMovies(movie).html());
-        }
         return template;
     }
 
