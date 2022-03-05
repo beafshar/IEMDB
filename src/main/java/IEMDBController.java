@@ -61,6 +61,12 @@ public class IEMDBController {
             Document template = rateMovie(context.pathParam("user_id"),context.pathParam("movie_id"),context.pathParam("rate"));
             context.html(template.html());
         });
+
+        app.post("/rateMovie/{user_id}/{movie_id}/{rate}", context -> {
+            Document template = rateMovie(context.pathParam("user_id"),context.pathParam("movie_id"),context.pathParam("rate"));
+            context.html(template.html());
+        });
+
         app.get("/voteComment/{user_id}/{comment_id}/{vote}", context -> {
             Document template = voteComment(context.pathParam("user_id"),context.pathParam("comment_id"),context.pathParam("vote"));
             context.html(template.html());
@@ -143,6 +149,24 @@ public class IEMDBController {
             template.selectFirst("#duration").html(Long.toString(movie.getDuration()));
             template.selectFirst("#ageLimit").html(Integer.toString(movie.getAgeLimit()));
             Element table = template.selectFirst("tbody");
+            String input = "<label>Your ID:</label>";
+            input += "<input id=\"userID\" type=\"text\" name=\"user_id\" value=\"\" />";
+            input +="<br><br>";
+//            Element user_id_text = template.getElementById("user_id");
+//            Element rate_id_text = template.getElementById("quantity");
+//            System.out.println(user_id_text.text());
+//            System.out.println(rate_id_text.text());
+//            trr.append("<form action=\"/rateMovie/" + user_id_text.text() + "/" + movie_id + "/" + rate_id_text.text() +"\" method=\"POST\">");
+            input +="<label>Rate(between 1 and 10):</label>";
+            input +="<input type=\"number\" id=\"quantity\" name=\"quantity\" min=\"1\" max=\"10\">";
+            input +="<button type=\"submit\">rate</button>";
+            input +="</form>";
+
+            table.append(input);
+            Document doc = Jsoup.parse(input);
+//            Element elem = doc.getElementById("user_id");
+//            System.out.println(elem.attr("value"));
+
             for (Comment comment : movie.getComments()) {
                 Element tr = new Element("tr");
                 tr.append("<td> " + userHandler.users.get(comment.getUserEmail()).getNickname() + "</td>");
