@@ -21,11 +21,10 @@ public class IEMDBController {
     private static final String USERS_API = SERVICE_API + "/api/users";
     private static final String COMMENTS_API = SERVICE_API + "/api/comments";
 
-    static final ActorHandler actorHandler = new ActorHandler();
-    private static final UserHandler userHandler = new UserHandler();
-    private static final MovieHandler movieHandler = new MovieHandler();
-    private static final CommentHandler commentHandler = new CommentHandler();
-
+    public static final ActorHandler actorHandler = new ActorHandler();
+    public static final UserHandler userHandler = new UserHandler();
+    public static final MovieHandler movieHandler = new MovieHandler();
+    public static final CommentHandler commentHandler = new CommentHandler();
 
     private static void handleRequest() {
         Javalin app = Javalin.create().start(8081);
@@ -296,7 +295,7 @@ public class IEMDBController {
         }
     }
 
-    private static Document rateMovie(String user_id, String movie_id, String rate) throws IOException {
+    static Document rateMovie(String user_id, String movie_id, String rate) throws IOException {
         try{
             userHandler.findUser(user_id);
             Movie movie = movieHandler.findMovie(valueOf(movie_id));
