@@ -1,19 +1,17 @@
+import Error.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;
-import java.io.IOException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.URI;
-import java.net.http.HttpResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import Error.*;
-
 import static java.lang.Integer.valueOf;
 
 public class IEMDBController {
@@ -189,8 +187,7 @@ public class IEMDBController {
             return template;
         }
         catch (MovieNotFound exp) {
-            Document template = Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
         }
     }
 
@@ -255,8 +252,7 @@ public class IEMDBController {
             return template;
         }
         catch (MovieNotFound exp) {
-            Document template = Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
         }
     }
 
@@ -280,77 +276,65 @@ public class IEMDBController {
             return template;
         }
         catch (ActorNotFound exp) {
-            Document template = Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
         }
     }
 
     private static Document voteComment (String user_id, String comment_id, String vote) throws IOException {
         try{
-            User user = userHandler.findUser(user_id);
+            userHandler.findUser(user_id);
             Comment comment = commentHandler.findComment(valueOf(comment_id));
             System.out.println(vote);
             comment.addVote(user_id, valueOf(vote));
-            Document template = Jsoup.parse(new File("src/main/template/200.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/200.html"), "utf-8");
         }
         catch (UserNotFound|CommentNotFound exp) {
-            Document template = Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
         }
         catch (InvalidVoteValue exp) {
-            Document template = Jsoup.parse(new File("src/main/template/403.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/403.html"), "utf-8");
         }
     }
 
     private static Document rateMovie(String user_id, String movie_id, String rate) throws IOException {
         try{
-            User user = userHandler.findUser(user_id);
+            userHandler.findUser(user_id);
             Movie movie = movieHandler.findMovie(valueOf(movie_id));
             movie.rateMovie(user_id, valueOf(rate));
-            Document template = Jsoup.parse(new File("src/main/template/200.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/200.html"), "utf-8");
         }
         catch (UserNotFound|MovieNotFound exp) {
-            Document template = Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
         }
         catch (InvalidRateScore exp) {
-            Document template = Jsoup.parse(new File("src/main/template/403.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/403.html"), "utf-8");
         }
     }
 
     private static Document removeFromWatchList(String user_id, String movie_id) throws IOException {
         try {
             User user = userHandler.findUser(user_id);
-            Movie movie = movieHandler.findMovie(valueOf(movie_id));
+            movieHandler.findMovie(valueOf(movie_id));
             user.removeFromWatchList(valueOf(movie_id));
-            Document template = Jsoup.parse(new File("src/main/template/200.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/200.html"), "utf-8");
         }
         catch (UserNotFound|MovieNotFound exp) {
-            Document template = Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
         }
     }
 
     private static Document addToWatchList(String user_id, String movie_id) throws IOException {
         try {
             User user = userHandler.findUser(user_id);
-            Movie movie = movieHandler.findMovie(valueOf(movie_id));
+            movieHandler.findMovie(valueOf(movie_id));
             user.addToWatchList(valueOf(movie_id));
-            Document template = Jsoup.parse(new File("src/main/template/200.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/200.html"), "utf-8");
         }
         catch (UserNotFound|MovieNotFound exp) {
-            Document template = Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
         }
         catch (MovieAlreadyExists|AgeLimitError exp){
-            Document template = Jsoup.parse(new File("src/main/template/403.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/403.html"), "utf-8");
         }
     }
 
@@ -393,8 +377,7 @@ public class IEMDBController {
             return template;
         }
         catch (UserNotFound exp) {
-            Document template = Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
-            return template;
+            return Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
         }
     }
 
