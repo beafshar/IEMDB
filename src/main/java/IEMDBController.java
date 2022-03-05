@@ -32,38 +32,61 @@ public class IEMDBController {
     private static void handleRequest() {
         Javalin app = Javalin.create().start(8081);
         app.get("/", ctx -> ctx.result("Welcome to IEMDB!"));
+
         app.get("/movies", context -> {
             Document template = getMovies();
             context.html(template.html());
         });
+
         app.get("/movies/{movie_id}", context -> {
             Document template = getMovie(context.pathParam("movie_id"));
             context.html(template.html());
         });
+
         app.get("/actors/{actor_id}", context -> {
             Document template = getActor(context.pathParam("actor_id"));
             context.html(template.html());
         });
+
         app.get("/watchList/{user_id}", context -> {
             Document template = getWatchList(context.pathParam("user_id"));
             context.html(template.html());
         });
+
         app.get("/watchList/{user_id}/{movie_id}", context -> {
             Document template = addToWatchList(context.pathParam("user_id"),context.pathParam("movie_id"));
             context.html(template.html());
         });
+
+        app.post("/add_to_watch/{movie_id}/{user_id}", context -> {
+            Document template = addToWatchList(context.pathParam("user_id"),context.pathParam("movie_id"));
+            context.html(template.html());
+            context.redirect("/watchList/" + context.pathParam("user_id"));
+        });
+
         app.post("/removeFromWatchList/{user_id}/{movie_id}", context -> {
             Document template = removeFromWatchList(context.pathParam("user_id"),context.pathParam("movie_id"));
             context.html(template.html());
             context.redirect("/watchList/" + context.pathParam("user_id"));
         });
+
         app.get("/rateMovie/{user_id}/{movie_id}/{rate}", context -> {
             Document template = rateMovie(context.pathParam("user_id"),context.pathParam("movie_id"),context.pathParam("rate"));
             context.html(template.html());
         });
 
-        app.post("/rateMovie/{user_id}/{movie_id}/{rate}", context -> {
-            Document template = rateMovie(context.pathParam("user_id"),context.pathParam("movie_id"),context.pathParam("rate"));
+        app.post("/rate/{movie_id}/{user_id}", context -> {
+            Document template = rateMovie(context.pathParam("user_id"),context.pathParam("movie_id"),context.formParam("quantity"));
+            context.html(template.html());
+            context.redirect("/movielogin/" + context.pathParam("movie_id") + "/" + context.pathParam("user_id"));
+        });
+
+        app.post("/movie_user/{movie_id}", context -> {
+            context.redirect("/movielogin/" + context.pathParam("movie_id") + "/" + context.formParam("user_id"));
+        });
+
+        app.get("/movielogin/{movie_id}/{user_id}", context -> {
+            Document template = getMovieUser(context.pathParam("movie_id"), context.pathParam("user_id"));
             context.html(template.html());
         });
 
@@ -71,10 +94,18 @@ public class IEMDBController {
             Document template = voteComment(context.pathParam("user_id"),context.pathParam("comment_id"),context.pathParam("vote"));
             context.html(template.html());
         });
+
+        app.post("/vote/{movie_id}/{comment_id}/{user_id}/{vote}", context -> {
+            Document template = voteComment(context.pathParam("user_id"),context.pathParam("comment_id"),context.pathParam("vote"));
+            context.html(template.html());
+            context.redirect("/movielogin/" + context.pathParam("movie_id") + "/" + context.pathParam("user_id"));
+        });
+
         app.get("/movies/search/{genre}", context -> {
             Document template = getMovieByGenre(context.pathParam("genre"));
             context.html(template.html());
         });
+
         app.get("/movies/search/{start_year}/{end_year}", context -> {
             Document template = getMovieByYear(context.pathParam("start_year"), context.pathParam("end_year"));
             context.html(template.html());
@@ -148,32 +179,49 @@ public class IEMDBController {
             template.selectFirst("#rating").html(Double.toString(movie.getRating()));
             template.selectFirst("#duration").html(Long.toString(movie.getDuration()));
             template.selectFirst("#ageLimit").html(Integer.toString(movie.getAgeLimit()));
-            Element table = template.selectFirst("tbody");
-            String input = "<label>Your ID:</label>";
-            input += "<input id=\"userID\" type=\"text\" name=\"user_id\" value=\"\" />";
-            input +="<br><br>";
-//            Element user_id_text = template.getElementById("user_id");
-//            Element rate_id_text = template.getElementById("quantity");
-//            System.out.println(user_id_text.text());
-//            System.out.println(rate_id_text.text());
-//            trr.append("<form action=\"/rateMovie/" + user_id_text.text() + "/" + movie_id + "/" + rate_id_text.text() +"\" method=\"POST\">");
-            input +="<label>Rate(between 1 and 10):</label>";
-            input +="<input type=\"number\" id=\"quantity\" name=\"quantity\" min=\"1\" max=\"10\">";
-            input +="<button type=\"submit\">rate</button>";
-            input +="</form>";
+            String rate_movie = "<br> <td> <form action=\"/movie_user/" + movie_id + "\"" +
+                    " method=\"POST\">\n" +
+                    "      <label>Your ID:</label>\n" +
+                    "      <input id = \"user_id\" type=\"text\" name=\"user_id\" value=\"\" />\n" +
+                    "      <button type=\"submit\">login</button>\n" +
+                    "    </form> </td></br>";
+            template.append(rate_movie);
+            return template;
+        }
+        catch (MovieNotFound exp) {
+            Document template = Jsoup.parse(new File("src/main/template/404.html"), "utf-8");
+            return template;
+        }
+    }
 
-            table.append(input);
-            Document doc = Jsoup.parse(input);
-//            Element elem = doc.getElementById("user_id");
-//            System.out.println(elem.attr("value"));
+    private static Document getMovieUser(String movie_id, String user_id) throws IOException {
+        try {
+            Document template = getMovie(movie_id);
+            Movie movie = movieHandler.findMovie(valueOf(movie_id));
+
+            String rate_movie = "<br> <td> <form action=\"/rate/" + movie_id + "/" + user_id + "/\"" +
+                    " method=\"POST\">\n" +
+                    "      <label>Rate(between 1 and 10):</label>\n" +
+                    "      <input type=\"number\" id=\"quantity\" name=\"quantity\" min=\"1\" max=\"10\">\n" +
+                    "      <button type=\"submit\">rate</button>\n" +
+                    "    </form> </td></br>";
+            template.append(rate_movie);
+
+            String add_to_watch = "<br> <td> <form action=\"/add_to_watch/" + movie_id +  "/" + user_id + "/\"" +
+                    " method=\"POST\">\n" +
+                    "      <button type=\"submit\">Add to WatchList</button>\n" +
+                    "    </form><br> <td>";
+            template.append(add_to_watch);
+
+            Element table = template.selectFirst("tbody");
 
             for (Comment comment : movie.getComments()) {
                 Element tr = new Element("tr");
                 tr.append("<td> " + userHandler.users.get(comment.getUserEmail()).getNickname() + "</td>");
                 tr.append("<td> " + comment.getText() + "</td>");
                 String like = "<td>"
-                        +          "<form action=\"\" method=\"POST\">"
-                        +            "<label for=\"\">";
+                        +          "<form action=\"/vote/" + movie_id + "/" + comment.getId() + "/" + user_id + "/1\""
+                        +           " method=\"POST\"> <label for=\"\">";
                 like += comment.getLikes();
                 like += "</label>"
                         +            "<input"
@@ -187,8 +235,8 @@ public class IEMDBController {
                         +        "</td>";
                 tr.append(like);
                 String dislike = "<td>"
-                        +          "<form action=\"\" method=\"POST\">"
-                        +            "<label for=\"\">";
+                        +          "<form action=\"/vote/" + movie_id + "/" + comment.getId() + "/" + user_id + "/-1\""
+                        +           " method=\"POST\"> <label for=\"\">";
                 dislike += comment.getDislikes();
                 dislike += "</label>"
                         +            "<input"
@@ -203,6 +251,7 @@ public class IEMDBController {
                 tr.append(dislike);
                 table.append(tr.html());
             }
+
             return template;
         }
         catch (MovieNotFound exp) {
@@ -240,6 +289,7 @@ public class IEMDBController {
         try{
             User user = userHandler.findUser(user_id);
             Comment comment = commentHandler.findComment(valueOf(comment_id));
+            System.out.println(vote);
             comment.addVote(user_id, valueOf(vote));
             Document template = Jsoup.parse(new File("src/main/template/200.html"), "utf-8");
             return template;
@@ -253,6 +303,7 @@ public class IEMDBController {
             return template;
         }
     }
+
     private static Document rateMovie(String user_id, String movie_id, String rate) throws IOException {
         try{
             User user = userHandler.findUser(user_id);
@@ -284,6 +335,7 @@ public class IEMDBController {
             return template;
         }
     }
+
     private static Document addToWatchList(String user_id, String movie_id) throws IOException {
         try {
             User user = userHandler.findUser(user_id);
@@ -301,6 +353,7 @@ public class IEMDBController {
             return template;
         }
     }
+
     private static Document getWatchList(String user_id) throws IOException {
         try {
             Document template = Jsoup.parse(new File("src/main/template/watchlist.html"), "utf-8");
