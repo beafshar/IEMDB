@@ -324,7 +324,7 @@ public class IEMDBController {
         }
     }
 
-    private static Document addToWatchList(String user_id, String movie_id) throws IOException {
+    static Document addToWatchList(String user_id, String movie_id) throws IOException {
         try {
             User user = userHandler.findUser(user_id);
             movieHandler.findMovie(valueOf(movie_id));
@@ -339,7 +339,7 @@ public class IEMDBController {
         }
     }
 
-    private static Document getWatchList(String user_id) throws IOException {
+    static Document getWatchList(String user_id) throws IOException {
         try {
             Document template = Jsoup.parse(new File("src/main/template/watchlist.html"), "utf-8");
             User user = userHandler.findUser(user_id);
