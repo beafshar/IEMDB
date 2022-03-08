@@ -1,9 +1,12 @@
+import Model.Error.UserNotFound;
+import Model.IEMDBController;
+import Model.User;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import Error.*;
+import Model.Error.*;
 import java.io.File;
 import java.io.IOException;
 
