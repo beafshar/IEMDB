@@ -13,9 +13,10 @@ import Model.*;
 public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (IEMDBController.getInstance().getActive_user()== null)
+        if (IEMDBController.getInstance().getActive_user() == null)
             response.sendRedirect("/login");
         else
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+            request.getRequestDispatcher("webapp/home.jsp").forward(request, response);
     }
 }
+
