@@ -2,8 +2,8 @@ package com.myservlet.Model;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import Model.Error.AgeLimitError;
 import Model.Error.MovieAlreadyExists;
@@ -57,10 +57,6 @@ public class User {
             if(calculateUserAge() >= movie.getAgeLimit()) {
                 if(WatchList.contains(movie.getId())) {
                     throw new MovieAlreadyExists();
-//                    MovieAlreadyExists err = new MovieAlreadyExists();
-//                    response.put("success", false);
-//                    response.put("error", err.getMessage());
-//                    return response;
                 }
                 WatchList.add(movie.getId());
                 response.put("success", true);
@@ -68,13 +64,8 @@ public class User {
                 return response;
             }
             throw new AgeLimitError();
-//            AgeLimitError err = new AgeLimitError();
-//            response.put("success", false);
-//            response.put("data", err.getMessage());
-//            return response;
         }
             throw new MovieNotFound();
-//        return Model.MovieHandler.MovieNotFound();
     }
 
     public ObjectNode removeFromWatchList(int movieId) {
@@ -112,5 +103,27 @@ public class User {
         response.put("success", true);
         response.set("data", root);
         return response;
+    }
+
+    public List<Movie> getRecommendationList() {
+        List<Movie> recommended_movies = new ArrayList<>();
+        TreeMap<Double, Movie> movie_score = new TreeMap<>();
+        for(Movie movie: IEMDBController.movieHandler.movies.values()) {
+            if(this.WatchList.contains(movie.getId()) == false){
+                double score = movie.getRating() + movie.getImdbRate();
+                int genre_similarity = 0;
+                for(Integer id: this.WatchList){
+                    Movie m = IEMDBController.movieHandler.movies.get(id);
+                    genre_similarity += m.getGenres().stream().filter(movie.getGenres()::contains).collect(Collectors.toList()).size();
+                }
+                score += genre_similarity*3;
+                movie_score.put(score, movie);
+            }
+        }
+        for(int i = 0; i < 3; i++) {
+            recommended_movies.add(movie_score.lastEntry().getValue());
+            movie_score.remove(movie_score.lastKey());
+        }
+        return recommended_movies;
     }
 }
