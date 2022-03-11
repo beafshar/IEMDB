@@ -38,7 +38,7 @@
             <th>imdb Rate</th> 
             <th>rating</th> 
             <th>duration</th> 
-            <th></th>
+            <th>Link</th>
             <th></th>
         </tr>
         <%
@@ -51,7 +51,7 @@
             <th><%= movie.getGenres() %></th>
             <th><%= movie.getImdbRate() %></th>
             <th><%= movie.getRating() %></th>
-            <th>139</th> 
+            <th><%= movie.getDuration() %></th>
             <td><a href=<%= "/movies/" + new DecimalFormat("00").format(movie.getId()) %>>Link</a></td>
             <td>        
                 <form action="" method="POST" >

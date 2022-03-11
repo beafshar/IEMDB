@@ -66,7 +66,7 @@
     <br>
     <form action="" method="POST">
       <input type="hidden" id="watchlist_action" name="action" value="add">
-      <input type="hidden" id="watchlist_movie_id" name="movie_id" value="01">
+      <input type="hidden" id="watchlist_movie_id" name="movie_id" value=<%=movie_id%>>
       <button type="submit">Add to WatchList</button>
     </form>
     <br />
