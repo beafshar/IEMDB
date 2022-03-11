@@ -1,6 +1,7 @@
 package com.myservlet.Controller;
 
 import Model.Error.AgeLimitError;
+import Model.Error.InvalidRateScore;
 import Model.Error.MovieAlreadyExists;
 import Model.Error.MovieNotFound;
 import com.myservlet.Model.Comment;
@@ -44,8 +45,11 @@ public class MovieController extends HttpServlet {
                         request.getParameter("comment"));
                 IEMDBController.movieHandler.movies.get(Integer.parseInt(request.getParameter("movie_id"))).addComment(comment);
             }
+            else if (action.equals("rate"))
+                IEMDBController.movieHandler.movies.get(Integer.parseInt(request.getParameter("movie_id"))).rateMovie(
+                        IEMDBController.getInstance().getActive_user().getEmail(), Integer.parseInt(request.getParameter("quantity")));
 
-        } catch (MovieAlreadyExists | InterruptedException | AgeLimitError | MovieNotFound e) {
+        } catch (MovieAlreadyExists | InterruptedException | AgeLimitError | MovieNotFound | InvalidRateScore e) {
             e.printStackTrace();
         }
         request.getRequestDispatcher("/movie.jsp").forward(request, response);
