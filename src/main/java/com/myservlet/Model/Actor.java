@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myservlet.Model.Movie;
 
 import java.beans.ConstructorProperties;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,5 +51,10 @@ public class Actor {
     public List<Movie> getMovies()
     {
         return this.movies;
+    }
+    public Integer getAge() {
+        LocalDate birth = LocalDate.parse(this.birthDate);
+        LocalDate curDate = LocalDate.now();
+        return curDate.getYear() - birth.getYear();
     }
 }
