@@ -3,6 +3,7 @@ package com.myservlet.Controller;
 import Model.Error.AgeLimitError;
 import Model.Error.MovieAlreadyExists;
 import Model.Error.MovieNotFound;
+import com.myservlet.Model.Comment;
 import com.myservlet.Model.IEMDBController;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,16 +32,22 @@ public class MovieController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action.equals("add")) {
-            try {
-                IEMDBController.getInstance().getActive_user().addToWatchList(Integer.parseInt(request.getParameter("movie_id")));
-            } catch (MovieAlreadyExists | InterruptedException | AgeLimitError | MovieNotFound e) {
-                e.printStackTrace();
-            }
-        }
         movie_id = request.getPathInfo().substring(1);
         request.setAttribute("movie_id", movie_id);
+        String action = request.getParameter("action");
+        try {
+            if (action.equals("add"))
+                IEMDBController.getInstance().getActive_user().addToWatchList(Integer.parseInt(request.getParameter("movie_id")));
+            else if (action.equals("comment")) {
+                Comment comment = new Comment(IEMDBController.getInstance().getActive_user().getEmail(),
+                        Integer.parseInt(request.getParameter("movie_id")),
+                        request.getParameter("comment"));
+                IEMDBController.movieHandler.movies.get(Integer.parseInt(request.getParameter("movie_id"))).addComment(comment);
+            }
+
+        } catch (MovieAlreadyExists | InterruptedException | AgeLimitError | MovieNotFound e) {
+            e.printStackTrace();
+        }
         request.getRequestDispatcher("/movie.jsp").forward(request, response);
     }
 }

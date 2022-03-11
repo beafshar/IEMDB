@@ -38,7 +38,7 @@
             <th>imdb Rate</th> 
             <th>rating</th> 
             <th>duration</th> 
-            <th>Link</th>
+            <th>link</th>
             <th></th>
         </tr>
         <%

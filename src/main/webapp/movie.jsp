@@ -4,6 +4,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.text.DecimalFormat" %>
+<%@ page import="com.myservlet.Model.Comment" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -77,35 +78,38 @@
         <th></th>
         <th></th>
       </tr>
+      <%
+        for(Comment comment : movie.getComments()){ %>
       <tr>
-        <td>@sara</td>
-        <td>Nice</td>
+        <td><%=IEMDBController.userHandler.users.get(comment.getUserEmail()).getNickname()%></td>
+        <td><%=comment.getText()%></td>
         <td>
           <form action="" method="POST">
-           <label>3</label>
-            <input id="like_comment_id" type="hidden" name="comment_id" value="03"/>
-            <input type="hidden" id="like_action" name="action" value="like">
-            <input type="hidden" id="like_movie_id" name="movie_id" value="01">
+           <label><%=comment.getLikes()%></label>
+            <input id="like_comment_id" type="hidden" name="comment_id" value=<%=String.valueOf(comment.getId())%>/>
+            <input type="hidden" id="like_action" name="action" value="1">
+            <input type="hidden" id="like_movie_id" name="movie_id" value=<%=movie_id%>>
             <button type="submit">like</button>
           </form>
         </td>
         <td>
           <form action="" method="POST">
-            <label>1</label>
-            <input id="form_comment_id" type="hidden" name="comment_id" value="03"/>
-            <input type="hidden" id="form_action" name="action" value="dislike">
-            <input type="hidden" id="form_movie_id" name="movie_id" value="01">
+            <label><%=comment.getDislikes()%></label>
+            <input id="form_comment_id" type="hidden" name="comment_id" value=<%=String.valueOf(comment.getId())%>/>
+            <input type="hidden" id="form_action" name="action" value="-1">
+            <input type="hidden" id="form_movie_id" name="movie_id" value=<%=movie_id%>>
             <button type="submit">dislike</button>
           </form>
         </td>
       </tr>
+      <% } %>
     </table>
     <br><br>
     <form action="" method="POST">
       <label>Your Comment:</label>
       <input type="text" name="comment" value="">
       <input type="hidden" id="comment_action" name="action" value="comment">
-      <input type="hidden" id="comment_movie_id" name="movie_id" value="01">
+      <input type="hidden" id="comment_movie_id" name="movie_id" value=<%=movie_id%>>
       <button type="submit">Add Comment</button>
     </form>
   </body>
