@@ -10,10 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.myservlet.Model.IEMDBController.actorHandler;
@@ -206,14 +203,20 @@ public class MovieHandler {
         return UserHandler.UserNotFound();
     }
 
-    public static List<Movie> filterMovies(String filter) {
-        System.out.println("filter: " + filter);
-        if (filter == null) return movies.values().stream().collect(Collectors.toList());
+    public static List<Movie> filterMovies(String filter, List<Movie> movies) {
         List<Movie> filteredMovies = new ArrayList<>();
-        for (Movie movie : movies.values())
+        for (Movie movie : movies)
             if (movie.getName().toLowerCase().contains(filter.toLowerCase()))
                 filteredMovies.add(movie);
         return filteredMovies;
+    }
+
+    public static List<Movie> getMovies(String filter, String sort_imdb, String sort_date) {
+        List <Movie> movies_list =  movies.values().stream().collect(Collectors.toList());
+        if (filter != null) movies_list = filterMovies(filter, movies_list);
+        if (sort_imdb.equals("1")) movies_list.sort(Comparator.comparing(Movie::getImdbRate).reversed());
+        if (sort_date.equals("1")) movies_list.sort(Comparator.comparing(Movie::getReleaseDate).reversed());
+        return movies_list;
     }
 
 }

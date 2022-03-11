@@ -15,7 +15,9 @@
 <body>
     <%
         String filter = (String)request.getAttribute("filter");
-        List<Movie> movies = IEMDBController.movieHandler.filterMovies(filter);
+        String sort_imdb = (String) request.getAttribute("sort_imdb");
+        String sort_date = (String) request.getAttribute("sort_date");
+        List<Movie> movies = IEMDBController.movieHandler.getMovies(filter, sort_imdb, sort_date);
     %>
     <a href="/">Home</a>
     <p id="email">Email: <%=IEMDBController.getInstance().getActive_user().getEmail()%>m</p>
@@ -63,7 +65,7 @@
             <td><%= movie.getDuration() %></td>
             <td><%= movie.getAgeLimit() %></td>
             <td>
-                <a href="<%= "/movie/" + new DecimalFormat("00").format(movie.getId()) %>">Link</a>
+                <a href="<%= "/movies/" + new DecimalFormat("00").format(movie.getId()) %>">Link</a>
             </td>
         </tr>
         <% } %>

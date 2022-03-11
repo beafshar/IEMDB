@@ -12,6 +12,8 @@ import java.io.IOException;
 @WebServlet(value = "/movies")
 public class MoviesController extends HttpServlet {
     String filter = "";
+    String sort_imdb = "1";
+    String sort_date = "";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -20,6 +22,8 @@ public class MoviesController extends HttpServlet {
                 response.sendRedirect("/login");
             else {
                 request.setAttribute("filter", filter);
+                request.setAttribute("sort_imdb", sort_imdb);
+                request.setAttribute("sort_date", sort_date);
                 request.getRequestDispatcher("movies.jsp").forward(request, response);
             }
         } catch (InterruptedException e) {
@@ -30,15 +34,19 @@ public class MoviesController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        if (action.equals("search")) {
+
+        if (action.equals("search"))
             filter = request.getParameter("search");
-        }
-        else if (action.equals("clear")) {
+        else if (action.equals("clear"))
             filter = "";
-        }
+        else if (action.equals("sort_by_imdb")) {
+            sort_imdb = "1"; sort_date = ""; }
+        else if(action.equals("sort_by_date")) {
+            sort_date = "1"; sort_imdb = ""; }
 
         request.setAttribute("filter", filter);
-        System.out.println("Filter: " + filter);
+        request.setAttribute("sort_imdb", sort_imdb);
+        request.setAttribute("sort_date", sort_date);
         request.getRequestDispatcher("movies.jsp").forward(request, response);
     }
 }
