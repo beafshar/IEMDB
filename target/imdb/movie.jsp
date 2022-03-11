@@ -60,7 +60,7 @@
       <label>Rate(between 1 and 10):</label>
       <input type="number" id="quantity" name="quantity" min="1" max="10">
       <input type="hidden" id="rate_action" name="action" value="rate">
-      <input type="hidden" id="rate_movie_id" name="movie_id" value="01">
+      <input type="hidden" id="rate_movie_id" name="movie_id" value=<%=movie_id%>>
       <button type="submit">rate</button>
     </form>
     <br>
