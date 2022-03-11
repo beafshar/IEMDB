@@ -86,8 +86,8 @@
         <td>
           <form action="" method="POST">
            <label><%=comment.getLikes()%></label>
-            <input id="like_comment_id" type="hidden" name="comment_id" value=<%=String.valueOf(comment.getId())%>/>
-            <input type="hidden" id="like_action" name="action" value="1">
+            <input id="like_comment_id" type="hidden" name="comment_id" value=<%=String.valueOf(comment.getId())%>>
+            <input type="hidden" id="like_action" name="action" value="like">
             <input type="hidden" id="like_movie_id" name="movie_id" value=<%=movie_id%>>
             <button type="submit">like</button>
           </form>
@@ -95,8 +95,8 @@
         <td>
           <form action="" method="POST">
             <label><%=comment.getDislikes()%></label>
-            <input id="form_comment_id" type="hidden" name="comment_id" value=<%=String.valueOf(comment.getId())%>/>
-            <input type="hidden" id="form_action" name="action" value="-1">
+            <input id="form_comment_id" type="hidden" name="comment_id" value=<%=String.valueOf(comment.getId())%>>
+            <input type="hidden" id="form_action" name="action" value="dislike">
             <input type="hidden" id="form_movie_id" name="movie_id" value=<%=movie_id%>>
             <button type="submit">dislike</button>
           </form>

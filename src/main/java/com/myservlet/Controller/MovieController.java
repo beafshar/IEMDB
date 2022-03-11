@@ -35,6 +35,8 @@ public class MovieController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         movie_id = request.getPathInfo().substring(1);
         request.setAttribute("movie_id", movie_id);
+        Integer like = 1;
+        Integer dislike = -1;
         String action = request.getParameter("action");
         try {
             if (action.equals("add"))
@@ -48,8 +50,14 @@ public class MovieController extends HttpServlet {
             else if (action.equals("rate"))
                 IEMDBController.movieHandler.movies.get(Integer.parseInt(request.getParameter("movie_id"))).rateMovie(
                         IEMDBController.getInstance().getActive_user().getEmail(), Integer.parseInt(request.getParameter("quantity")));
+            else if (action.equals("like"))
+                IEMDBController.commentHandler.comments.get(Integer.parseInt(request.getParameter("comment_id"))).addVote(
+                        IEMDBController.getInstance().getActive_user().getEmail(), like);
+            else if (action.equals("dislike"))
+                IEMDBController.commentHandler.comments.get(Integer.parseInt(request.getParameter("comment_id"))).addVote(
+                        IEMDBController.getInstance().getActive_user().getEmail(), dislike);
 
-        } catch (MovieAlreadyExists | InterruptedException | AgeLimitError | MovieNotFound | InvalidRateScore e) {
+        } catch (MovieAlreadyExists | InterruptedException | AgeLimitError | MovieNotFound | InvalidRateScore | Model.Error.InvalidVoteValue e) {
             e.printStackTrace();
         }
         request.getRequestDispatcher("/movie.jsp").forward(request, response);
