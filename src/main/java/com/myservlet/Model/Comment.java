@@ -1,4 +1,4 @@
-package Model;
+package com.myservlet.Model;
 
 import Model.Error.InvalidVoteValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -10,7 +10,7 @@ import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import Model.Error.*;
+
 
 public class Comment {
     private String text;

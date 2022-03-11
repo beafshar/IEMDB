@@ -1,4 +1,4 @@
-package Model;
+package com.myservlet.Model;
 
 import Model.Error.InvalidRateScore;
 import Model.Error.MovieNotFound;
@@ -8,13 +8,14 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.json.JSONException;
 import org.json.JSONObject;
-import Model.Error.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.myservlet.Model.IEMDBController.actorHandler;
 
 
 public class MovieHandler {
@@ -124,7 +125,7 @@ public class MovieHandler {
             for (int cast : movie.getCast()) {
                 ObjectNode jsonObject = objectMapper.createObjectNode();
                 jsonObject.put("actorId", cast);
-                jsonObject.put("name", ActorHandler.findActor(cast).getName());
+                jsonObject.put("name", actorHandler.findActor(cast).getName());
                 c.add(jsonObject);
             }
             jo.putArray("cast").addAll(c);

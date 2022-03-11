@@ -1,4 +1,4 @@
-package Model;
+package com.myservlet.Model;
 
 import Model.Error.UserNotFound;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
-import Model.Error.*;
 
 public class UserHandler {
 

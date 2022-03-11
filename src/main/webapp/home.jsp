@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page import="com.myservlet.Model.IEMDBController"%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +7,7 @@
 </head>
 <body>
     <ul>
-        <li id="email">email: ali@gmail.com</li>
+        <li id="email">Email: <%=IEMDBController.getInstance().getActive_user().getEmail()%></li>
         <li>
             <a href="/movies">Movies</a>
         </li>

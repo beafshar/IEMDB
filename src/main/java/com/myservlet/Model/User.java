@@ -1,4 +1,4 @@
-package Model;
+package com.myservlet.Model;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDate;
@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import Model.Error.*;
 
 public class User {
     private String email;

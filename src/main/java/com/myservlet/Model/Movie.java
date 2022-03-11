@@ -1,6 +1,5 @@
-package Model;
+package com.myservlet.Model;
 
-import Model.Comment;
 import Model.Error.InvalidRateScore;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import Model.Error.*;
 
 public class Movie {
     private int id;

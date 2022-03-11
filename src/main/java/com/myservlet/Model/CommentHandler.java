@@ -1,4 +1,4 @@
-package Model;
+package com.myservlet.Model;
 
 import Model.Error.CommentNotFound;
 import Model.Error.InvalidVoteValue;
@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.json.JSONObject;
-import Model.Error.*;
 import java.util.HashMap;
 import java.util.Map;
 

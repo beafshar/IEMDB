@@ -1,7 +1,8 @@
-package Model;
+package com.myservlet.Model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.myservlet.Model.Movie;
 
 import java.beans.ConstructorProperties;
 import java.util.ArrayList;
