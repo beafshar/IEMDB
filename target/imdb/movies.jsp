@@ -1,6 +1,7 @@
 <%@ page import="com.myservlet.Model.Movie" %>
 <%@ page import="com.myservlet.Model.IEMDBController" %>
 <%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.util.List" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,12 +13,16 @@
     </style>
 </head>
 <body>
+    <%
+        String filter = (String)request.getAttribute("filter");
+        List<Movie> movies = IEMDBController.movieHandler.filterMovies(filter);
+    %>
     <a href="/">Home</a>
     <p id="email">Email: <%=IEMDBController.getInstance().getActive_user().getEmail()%>m</p>
     <br><br>
     <form action="" method="POST">
         <label>Search:</label>
-        <input type="text" name="search" value="">
+        <input type="text" name="search" value=<%=filter%>>
         <button type="submit" name="action" value="search">Search</button>
         <button type="submit" name="action" value="clear">Clear Search</button>
     </form>
@@ -44,7 +49,7 @@
             <th>Links</th>
         </tr>
         <%
-            for(Movie movie : IEMDBController.movieHandler.movies.values()){ %>
+            for(Movie movie : movies){ %>
         <tr>
             <td><%= movie.getName() %></td>
             <td><%= movie.getSummary() %></td>

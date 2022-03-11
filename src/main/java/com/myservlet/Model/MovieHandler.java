@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.myservlet.Model.IEMDBController.actorHandler;
 
@@ -203,6 +204,16 @@ public class MovieHandler {
             return MovieHandler.MovieNotFound();
         }
         return UserHandler.UserNotFound();
+    }
+
+    public static List<Movie> filterMovies(String filter) {
+        System.out.println("filter: " + filter);
+        if (filter == null) return movies.values().stream().collect(Collectors.toList());
+        List<Movie> filteredMovies = new ArrayList<>();
+        for (Movie movie : movies.values())
+            if (movie.getName().toLowerCase().contains(filter.toLowerCase()))
+                filteredMovies.add(movie);
+        return filteredMovies;
     }
 
 }
