@@ -1,8 +1,11 @@
 package com.myservlet.Model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.myservlet.Model.Error.ActorNotFound;
 import com.myservlet.Model.Error.InvalidRateScore;
+import java.beans.ConstructorProperties;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +29,15 @@ public class Movie {
     private final List<Comment> comments = new ArrayList<>();
     private final Map<String, Integer> map = new HashMap<>();
 
-    public Movie(int id, String name,  String summary, String releaseDate,  String director, ArrayNode writers, ArrayNode genres, ArrayNode cast,
-                 double imdbRate, long duration, int ageLimit) throws ActorNotFound {
+    @ConstructorProperties({"id","name","summary", "releaseDate", "director", "writers", "genres", "cast", "imdbRate", "duration", "ageLimit"})
+    @JsonCreator
+    public Movie(@JsonProperty(value = "id", required = true) int id, @JsonProperty(value = "name", required = true) String name,
+                 @JsonProperty(value = "summary", required = true) String summary, @JsonProperty(value = "releaseDate", required = true) String releaseDate,
+                 @JsonProperty(value = "director", required = true) String director, @JsonProperty(value = "writers", required = true) ArrayNode writers,
+                 @JsonProperty(value = "genres", required = true) ArrayNode genres, @JsonProperty(value = "cast", required = true) ArrayNode cast,
+                 @JsonProperty(value = "imdbRate", required = true) double imdbRate, @JsonProperty(value = "duration", required = true) long duration,
+                 @JsonProperty(value = "ageLimit", required = true) int ageLimit
+    ) throws ActorNotFound {
         this.id = id;
         this.name = name;
         this.summary = summary;

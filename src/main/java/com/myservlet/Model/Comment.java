@@ -1,6 +1,9 @@
 package com.myservlet.Model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myservlet.Model.Error.InvalidVoteValue;
+import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +19,12 @@ public class Comment {
     private int likes = 0;
     private int dislikes = 0;
 
-    public Comment( String userEmail, int movieId, String text) {
+    @ConstructorProperties({"userEmail","movieId","text"})
+    @JsonCreator
+    public Comment(@JsonProperty(value = "userEmail", required = true) String userEmail,
+                   @JsonProperty(value = "movieId", required = true) int movieId,
+                   @JsonProperty(value = "text", required = true) String text)
+    {
         this.userEmail = userEmail;
         this.movieId = movieId;
         this.text = text;

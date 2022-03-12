@@ -1,8 +1,10 @@
 package com.myservlet.Model;
 
+import java.beans.ConstructorProperties;
 import java.time.LocalDate;
 import java.util.*;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myservlet.Model.Error.AgeLimitError;
 import com.myservlet.Model.Error.MovieAlreadyExists;
 import com.myservlet.Model.Error.MovieNotFound;
@@ -15,7 +17,13 @@ public class User {
     private final String birthDate;
     private final List<Integer> WatchList = new ArrayList<>();
 
-    public User(String email,  String password, String nickname, String name, String birthDate)
+    @ConstructorProperties({"email","password","nickname","name","birthDate"})
+    @JsonCreator
+    public User(@JsonProperty(value = "email", required = true) String email,
+                @JsonProperty(value = "password", required = true) String password,
+                @JsonProperty(value = "nickname", required = true) String nickname,
+                @JsonProperty(value = "name", required = true) String name,
+                @JsonProperty(value = "birthDate", required = true) String birthDate)
     {
         this.email = email;
         this.password = password;
