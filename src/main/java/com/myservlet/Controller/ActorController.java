@@ -23,7 +23,7 @@ public class ActorController extends HttpServlet {
                 request.getRequestDispatcher("/actor.jsp").forward(request, response);
             }
         } catch (InterruptedException | MovieNotFound e) {
-            e.printStackTrace();
+            request.getRequestDispatcher("404.html").forward(request, response);
         }
     }
 }

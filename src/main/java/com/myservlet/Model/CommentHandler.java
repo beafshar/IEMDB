@@ -12,7 +12,7 @@ public class CommentHandler {
     public static Comment findComment(int comment_id) throws CommentNotFound {
         if (comments.containsKey(comment_id))
             return comments.get(comment_id);
-        throw new CommentNotFound();
+        else throw new CommentNotFound();
     }
     public void setComments(Comment[] comments) throws MovieNotFound {
         for (Comment comment : comments) {
@@ -21,6 +21,14 @@ public class CommentHandler {
             MovieHandler.findMovie(comment.getMovieId()).addComment(comment);
             CommentHandler.comment_id++;
         }
+    }
+    public Comment addComment(String email, Integer movie_id, String text) throws MovieNotFound {
+        Comment comment = new Comment(email, movie_id, text);
+        comment.setId(comment_id);
+        this.comments.put(comment.getId(), comment);
+        MovieHandler.findMovie(movie_id).addComment(comment);
+        CommentHandler.comment_id++;
+        return comment;
     }
 
 }

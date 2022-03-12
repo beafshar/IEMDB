@@ -55,7 +55,7 @@ public class Comment {
             else if(vote == -1)
                 dislikes++;
         }
-        throw new InvalidVoteValue();
+        else throw new InvalidVoteValue();
     }
 
     public int getLikes() { return likes; }

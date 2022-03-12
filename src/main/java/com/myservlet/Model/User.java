@@ -50,17 +50,17 @@ public class User {
             if(calculateUserAge() >= movie.getAgeLimit()) {
                 if(WatchList.contains(movie.getId()))
                     throw new MovieAlreadyExists();
-                WatchList.add(movie.getId());
+                else WatchList.add(movie.getId());
             }
-            throw new AgeLimitError();
+            else throw new AgeLimitError();
         }
-        throw new MovieNotFound();
+        else throw new MovieNotFound();
     }
 
     public void removeFromWatchList(int movieId) throws MovieNotFound {
         if (WatchList.contains(movieId))
             WatchList.remove((Integer) movieId);
-        throw new MovieNotFound();
+        else throw new MovieNotFound();
     }
 
     public List<Movie> getRecommendationList() throws MovieNotFound {

@@ -24,7 +24,7 @@ public class MovieController extends HttpServlet {
                 request.getRequestDispatcher("/movie.jsp").forward(request, response);
             }
         } catch (InterruptedException |MovieNotFound e) {
-            e.printStackTrace();
+            request.getRequestDispatcher("404.html").forward(request, response);
         }
     }
 
@@ -36,12 +36,9 @@ public class MovieController extends HttpServlet {
         try {
             if (action.equals("add"))
                 IEMDBController.getInstance().getActive_user().addToWatchList(Integer.parseInt(request.getParameter("movie_id")));
-            else if (action.equals("comment")) {
-                Comment comment = new Comment(IEMDBController.getInstance().getActive_user().getEmail(),
-                        Integer.parseInt(request.getParameter("movie_id")),
-                        request.getParameter("comment"));
-                IEMDBController.movieHandler.findMovie(Integer.parseInt(request.getParameter("movie_id"))).addComment(comment);
-            }
+            else if (action.equals("comment"))
+                IEMDBController.commentHandler.addComment(IEMDBController.getInstance().getActive_user().getEmail(),
+                        Integer.parseInt(request.getParameter("movie_id")), request.getParameter("comment"));
             else if (action.equals("rate"))
                 IEMDBController.movieHandler.findMovie(Integer.parseInt(request.getParameter("movie_id"))).rateMovie(
                         IEMDBController.getInstance().getActive_user().getEmail(), Integer.parseInt(request.getParameter("quantity")));
@@ -51,11 +48,13 @@ public class MovieController extends HttpServlet {
             else if (action.equals("dislike"))
                 IEMDBController.commentHandler.findComment(Integer.parseInt(request.getParameter("comment_id"))).addVote(
                         IEMDBController.getInstance().getActive_user().getEmail(), -1);
-
-        } catch (InterruptedException | InvalidRateScore | InvalidVoteValue | CommentNotFound | MovieNotFound | AgeLimitError | MovieAlreadyExists e) {
-            e.printStackTrace();
+            request.getRequestDispatcher("/movie.jsp").forward(request, response);
+        } catch (InterruptedException | CommentNotFound | MovieNotFound e) {
+            request.getRequestDispatcher("404.html").forward(request, response);
         }
-        request.getRequestDispatcher("/movie.jsp").forward(request, response);
+        catch (InvalidRateScore | InvalidVoteValue | AgeLimitError | MovieAlreadyExists e) {
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
+        }
     }
 }
-

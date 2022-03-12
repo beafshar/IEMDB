@@ -15,7 +15,7 @@ public class MovieHandler {
     public static Movie findMovie(int movie_id) throws MovieNotFound {
         if (movies.containsKey(movie_id))
             return movies.get(movie_id);
-        throw new MovieNotFound();
+        else throw new MovieNotFound();
     }
 
     public static List<Movie> getMovieByYear(int start_year, int end_year) {

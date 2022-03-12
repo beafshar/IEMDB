@@ -19,7 +19,7 @@ public class WatchlistController extends HttpServlet {
             else
                 request.getRequestDispatcher("/watchlist.jsp").forward(request, response);
         } catch (InterruptedException | MovieNotFound e) {
-            e.printStackTrace();
+            request.getRequestDispatcher("404.html").forward(request, response);
         }
     }
 
@@ -27,10 +27,10 @@ public class WatchlistController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             IEMDBController.getInstance().getActive_user().removeFromWatchList(Integer.parseInt(request.getParameter("movie_id")));
+            request.getRequestDispatcher("/watchlist.jsp").forward(request, response);
         } catch (InterruptedException |MovieNotFound e) {
-            e.printStackTrace();
+            request.getRequestDispatcher("404.html").forward(request, response);
         }
-        request.getRequestDispatcher("/watchlist.jsp").forward(request, response);
     }
 }
 

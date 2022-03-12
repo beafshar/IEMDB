@@ -20,9 +20,8 @@ public class LoginController extends HttpServlet {
         try {
             IEMDBController.getInstance().setActive_user(email);
             response.sendRedirect("/");
-
         } catch (InterruptedException | MovieNotFound | UserNotFound e) {
-            e.printStackTrace();
+            request.getRequestDispatcher("404.html").forward(request, response);
         }
     }
 }

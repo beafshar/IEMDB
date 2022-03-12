@@ -10,13 +10,16 @@
     </style>
 </head>
 <body>
+    <%
+        String error_message = (String)request.getAttribute("error");
+    %>
     <a href="/">Home</a>
     <h1>
         Error:
     </h1>
     <br>
     <h3>
-        Your error message in here
+        <%=error_message%>
     </h3>
 </body>
 </html>

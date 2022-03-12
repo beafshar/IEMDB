@@ -27,7 +27,7 @@ public class MoviesController extends HttpServlet {
                 request.getRequestDispatcher("movies.jsp").forward(request, response);
             }
         } catch (InterruptedException | MovieNotFound e) {
-            e.printStackTrace();
+            request.getRequestDispatcher("404.html").forward(request, response);
         }
     }
 

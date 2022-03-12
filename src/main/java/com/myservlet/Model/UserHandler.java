@@ -14,9 +14,10 @@ public class UserHandler {
     }
 
     public static User findUser(String email) throws UserNotFound {
-        if (users.containsKey(email))
+        if(email.equals("")) return null;
+        else if (users.containsKey(email))
             return users.get(email);
-        throw new UserNotFound();
+        else throw new UserNotFound();
     }
 
 }

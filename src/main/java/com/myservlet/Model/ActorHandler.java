@@ -14,7 +14,7 @@ public class ActorHandler {
     public static Actor findActor(Integer id) throws ActorNotFound {
         if (actors.containsKey(id))
             return actors.get(id);
-        throw new ActorNotFound();
+        else throw new ActorNotFound();
     }
 
     public static Map<Integer, Actor> getActors() { return actors;}
