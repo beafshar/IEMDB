@@ -3,24 +3,19 @@ package com.myservlet.Model;
 import java.beans.ConstructorProperties;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
-
 import Model.Error.AgeLimitError;
 import Model.Error.MovieAlreadyExists;
 import Model.Error.MovieNotFound;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class User {
-    private String email;
-    private String password;
-    private String name;
-    private String nickname;
-    private String birthDate;
-    private List<Integer> WatchList = new ArrayList<>();
+    private final String email;
+    private final String password;
+    private final String name;
+    private final String nickname;
+    private final String birthDate;
+    private final List<Integer> WatchList = new ArrayList<>();
 
     @ConstructorProperties({"email","password","nickname","name","birthDate"})
     @JsonCreator
@@ -49,72 +44,35 @@ public class User {
         return curDate.getYear() - birth.getYear();
     }
 
-    public ObjectNode addToWatchList(int movieId) throws MovieAlreadyExists, AgeLimitError, MovieNotFound {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode response = objectMapper.createObjectNode();
+    public void addToWatchList(int movieId) throws MovieAlreadyExists, AgeLimitError, MovieNotFound {
         Movie movie = MovieHandler.returnMovieObjectGivenId(movieId);
         if(movie != null) {
             if(calculateUserAge() >= movie.getAgeLimit()) {
-                if(WatchList.contains(movie.getId())) {
+                if(WatchList.contains(movie.getId()))
                     throw new MovieAlreadyExists();
-                }
                 WatchList.add(movie.getId());
-                response.put("success", true);
-                response.put("data", "movie added to watchlist successfully");
-                return response;
             }
             throw new AgeLimitError();
         }
             throw new MovieNotFound();
     }
 
-    public ObjectNode removeFromWatchList(int movieId) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode response = objectMapper.createObjectNode();
-        if (WatchList.contains(movieId)) {
+    public void removeFromWatchList(int movieId) throws MovieNotFound {
+        if (WatchList.contains(movieId))
             WatchList.remove((Integer) movieId);
-            response.put("success", true);
-            response.put("data", "movie removed from watchlist successfully");
-            return response;
-        }
-        return MovieHandler.MovieNotFound();
-    }
-
-    public ObjectNode getWatchList() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode response = objectMapper.createObjectNode();
-        ObjectNode root = objectMapper.createObjectNode();
-        ArrayNode arrayNode = objectMapper.createArrayNode();
-        for(Integer movie : WatchList) {
-            Movie m = MovieHandler.returnMovieObjectGivenId(movie);
-            ObjectNode mov = objectMapper.createObjectNode();
-            mov.put("movieId", m.getId());
-            mov.put("name", m.getName());
-            mov.put("director", m.getDirector());
-            ArrayNode jsonArray = objectMapper.createArrayNode();
-            for(String g : m.getGenres()) {
-                jsonArray.add(g);
-            }
-            mov.putArray("genres").addAll(jsonArray);
-            mov.put("rating", m.getRating());
-            arrayNode.add(mov);
-        }
-        root.putArray("WatchList").addAll(arrayNode);
-        response.put("success", true);
-        response.set("data", root);
-        return response;
+        throw new MovieNotFound();
     }
 
     public List<Movie> getRecommendationList() {
         List<Movie> recommended_movies = new ArrayList<>();
         TreeMap<Double, Movie> movie_score = new TreeMap<>();
         for(Movie movie: IEMDBController.movieHandler.movies.values()) {
-            if(this.WatchList.contains(movie.getId()) == false){
+            if(!this.WatchList.contains(movie.getId())){
                 double score = movie.getRating() + movie.getImdbRate();
                 int genre_similarity = 0;
                 for(Integer id: this.WatchList){
                     Movie m = IEMDBController.movieHandler.movies.get(id);
-                    genre_similarity += m.getGenres().stream().filter(movie.getGenres()::contains).collect(Collectors.toList()).size();
+                    genre_similarity += (int) m.getGenres().stream().filter(movie.getGenres()::contains).count();
                 }
                 score += genre_similarity*3;
                 movie_score.put(score, movie);

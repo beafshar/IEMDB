@@ -47,6 +47,7 @@ public class IEMDBController {
         userHandler.setUsers(getUsersFromAPI());
         commentHandler.setComments(getCommentsFromAPI());
     }
+
     public static Movie[] getMoviesFromAPI() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()

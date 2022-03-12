@@ -1,7 +1,6 @@
 package com.myservlet.Controller;
 
 import com.myservlet.Model.IEMDBController;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

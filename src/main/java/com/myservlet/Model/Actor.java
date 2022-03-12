@@ -2,7 +2,6 @@ package com.myservlet.Model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.myservlet.Model.Movie;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDate;
@@ -10,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Actor {
-    private int id;
-    private String name;
-    private String birthDate;
-    private String nationality;
-    private List<Movie> movies = new ArrayList<>();
+    private final int id;
+    private final String name;
+    private final String birthDate;
+    private final String nationality;
+    private final List<Movie> movies = new ArrayList<>();
 
     @ConstructorProperties({"id","name","birthDate","nationality"})
     @JsonCreator

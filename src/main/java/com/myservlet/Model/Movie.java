@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.beans.ConstructorProperties;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -15,21 +14,21 @@ import java.util.List;
 import java.util.Map;
 
 public class Movie {
-    private int id;
-    private String name;
-    private String summary;
-    private String releaseDate;
-    private String director;
+    private final int id;
+    private final String name;
+    private final String summary;
+    private final String releaseDate;
+    private final String director;
     List<String> writers = new ArrayList<>();
     List<String> genres = new ArrayList<>();
     List<Integer> cast = new ArrayList<>();
-    private double imdbRate;
-    private long duration;
-    private int ageLimit;
+    private final double imdbRate;
+    private final long duration;
+    private final int ageLimit;
     private double rating = 0;
     private double ratingCount = 0;
-    private List<Comment> comments = new ArrayList<>();
-    private Map<String, Integer> map = new HashMap<>();
+    private final List<Comment> comments = new ArrayList<>();
+    private final Map<String, Integer> map = new HashMap<>();
 
     @ConstructorProperties({"id","name","summary", "releaseDate", "director", "writers", "genres", "cast", "imdbRate", "duration", "ageLimit"})
     @JsonCreator
