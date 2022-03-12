@@ -1,6 +1,6 @@
 package com.myservlet.Model;
 
-import Model.Error.UserNotFound;
+import com.myservlet.Model.Error.UserNotFound;
 import java.util.HashMap;
 import java.util.Map;
 

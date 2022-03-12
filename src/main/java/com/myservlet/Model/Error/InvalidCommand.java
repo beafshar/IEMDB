@@ -1,4 +1,4 @@
-package Model.Error;
+package com.myservlet.Model.Error;
 
 public class InvalidCommand extends Exception {
     public InvalidCommand() {

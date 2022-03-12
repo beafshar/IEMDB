@@ -1,12 +1,6 @@
 package com.myservlet.Model;
 
-import Model.Error.InvalidVoteValue;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import java.beans.ConstructorProperties;
+import com.myservlet.Model.Error.InvalidVoteValue;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,11 +16,7 @@ public class Comment {
     private int likes = 0;
     private int dislikes = 0;
 
-    @ConstructorProperties({"userEmail","movieId","text"})
-    @JsonCreator
-    public Comment(@JsonProperty(value = "userEmail", required = true) String userEmail,
-                   @JsonProperty(value = "movieId", required = true) int movieId,
-                   @JsonProperty(value = "text", required = true) String text) {
+    public Comment( String userEmail, int movieId, String text) {
         this.userEmail = userEmail;
         this.movieId = movieId;
         this.text = text;
@@ -43,7 +33,7 @@ public class Comment {
     public int getMovieId() { return this.movieId; }
     public LocalDateTime getRecordTime() { return this.recordTime; }
 
-    public ObjectNode addVote(String userEmail, int vote) throws InvalidVoteValue {
+    public void addVote(String userEmail, int vote) throws InvalidVoteValue {
         if (vote == 0 || vote == 1 || vote == -1) {
             if(map.containsKey(userEmail)) {
                 if(map.get(userEmail) == 1)
@@ -56,14 +46,8 @@ public class Comment {
                 likes++;
             else if(vote == -1)
                 dislikes++;
-            ObjectMapper objectMapper = new ObjectMapper();
-            ObjectNode response = objectMapper.createObjectNode();
-            response.put("success", true);
-            response.put("data", "comment voted successfully");
-            return response;
         }
         throw new InvalidVoteValue();
-
     }
 
     public int getLikes() { return likes; }

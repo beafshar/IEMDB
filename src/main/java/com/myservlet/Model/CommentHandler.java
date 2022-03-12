@@ -1,6 +1,7 @@
 package com.myservlet.Model;
 
-import Model.Error.CommentNotFound;
+import com.myservlet.Model.Error.CommentNotFound;
+import com.myservlet.Model.Error.MovieNotFound;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,11 +14,11 @@ public class CommentHandler {
             return comments.get(comment_id);
         throw new CommentNotFound();
     }
-    public void setComments(Comment[] comments) {
+    public void setComments(Comment[] comments) throws MovieNotFound {
         for (Comment comment : comments) {
             comment.setId(comment_id);
             this.comments.put(comment.getId(), comment);
-            MovieHandler.movies.get(comment.getMovieId()).addComment(comment);
+            MovieHandler.findMovie(comment.getMovieId()).addComment(comment);
             CommentHandler.comment_id++;
         }
     }

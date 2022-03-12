@@ -1,5 +1,7 @@
 package com.myservlet.Controller;
 
+import com.myservlet.Model.Error.MovieNotFound;
+import com.myservlet.Model.Error.UserNotFound;
 import com.myservlet.Model.IEMDBController;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -19,7 +21,7 @@ public class LoginController extends HttpServlet {
             IEMDBController.getInstance().setActive_user(email);
             response.sendRedirect("/");
 
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | MovieNotFound | UserNotFound e) {
             e.printStackTrace();
         }
     }

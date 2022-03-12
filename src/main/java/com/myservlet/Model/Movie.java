@@ -1,12 +1,8 @@
 package com.myservlet.Model;
 
-import Model.Error.InvalidRateScore;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.beans.ConstructorProperties;
+import com.myservlet.Model.Error.ActorNotFound;
+import com.myservlet.Model.Error.InvalidRateScore;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,14 +26,8 @@ public class Movie {
     private final List<Comment> comments = new ArrayList<>();
     private final Map<String, Integer> map = new HashMap<>();
 
-    @ConstructorProperties({"id","name","summary", "releaseDate", "director", "writers", "genres", "cast", "imdbRate", "duration", "ageLimit"})
-    @JsonCreator
-    public Movie(@JsonProperty(value = "id", required = true) int id, @JsonProperty(value = "name", required = true) String name,
-                 @JsonProperty(value = "summary", required = true) String summary, @JsonProperty(value = "releaseDate", required = true) String releaseDate,
-                 @JsonProperty(value = "director", required = true) String director, @JsonProperty(value = "writers", required = true) ArrayNode writers,
-                 @JsonProperty(value = "genres", required = true) ArrayNode genres, @JsonProperty(value = "cast", required = true) ArrayNode cast,
-                 @JsonProperty(value = "imdbRate", required = true) double imdbRate, @JsonProperty(value = "duration", required = true) long duration,
-                 @JsonProperty(value = "ageLimit", required = true) int ageLimit) {
+    public Movie(int id, String name,  String summary, String releaseDate,  String director, ArrayNode writers, ArrayNode genres, ArrayNode cast,
+                 double imdbRate, long duration, int ageLimit) throws ActorNotFound {
         this.id = id;
         this.name = name;
         this.summary = summary;
@@ -51,7 +41,7 @@ public class Movie {
         }
         for(int i = 0; i < cast.size(); i++){
             this.cast.add(cast.get(i).intValue());
-            IEMDBController.actorHandler.actors.get(cast.get(i).intValue()).addMovie(this);
+            IEMDBController.actorHandler.findActor(cast.get(i).intValue()).addMovie(this);
         }
         this.imdbRate = imdbRate;
         this.duration = duration;
@@ -74,28 +64,23 @@ public class Movie {
         comments.add(comment);
     }
 
-    public ObjectNode rateMovie(String userEmail, int score) throws InvalidRateScore {
+    public void rateMovie(String userEmail, int score) throws InvalidRateScore {
         if (score > 10 || score <= 0) {
             throw new InvalidRateScore();
         }
-        if(map.containsKey(userEmail)) {
-            if (ratingCount == 1)
-                rating = 0;
+        if(this.map.containsKey(userEmail)) {
+            if (this.ratingCount == 1)
+                this.rating = 0;
             else
-                rating = (rating*ratingCount - map.get(userEmail))/(ratingCount - 1);
-            ratingCount--;
+                this.rating = (this.rating*this.ratingCount - this.map.get(userEmail))/(this.ratingCount - 1);
+            this.ratingCount--;
         }
-        map.put(userEmail, score);
-        ratingCount += 1;
-        rating = (rating*(ratingCount-1) + score)/ratingCount;
-        rating = Double.parseDouble(new DecimalFormat("##.#").format(rating));
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode response = objectMapper.createObjectNode();
-        response.put("success", true);
-        response.put("data", "movie rated successfully");
-        return response;
+        this.map.put(userEmail, score);
+        this.ratingCount += 1;
+        this.rating = (this.rating*(this.ratingCount-1) + score)/this.ratingCount;
+        this.rating = Double.parseDouble(new DecimalFormat("##.#").format(this.rating));
     }
-    public double getRating() {return rating;}
-    public double getRatingCount() {return ratingCount;}
-    public List<Comment> getComments() {return comments;}
+    public double getRating() {return this.rating;}
+    public double getRatingCount() {return this.ratingCount;}
+    public List<Comment> getComments() {return this.comments;}
 }

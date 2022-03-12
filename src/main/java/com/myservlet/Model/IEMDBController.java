@@ -1,6 +1,9 @@
 package com.myservlet.Model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myservlet.Model.Error.MovieNotFound;
+import com.myservlet.Model.Error.UserNotFound;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -23,11 +26,11 @@ public class IEMDBController {
 
     private static IEMDBController instance;
 
-    private IEMDBController() throws IOException, InterruptedException {
+    private IEMDBController() throws IOException, InterruptedException, MovieNotFound {
         setDatasets();
     }
 
-    public static IEMDBController getInstance() throws IOException, InterruptedException {
+    public static IEMDBController getInstance() throws IOException, InterruptedException, MovieNotFound {
         if (instance == null)
             instance = new IEMDBController();
         return instance;
@@ -37,11 +40,11 @@ public class IEMDBController {
         return active_user;
     }
 
-    public void setActive_user(String active_user) {
-        this.active_user = userHandler.users.get(active_user);
+    public void setActive_user(String active_user) throws UserNotFound {
+        this.active_user = userHandler.findUser(active_user);
     }
 
-    public static void setDatasets() throws IOException, InterruptedException {
+    public static void setDatasets() throws IOException, InterruptedException, MovieNotFound {
         actorHandler.setActors(getActorsFromAPI());
         movieHandler.setMovies(getMoviesFromAPI());
         userHandler.setUsers(getUsersFromAPI());

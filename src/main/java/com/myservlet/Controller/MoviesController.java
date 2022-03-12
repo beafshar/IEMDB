@@ -1,5 +1,6 @@
 package com.myservlet.Controller;
 
+import com.myservlet.Model.Error.MovieNotFound;
 import com.myservlet.Model.IEMDBController;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +26,7 @@ public class MoviesController extends HttpServlet {
                 request.setAttribute("sort_date", sort_date);
                 request.getRequestDispatcher("movies.jsp").forward(request, response);
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | MovieNotFound e) {
             e.printStackTrace();
         }
     }

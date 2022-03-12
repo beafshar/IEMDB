@@ -1,6 +1,6 @@
 package com.myservlet.Model;
 
-import Model.Error.MovieNotFound;
+import com.myservlet.Model.Error.MovieNotFound;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -26,10 +26,6 @@ public class MovieHandler {
                 mov.add(movie);
         }
         return mov;
-    }
-
-    public static Movie returnMovieObjectGivenId(int id){
-        return movies.get(id);
     }
 
     public static List<Movie> filterMovies(String filter, List<Movie> movies) {

@@ -1,6 +1,6 @@
 package com.myservlet.Controller;
 
-import Model.Error.MovieNotFound;
+import com.myservlet.Model.Error.MovieNotFound;
 import com.myservlet.Model.IEMDBController;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +18,7 @@ public class WatchlistController extends HttpServlet {
                 response.sendRedirect("/login");
             else
                 request.getRequestDispatcher("/watchlist.jsp").forward(request, response);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | MovieNotFound e) {
             e.printStackTrace();
         }
     }
@@ -27,10 +27,10 @@ public class WatchlistController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             IEMDBController.getInstance().getActive_user().removeFromWatchList(Integer.parseInt(request.getParameter("movie_id")));
-            request.getRequestDispatcher("/watchlist.jsp").forward(request, response);
-        } catch (InterruptedException | MovieNotFound e) {
+        } catch (InterruptedException |MovieNotFound e) {
             e.printStackTrace();
         }
+        request.getRequestDispatcher("/watchlist.jsp").forward(request, response);
     }
 }
 

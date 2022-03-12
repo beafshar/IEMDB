@@ -1,12 +1,11 @@
 package com.myservlet.Model;
 
-import Model.Error.ActorNotFound;
+import com.myservlet.Model.Error.ActorNotFound;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ActorHandler {
     public static Map<Integer, Actor> actors = new HashMap<>();
-
 
     public void setActors(Actor[] actors) {
         for (Actor actor : actors)

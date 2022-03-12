@@ -1,4 +1,4 @@
-package Model.Error;
+package com.myservlet.Model.Error;
 
 public class MovieNotFound extends Exception {
     public MovieNotFound() {

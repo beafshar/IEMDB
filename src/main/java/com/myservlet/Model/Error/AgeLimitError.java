@@ -1,4 +1,4 @@
-package Model.Error;
+package com.myservlet.Model.Error;
 
 public class AgeLimitError extends Exception {
     public AgeLimitError() {

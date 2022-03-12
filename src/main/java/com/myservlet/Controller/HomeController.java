@@ -1,5 +1,6 @@
 package com.myservlet.Controller;
 
+import com.myservlet.Model.Error.MovieNotFound;
 import com.myservlet.Model.IEMDBController;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +18,7 @@ public class HomeController extends HttpServlet {
                 response.sendRedirect("/login");
             else
                 request.getRequestDispatcher("home.jsp").forward(request, response);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | MovieNotFound e) {
             e.printStackTrace();
         }
     }
