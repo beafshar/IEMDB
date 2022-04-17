@@ -4,11 +4,13 @@ import java.beans.ConstructorProperties;
 import java.time.LocalDate;
 import java.util.*;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myservlet.Model.Error.AgeLimitError;
 import com.myservlet.Model.Error.MovieAlreadyExists;
 import com.myservlet.Model.Error.MovieNotFound;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     private final String email;
     private final String password;

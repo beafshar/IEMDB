@@ -1,6 +1,7 @@
 package com.myservlet.Model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.myservlet.Model.Error.ActorNotFound;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
     private final int id;
     private final String name;
@@ -28,21 +30,25 @@ public class Movie {
     private double ratingCount = 0;
     private final List<Comment> comments = new ArrayList<>();
     private final Map<String, Integer> map = new HashMap<>();
+    private final String image;
+    private final String coverImage;
 
-    @ConstructorProperties({"id","name","summary", "releaseDate", "director", "writers", "genres", "cast", "imdbRate", "duration", "ageLimit"})
+    @ConstructorProperties({"id","name","summary", "releaseDate", "director", "writers", "genres", "cast", "imdbRate", "duration", "ageLimit", "image", "coverImage"})
     @JsonCreator
     public Movie(@JsonProperty(value = "id", required = true) int id, @JsonProperty(value = "name", required = true) String name,
                  @JsonProperty(value = "summary", required = true) String summary, @JsonProperty(value = "releaseDate", required = true) String releaseDate,
                  @JsonProperty(value = "director", required = true) String director, @JsonProperty(value = "writers", required = true) ArrayNode writers,
                  @JsonProperty(value = "genres", required = true) ArrayNode genres, @JsonProperty(value = "cast", required = true) ArrayNode cast,
                  @JsonProperty(value = "imdbRate", required = true) double imdbRate, @JsonProperty(value = "duration", required = true) long duration,
-                 @JsonProperty(value = "ageLimit", required = true) int ageLimit
-    ) throws ActorNotFound {
+                 @JsonProperty(value = "ageLimit", required = true) int ageLimit, @JsonProperty(value = "image", required = true)  String image,
+                 @JsonProperty(value = "coverImage", required = true) String coverImage) throws ActorNotFound {
         this.id = id;
         this.name = name;
         this.summary = summary;
         this.releaseDate = releaseDate;
         this.director = director;
+        this.image = image;
+        this.coverImage = coverImage;
         for(int i = 0; i < writers.size(); i++){
             this.writers.add(writers.get(i).asText());
         }
@@ -69,6 +75,8 @@ public class Movie {
     public double getImdbRate() {return this.imdbRate;}
     public long getDuration() {return this.duration;}
     public int getAgeLimit() {return this.ageLimit;}
+    public String getImage() {return this.image;}
+    public String getCoverImage() {return this.coverImage;}
 
     public void addComment(Comment comment) {
         comments.add(comment);

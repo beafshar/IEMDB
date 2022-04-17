@@ -12,8 +12,8 @@ import java.net.http.HttpResponse;
 
 public class IEMDBController {
     private static final String SERVICE_API = "http://138.197.181.131:5000";
-    private static final String MOVIES_API = SERVICE_API + "/api/movies";
-    private static final String ACTORS_API = SERVICE_API + "/api/actors";
+    private static final String MOVIES_API = SERVICE_API + "/api/v2/movies";
+    private static final String ACTORS_API = SERVICE_API + "/api/v2/actors";
     private static final String USERS_API = SERVICE_API + "/api/users";
     private static final String COMMENTS_API = SERVICE_API + "/api/comments";
 
