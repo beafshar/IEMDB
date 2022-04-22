@@ -38,7 +38,13 @@ public class User {
     public String getName() { return this.name; }
     public String getBirthDate() {return this.birthDate;}
     public String getNickname() {return this.nickname;}
-    public List<Integer> getWatch() {return this.WatchList;}
+    public ArrayList<Movie> getWatchlist() throws MovieNotFound {
+        ArrayList<Movie> watch = new ArrayList<>();
+        for(int id : WatchList) {
+            watch.add(MovieHandler.findMovie(id));
+        }
+        return watch;
+    }
     public String getPassword() {return this.password;}
 
     private int calculateUserAge() {

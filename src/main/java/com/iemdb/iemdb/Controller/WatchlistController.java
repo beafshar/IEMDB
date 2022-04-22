@@ -3,9 +3,9 @@ package com.iemdb.iemdb.Controller;
 import com.iemdb.iemdb.Model.Error.MovieNotFound;
 import com.iemdb.iemdb.Model.IEMDBController;
 import com.iemdb.iemdb.Model.Movie;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.iemdb.iemdb.Model.User;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -14,30 +14,14 @@ import java.util.ArrayList;
 public class WatchlistController {
 
     @GetMapping("")
-    public ArrayList<Movie> getMovies() throws IOException, MovieNotFound, InterruptedException {
-        return IEMDBController.getInstance().movieHandler.getMovies();
+    public ArrayList<Movie> getWatchlist() throws IOException, MovieNotFound, InterruptedException {
+        User user = IEMDBController.getInstance().getActive_user();
+        return user.getWatchlist();
     }
 
-//    @Override
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        try {
-//            if (IEMDBController.getInstance().getActive_user() == null)
-//                response.sendRedirect("/login");
-//            else
-//                request.getRequestDispatcher("/watchlist.jsp").forward(request, response);
-//        } catch (InterruptedException | MovieNotFound e) {
-//            request.getRequestDispatcher("404.html").forward(request, response);
-//        }
-//    }
-//
-//    @Override
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        try {
-//            IEMDBController.getInstance().getActive_user().removeFromWatchList(Integer.parseInt(request.getParameter("movie_id")));
-//            request.getRequestDispatcher("/watchlist.jsp").forward(request, response);
-//        } catch (InterruptedException |MovieNotFound e) {
-//            request.getRequestDispatcher("404.html").forward(request, response);
-//        }
-//    }
+    @PostMapping("")
+    public void removeMovieFromWatchlist(@RequestParam(value = "id", defaultValue = "") Integer id) throws IOException, MovieNotFound, InterruptedException {
+        User user = IEMDBController.getInstance().getActive_user();
+        user.removeFromWatchList(id);
+    }
 }
-
