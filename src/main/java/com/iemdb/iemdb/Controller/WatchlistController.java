@@ -1,16 +1,23 @@
-//package com.myservlet.Controller;
-//
-//import com.myservlet.Model.Error.MovieNotFound;
-//import com.myservlet.Model.IEMDBController;
-//import javax.servlet.ServletException;
-//import javax.servlet.annotation.WebServlet;
-//import javax.servlet.http.HttpServlet;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import java.io.IOException;
-//
-//@WebServlet(value = "/watchlist")
-//public class WatchlistController extends HttpServlet {
+package com.iemdb.iemdb.Controller;
+
+import com.iemdb.iemdb.Model.Error.MovieNotFound;
+import com.iemdb.iemdb.Model.IEMDBController;
+import com.iemdb.iemdb.Model.Movie;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import java.io.IOException;
+import java.util.ArrayList;
+
+@RestController
+@RequestMapping("/watchlist")
+public class WatchlistController {
+
+    @GetMapping("")
+    public ArrayList<Movie> getMovies() throws IOException, MovieNotFound, InterruptedException {
+        return IEMDBController.getInstance().movieHandler.getMovies();
+    }
+
 //    @Override
 //    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        try {
@@ -32,5 +39,5 @@
 //            request.getRequestDispatcher("404.html").forward(request, response);
 //        }
 //    }
-//}
-//
+}
+

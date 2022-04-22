@@ -41,12 +41,12 @@ public class MovieHandler {
         return filteredMovies;
     }
 
-    public static List<Movie> getMovies(String filter, String sort_imdb, String sort_date) {
+    public static ArrayList<Movie> getMovies(String filter, String sort_imdb, String sort_date) {
         List <Movie> movies_list = new ArrayList<>(movies.values());
         if (filter != null) movies_list = filterMovies(filter, movies_list);
         if (sort_imdb.equals("1")) movies_list.sort(Comparator.comparing(Movie::getImdbRate).reversed());
         if (sort_date.equals("1")) movies_list.sort(Comparator.comparing(Movie::getReleaseDate).reversed());
-        return movies_list;
+        return (ArrayList<Movie>) movies_list;
     }
 
 }
