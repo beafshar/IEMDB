@@ -1,14 +1,8 @@
 package com.iemdb.iemdb.Controller;
 
-import com.iemdb.iemdb.Model.Actor;
-import com.iemdb.iemdb.Model.Error.ActorNotFound;
-import com.iemdb.iemdb.Model.Error.MovieNotFound;
-import com.iemdb.iemdb.Model.IEMDBController;
-import com.iemdb.iemdb.Model.Movie;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.iemdb.iemdb.Model.*;
+import com.iemdb.iemdb.Model.Error.*;
+import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
