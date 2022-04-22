@@ -1,32 +1,20 @@
 package com.iemdb.iemdb.Controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.iemdb.iemdb.Model.Error.MovieNotFound;
+import com.iemdb.iemdb.Model.Error.UserNotFound;
+import com.iemdb.iemdb.Model.IEMDBController;
+import com.iemdb.iemdb.Model.User;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 
 @RestController
 @RequestMapping("/login")
 public class LoginController {
 
-    @GetMapping("")
-    public String login() throws IOException {
-        return "login";
+    @PostMapping("")
+    public User login(@RequestParam(value = "username", defaultValue = "") String username,
+                      @RequestParam(value = "password", defaultValue = "") String password ) throws IOException, MovieNotFound, InterruptedException, UserNotFound {
+        return IEMDBController.getInstance().setActive_user(username, password);
     }
 }
-//public class LoginController{
-//    @Override
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        request.getRequestDispatcher("login.jsp").forward(request, response);
-//    }
-//    @Override
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String email = request.getParameter("email");
-//        try {
-//            IEMDBController.getInstance().setActive_user(email);
-//            response.sendRedirect("/");
-//        } catch (InterruptedException | MovieNotFound | UserNotFound e) {
-//            request.getRequestDispatcher("404.html").forward(request, response);
-//        }
-//    }
-//}

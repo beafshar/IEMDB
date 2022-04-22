@@ -40,8 +40,9 @@ public class IEMDBController {
         return active_user;
     }
 
-    public void setActive_user(String active_user) throws UserNotFound {
-        this.active_user = userHandler.findUser(active_user);
+    public User setActive_user(String active_user, String password) throws UserNotFound {
+        this.active_user = userHandler.findUser(active_user, password);
+        return userHandler.findUser(active_user, password);
     }
 
     public static void setDatasets() throws IOException, InterruptedException, MovieNotFound {
