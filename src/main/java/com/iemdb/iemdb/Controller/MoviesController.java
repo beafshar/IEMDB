@@ -1,11 +1,8 @@
 package com.iemdb.iemdb.Controller;
 
-
-import com.iemdb.iemdb.Model.Error.MovieNotFound;
-import com.iemdb.iemdb.Model.IEMDBController;
-import com.iemdb.iemdb.Model.Movie;
+import com.iemdb.iemdb.Model.*;
+import com.iemdb.iemdb.Model.Error.*;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,12 +16,6 @@ public class MoviesController {
     @GetMapping("")
     public ArrayList<Movie>  getMovies() throws IOException, MovieNotFound, InterruptedException {
         return IEMDBController.getInstance().movieHandler.getMovies();
-    }
-
-    @GetMapping("/{id}")
-    public Movie getMovie(@PathVariable("id") Integer id) throws IOException, MovieNotFound, InterruptedException {
-        System.out.println(id);
-        return IEMDBController.getInstance().movieHandler.findMovie(id);
     }
 
     @GetMapping("/imdb")
@@ -47,6 +38,41 @@ public class MoviesController {
         return IEMDBController.getInstance().movieHandler.getMovies(filter, sort_imdb, sort_date);
     }
 
+    @GetMapping("/{id}")
+    public Movie getMovie(@PathVariable("id") Integer id) throws IOException, MovieNotFound, InterruptedException {
+        return IEMDBController.getInstance().movieHandler.findMovie(id);
+    }
+
+    @GetMapping("/{id}/add_to_watchlist")
+    public void addToWatchlist(@PathVariable("id") Integer id) throws IOException, MovieNotFound, InterruptedException, AgeLimitError, MovieAlreadyExists {
+        User user = IEMDBController.getInstance().getActive_user();
+        user.addToWatchList(id);
+    }
+
+    @PostMapping("/{id}/rate")
+    public void rateMovie(@PathVariable("id") Integer id, @RequestParam(value = "rate", defaultValue = "") Integer rate) throws MovieNotFound, IOException, InterruptedException, InvalidRateScore {
+        User user = IEMDBController.getInstance().getActive_user();
+        IEMDBController.getInstance().movieHandler.findMovie(id).rateMovie(user.getEmail(), rate);
+    }
+
+    @PostMapping("/{id}/comment")
+    public Comment addComment(@PathVariable("id") Integer id, @RequestParam(value = "comment", defaultValue = "") String comment) throws IOException, MovieNotFound, InterruptedException {
+        User user = IEMDBController.getInstance().getActive_user();
+        return IEMDBController.getInstance().commentHandler.addComment(user.getEmail(), id, comment);
+    }
+
+    @GetMapping("/{id}/{comment_id}/like")
+    public void likeComment(@PathVariable("id") Integer id, @PathVariable("comment_id") Integer comment_id) throws MovieNotFound, IOException, InterruptedException, CommentNotFound, InvalidVoteValue {
+        Comment comment = IEMDBController.getInstance().commentHandler.findComment(comment_id);
+        User user = IEMDBController.getInstance().getActive_user();
+        comment.addVote(user.getEmail(), 1);
+    }
+
+    @GetMapping("/{id}/{comment_id}/dislike")
+    public void dislikeComment(@PathVariable("id") Integer id, @PathVariable("comment_id") Integer comment_id) throws MovieNotFound, IOException, InterruptedException, CommentNotFound, InvalidVoteValue {
+        Comment comment = IEMDBController.getInstance().commentHandler.findComment(comment_id);
+        User user = IEMDBController.getInstance().getActive_user();
+        comment.addVote(user.getEmail(), -1);
+    }
+
 }
-
-
