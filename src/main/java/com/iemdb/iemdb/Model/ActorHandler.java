@@ -1,6 +1,8 @@
 package com.iemdb.iemdb.Model;
 
 import com.iemdb.iemdb.Model.Error.ActorNotFound;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,5 +19,5 @@ public class ActorHandler {
         else throw new ActorNotFound();
     }
 
-    public static Map<Integer, Actor> getActors() { return actors;}
+    public static ArrayList<Actor> getActors() { return new ArrayList<>(actors.values()); }
 }

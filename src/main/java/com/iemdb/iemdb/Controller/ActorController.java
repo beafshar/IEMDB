@@ -1,30 +1,33 @@
-//package com.myservlet.Controller;
-//
-//import com.myservlet.Model.Error.MovieNotFound;
-//import com.myservlet.Model.IEMDBController;
-//import javax.servlet.ServletException;
-//import javax.servlet.annotation.WebServlet;
-//import javax.servlet.http.HttpServlet;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import java.io.IOException;
-//
-//@WebServlet(value = "/actors/*")
-//public class ActorController extends HttpServlet {
-//    String actor_id = "";
-//    @Override
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        try {
-//            if (IEMDBController.getInstance().getActive_user() == null)
-//                response.sendRedirect("/login");
-//            else {
-//                actor_id = request.getPathInfo().substring(1);
-//                request.setAttribute("actor_id", actor_id);
-//                request.getRequestDispatcher("/actor.jsp").forward(request, response);
-//            }
-//        } catch (InterruptedException | MovieNotFound e) {
-//            request.getRequestDispatcher("404.html").forward(request, response);
-//        }
-//    }
-//}
-//
+package com.iemdb.iemdb.Controller;
+
+import com.iemdb.iemdb.Model.Actor;
+import com.iemdb.iemdb.Model.Error.ActorNotFound;
+import com.iemdb.iemdb.Model.Error.MovieNotFound;
+import com.iemdb.iemdb.Model.IEMDBController;
+import com.iemdb.iemdb.Model.Movie;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import java.io.IOException;
+import java.util.ArrayList;
+
+@RestController
+@RequestMapping("/actors")
+public class ActorController {
+
+    @GetMapping("")
+    public ArrayList<Actor> getActors() throws IOException, InterruptedException, MovieNotFound {
+        try {
+            return IEMDBController.getInstance().actorHandler.getActors();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @GetMapping("/{id}")
+    public Actor getActor(@PathVariable("id") Integer id) throws MovieNotFound, IOException, InterruptedException, ActorNotFound {
+        return IEMDBController.getInstance().actorHandler.findActor(id);
+    }
+}
