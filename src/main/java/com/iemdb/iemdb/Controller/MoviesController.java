@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/movies")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MoviesController {
     String filter = "";
     String sort_imdb = "1";

@@ -8,6 +8,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/logout")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LogoutController {
 
     @PostMapping("")

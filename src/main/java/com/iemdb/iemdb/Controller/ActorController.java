@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/actors")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ActorController {
 
     @GetMapping("")

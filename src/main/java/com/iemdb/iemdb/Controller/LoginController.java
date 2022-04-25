@@ -8,6 +8,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/login")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LoginController {
 
     @PostMapping("")
