@@ -5,6 +5,7 @@ import com.iemdb.iemdb.Model.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/login")
@@ -12,8 +13,7 @@ import java.io.IOException;
 public class LoginController {
 
     @PostMapping("")
-    public User login(@RequestParam(value = "username", defaultValue = "") String username,
-                      @RequestParam(value = "password", defaultValue = "") String password ) throws IOException, MovieNotFound, InterruptedException, UserNotFound {
-        return IEMDBController.getInstance().setActive_user(username, password);
+    public User login(@RequestBody Map<String, String> data ) throws IOException, MovieNotFound, InterruptedException, UserNotFound {
+        return IEMDBController.getInstance().setActive_user(data.get("username"), data.get("password"));
     }
 }
