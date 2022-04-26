@@ -25,11 +25,17 @@ public class ActorController {
 
     @GetMapping("/{id}")
     public Actor getActor(@PathVariable("id") Integer id) throws MovieNotFound, IOException, InterruptedException, ActorNotFound {
+        System.out.println(id);
         return IEMDBController.getInstance().actorHandler.findActor(id);
     }
 
     @GetMapping("/{id}/movies")
     public ArrayList<Movie> getMovies(@PathVariable("id") Integer id) throws IOException, InterruptedException, MovieNotFound, ActorNotFound {
-        return IEMDBController.getInstance().actorHandler.findActor(id).getMovies();
+        List<Integer> movies =  IEMDBController.getInstance().actorHandler.findActor(id).getMovies();
+        ArrayList<Movie> movieList = new ArrayList<>();
+        for (Integer movie : movies) {
+            movieList.add(IEMDBController.getInstance().movieHandler.findMovie(movie));
+        }
+        return movieList;
     }
 }

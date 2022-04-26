@@ -14,7 +14,7 @@ public class Actor {
     private final String birthDate;
     private final String nationality;
     private final String image;
-    private final List<Movie> movies = new ArrayList<>();
+    private final List<Integer> movies = new ArrayList<>();
 
     @ConstructorProperties({"id","name","birthDate","nationality","image"})
     @JsonCreator
@@ -49,10 +49,7 @@ public class Actor {
     public String getImage() { return image; }
     public void addMovie(Movie movie)
     {
-        this.movies.add(movie);
+        this.movies.add(movie.getId());
     }
-    public ArrayList<Movie> getMovies()
-    {
-        return (ArrayList<Movie>) this.movies;
-    }
+    public ArrayList<Integer> getMovies() { return (ArrayList<Integer>) this.movies;}
 }
