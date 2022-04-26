@@ -29,14 +29,19 @@ public class MoviesController {
         return IEMDBController.getInstance().movieHandler.getMovies(filter, sort_imdb, "1");
     }
 
-    @PostMapping("/filter_by_name")
-    public ArrayList<Movie> filterByName(@RequestParam(value = "filter", defaultValue = "") String filter) throws IOException, MovieNotFound, InterruptedException {
+    @GetMapping("/filter_by_name/{filter}")
+    public ArrayList<Movie> filterByName(@PathVariable("filter") String filter) throws IOException, MovieNotFound, InterruptedException {
         return IEMDBController.getInstance().movieHandler.getMovies(filter, sort_imdb, sort_date);
     }
 
-    @PostMapping("/filter_by_genre")
-    public ArrayList<Movie> filterByGenre(@RequestParam(value = "filter", defaultValue = "") String filter) throws IOException, MovieNotFound, InterruptedException {
-        return IEMDBController.getInstance().movieHandler.getMovies(filter, sort_imdb, sort_date);
+    @GetMapping("/filter_by_genre/{filter}")
+    public ArrayList<Movie> filterByGenre(@PathVariable("filter") String filter) throws IOException, MovieNotFound, InterruptedException {
+        return IEMDBController.getInstance().movieHandler.getMovieByGenre(filter);
+    }
+
+    @GetMapping("/filter_by_date/{filter}")
+    public ArrayList<Movie> filterByDate(@PathVariable("filter") String filter) throws IOException, MovieNotFound, InterruptedException {
+        return IEMDBController.getInstance().movieHandler.getMovieByDate(filter);
     }
 
     @GetMapping("/{id}")

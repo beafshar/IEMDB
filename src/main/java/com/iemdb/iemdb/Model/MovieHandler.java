@@ -49,4 +49,21 @@ public class MovieHandler {
         return (ArrayList<Movie>) movies_list;
     }
 
+    public static ArrayList<Movie> getMovieByGenre(String filter) {
+        List <Movie> movies_list = new ArrayList<>();
+        for (Movie movie : movies.values())
+            for (String genre : movie.getGenres())
+                if (genre.equalsIgnoreCase(filter))
+                    movies_list.add(movie);
+        return (ArrayList<Movie>) movies_list;
+    }
+
+    public static ArrayList<Movie> getMovieByDate(String filter) {
+        List <Movie> movies_list = new ArrayList<>();
+        for (Movie movie : movies.values())
+            if (movie.getName().toLowerCase().contains(filter.toLowerCase()))
+                movies_list.add(movie);
+        return (ArrayList<Movie>) movies_list;
+    }
+
 }
