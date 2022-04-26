@@ -51,8 +51,8 @@ public class Actor {
     {
         this.movies.add(movie);
     }
-    public List<Movie> getMovies()
+    public ArrayList<Movie> getMovies()
     {
-        return this.movies;
+        return (ArrayList<Movie>) this.movies;
     }
 }

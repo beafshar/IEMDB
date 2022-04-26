@@ -49,6 +49,11 @@ public class MoviesController {
         return IEMDBController.getInstance().movieHandler.findMovie(id);
     }
 
+    @GetMapping("/{id}/actors")
+    public ArrayList<Actor> getActors(@PathVariable("id") Integer id) throws IOException, MovieNotFound, InterruptedException, ActorNotFound {
+        return IEMDBController.getInstance().movieHandler.findMovie(id).getActors();
+    }
+
     @GetMapping("/{id}/add_to_watchlist")
     public void addToWatchlist(@PathVariable("id") Integer id) throws IOException, MovieNotFound, InterruptedException, AgeLimitError, MovieAlreadyExists {
         User user = IEMDBController.getInstance().getActive_user();
@@ -59,6 +64,11 @@ public class MoviesController {
     public void rateMovie(@PathVariable("id") Integer id, @RequestParam(value = "rate", defaultValue = "") Integer rate) throws MovieNotFound, IOException, InterruptedException, InvalidRateScore {
         User user = IEMDBController.getInstance().getActive_user();
         IEMDBController.getInstance().movieHandler.findMovie(id).rateMovie(user.getEmail(), rate);
+    }
+
+    @GetMapping("/{id}/comments")
+    public ArrayList<Comment> getComment(@PathVariable("id") Integer id) throws IOException, MovieNotFound, InterruptedException {
+        return IEMDBController.getInstance().movieHandler.findMovie(id).getComment();
     }
 
     @PostMapping("/{id}/comment")

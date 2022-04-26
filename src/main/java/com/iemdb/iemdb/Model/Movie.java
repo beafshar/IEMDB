@@ -78,6 +78,7 @@ public class Movie {
     public int getAgeLimit() {return this.ageLimit;}
     public String getImage() {return this.image;}
     public String getCoverImage() {return this.coverImage;}
+    public ArrayList<Comment> getComment() {return (ArrayList<Comment>) this.comments;}
 
     public void addComment(Comment comment) {
         comments.add(comment);
@@ -101,5 +102,12 @@ public class Movie {
     }
     public double getRating() {return this.rating;}
     public double getRatingCount() {return this.ratingCount;}
-    public List<Comment> getComments() {return this.comments;}
+
+    public ArrayList<Actor> getActors() throws ActorNotFound {
+        ArrayList<Actor> actors = new ArrayList<>();
+        for(int i = 0; i < this.cast.size(); i++) {
+            actors.add(IEMDBController.actorHandler.findActor(this.cast.get(i)));
+        }
+        return actors;
+    }
 }
