@@ -15,6 +15,7 @@ public class Actor {
     private final String nationality;
     private final String image;
     private final List<Integer> movies = new ArrayList<>();
+    private Integer numberOfMovies = 0;
 
     @ConstructorProperties({"id","name","birthDate","nationality","image"})
     @JsonCreator
@@ -50,6 +51,7 @@ public class Actor {
     public void addMovie(Movie movie)
     {
         this.movies.add(movie.getId());
+        this.numberOfMovies++;
     }
     public ArrayList<Integer> getMovies() { return (ArrayList<Integer>) this.movies;}
 }
