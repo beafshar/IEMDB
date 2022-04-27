@@ -46,7 +46,7 @@ public class MoviesController {
 
     @GetMapping("/{id}")
     public Movie getMovie(@PathVariable("id") Integer id) throws IOException, MovieNotFound, InterruptedException {
-        return IEMDBController.getInstance().movieHandler.findMovie(id);
+        return IEMDBController.getInstance().movieHandler.findMovie(id.intValue());
     }
 
     @GetMapping("/{id}/actors")
