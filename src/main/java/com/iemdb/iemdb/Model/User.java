@@ -9,15 +9,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iemdb.iemdb.Model.Error.AgeLimitError;
 import com.iemdb.iemdb.Model.Error.MovieAlreadyExists;
 import com.iemdb.iemdb.Model.Error.MovieNotFound;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+@NoArgsConstructor
+@Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
-    private final String email;
-    private final String password;
-    private final String name;
-    private final String nickname;
-    private final String birthDate;
-    private final List<Integer> WatchList = new ArrayList<>();
+    @Id
+    private  String email;
+    private  String password;
+    private  String name;
+    private  String nickname;
+    private  String birthDate;
+    @ElementCollection
+    private  List<Integer> WatchList = new ArrayList<>();
 
     @ConstructorProperties({"email","password","nickname","name","birthDate"})
     @JsonCreator

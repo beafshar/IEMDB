@@ -6,7 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.iemdb.iemdb.Model.Error.ActorNotFound;
 import com.iemdb.iemdb.Model.Error.InvalidRateScore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.beans.ConstructorProperties;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -14,25 +21,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+@Entity
+@NoArgsConstructor
+@Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
-    private final int id;
-    private final String name;
-    private final String summary;
-    private final String releaseDate;
-    private final String director;
+    @Id
+    private int id;
+    private String name;
+    private String summary;
+    private String releaseDate;
+    private String director;
+    @ElementCollection
     List<String> writers = new ArrayList<>();
+    @ElementCollection
     List<String> genres = new ArrayList<>();
+    @ElementCollection
     List<Integer> cast = new ArrayList<>();
-    private final double imdbRate;
-    private final long duration;
-    private final int ageLimit;
+    private double imdbRate;
+    private long duration;
+    private int ageLimit;
     private double rating = 0;
     private double ratingCount = 0;
-    private final List<Comment> comments = new ArrayList<>();
-    private final Map<String, Integer> map = new HashMap<>();
-    private final String image;
-    private final String coverImage;
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
+    @Type( type = "json" )
+    private Map<String, Integer> map = new HashMap<>();
+    private String image;
+    private String coverImage;
 
     @ConstructorProperties({"id","name","summary", "releaseDate", "director", "writers", "genres", "cast", "imdbRate", "duration", "ageLimit", "image", "coverImage"})
     @JsonCreator

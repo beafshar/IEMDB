@@ -3,17 +3,29 @@ package com.iemdb.iemdb.Model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iemdb.iemdb.Model.Error.InvalidVoteValue;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+
+@Entity
+@NoArgsConstructor
+@Getter
 public class Comment {
-    private final String text;
-    private final String userEmail;
-    private final int movieId;
+    @Id
     private int id;
-    private final LocalDateTime recordTime;
+    private String text;
+    private String userEmail;
+    private int movieId;
+    private LocalDateTime recordTime;
+    @Type( type = "json" )
     private final Map<String, Integer> map = new HashMap<>();
     private int likes = 0;
     private int dislikes = 0;
