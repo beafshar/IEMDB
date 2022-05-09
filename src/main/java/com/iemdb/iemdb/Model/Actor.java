@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ public class Actor {
     private String birthDate;
     private String nationality;
     private String image;
-    @Type( type = "json" )
-    private final List<Integer> movies = new ArrayList<>();
+    @OneToMany
+    private final List<Movie> movies = new ArrayList<>();
     private Integer numberOfMovies = 0;
 
     @ConstructorProperties({"id","name","birthDate","nationality","image"})
@@ -61,8 +61,8 @@ public class Actor {
     public String getImage() { return image; }
     public void addMovie(Movie movie)
     {
-        this.movies.add(movie.getId());
+        this.movies.add(movie);
         this.numberOfMovies++;
     }
-    public ArrayList<Integer> getMovies() { return (ArrayList<Integer>) this.movies;}
+    public ArrayList<Movie> getMovies() { return (ArrayList<Movie>) this.movies;}
 }
