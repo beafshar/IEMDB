@@ -18,6 +18,12 @@ public class WatchlistController {
         return user.getWatchlist();
     }
 
+    @GetMapping("/recommendations")
+    public ArrayList<Movie> getRecommendationList() throws IOException, MovieNotFound, InterruptedException {
+        User user = IEMDBController.getInstance().getActive_user();
+        return (ArrayList<Movie>) user.getRecommendationList();
+    }
+
     @PostMapping("")
     public void removeMovieFromWatchlist(@RequestParam(value = "id", defaultValue = "") Integer id) throws IOException, MovieNotFound, InterruptedException {
         User user = IEMDBController.getInstance().getActive_user();

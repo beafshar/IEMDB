@@ -71,8 +71,8 @@ public class MoviesController {
         return IEMDBController.getInstance().movieHandler.findMovie(id).getComment();
     }
 
-    @PostMapping("/{id}/comment")
-    public Comment addComment(@PathVariable("id") Integer id, @RequestParam(value = "comment", defaultValue = "") String comment) throws IOException, MovieNotFound, InterruptedException {
+    @PostMapping("/{id}/comment/{comment}")
+    public Comment addComment(@PathVariable("id") Integer id, @PathVariable("comment") String comment) throws IOException, MovieNotFound, InterruptedException {
         User user = IEMDBController.getInstance().getActive_user();
         return IEMDBController.getInstance().commentHandler.addComment(user.getEmail(), id, comment);
     }
