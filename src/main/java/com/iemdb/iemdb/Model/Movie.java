@@ -98,7 +98,7 @@ public class Movie {
         this.map.put(userEmail, score);
         this.ratingCount += 1;
         this.rating = (this.rating*(this.ratingCount-1) + score)/this.ratingCount;
-        this.rating = Double.parseDouble(new DecimalFormat("##.#").format(this.rating));
+        this.rating = roundToHalf(this.rating);
     }
     public double getRating() {return this.rating;}
     public double getRatingCount() {return this.ratingCount;}
@@ -109,5 +109,9 @@ public class Movie {
             actors.add(IEMDBController.actorHandler.findActor(this.cast.get(i)));
         }
         return actors;
+    }
+
+    public static double roundToHalf(double d) {
+        return Math.round(d * 2) / 2.0;
     }
 }

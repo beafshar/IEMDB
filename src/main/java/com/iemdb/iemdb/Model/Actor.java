@@ -48,6 +48,7 @@ public class Actor {
         return this.id;
     }
     public String getImage() { return image; }
+    public Integer getNumberOfMovies() { return numberOfMovies; }
     public void addMovie(Movie movie)
     {
         this.movies.add(movie.getId());

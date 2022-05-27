@@ -14,6 +14,17 @@ public class LoginController {
 
     @PostMapping("")
     public User login(@RequestBody Map<String, String> data ) throws IOException, MovieNotFound, InterruptedException, UserNotFound {
-        return IEMDBController.getInstance().setActive_user(data.get("username"), data.get("password"));
+        try {
+            return IEMDBController.getInstance().setActive_user(data.get("username"), data.get("password"));
+        } catch (IOException | MovieNotFound | InterruptedException | UserNotFound e) {
+            return null;
+        }
+    }
+
+    @GetMapping("/check")
+    public Boolean check_login() throws IOException, MovieNotFound, InterruptedException, UserNotFound {
+        if (IEMDBController.getInstance().getActive_user() == null)
+            return false;
+        return true;
     }
 }

@@ -60,8 +60,8 @@ public class MoviesController {
         user.addToWatchList(id);
     }
 
-    @PostMapping("/{id}/rate")
-    public void rateMovie(@PathVariable("id") Integer id, @RequestParam(value = "rate", defaultValue = "") Integer rate) throws MovieNotFound, IOException, InterruptedException, InvalidRateScore {
+    @PostMapping("/{id}/rate/{rate}")
+    public void rateMovie(@PathVariable("id") Integer id, @PathVariable("rate") Integer rate) throws MovieNotFound, IOException, InterruptedException, InvalidRateScore {
         User user = IEMDBController.getInstance().getActive_user();
         IEMDBController.getInstance().movieHandler.findMovie(id).rateMovie(user.getEmail(), rate);
     }

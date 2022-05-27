@@ -11,8 +11,8 @@ import java.io.IOException;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LogoutController {
 
-    @PostMapping("")
-    public User logout() throws IOException, MovieNotFound, InterruptedException, UserNotFound {
-        return IEMDBController.getInstance().setActive_user("", "");
+    @GetMapping("")
+    public void logout() throws IOException, MovieNotFound, InterruptedException, UserNotFound {
+         IEMDBController.getInstance().setActive_user_null();
     }
 }

@@ -45,6 +45,10 @@ public class IEMDBController {
         return userHandler.findUser(active_user, password);
     }
 
+    public void setActive_user_null() {
+        this.active_user = null;
+    }
+
     public static void setDatasets() throws IOException, InterruptedException, MovieNotFound {
         actorHandler.setActors(getActorsFromAPI());
         movieHandler.setMovies(getMoviesFromAPI());
