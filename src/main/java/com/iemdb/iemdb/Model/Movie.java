@@ -98,7 +98,7 @@ public class Movie {
         this.map.put(userEmail, score);
         this.ratingCount += 1;
         this.rating = (this.rating*(this.ratingCount-1) + score)/this.ratingCount;
-        this.rating = roundToHalf(this.rating);
+        this.rating = roundToHalf(this.rating/2);
     }
     public double getRating() {return this.rating;}
     public double getRatingCount() {return this.ratingCount;}

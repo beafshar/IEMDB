@@ -12,7 +12,11 @@ import java.io.IOException;
 public class LogoutController {
 
     @GetMapping("")
-    public void logout() throws IOException, MovieNotFound, InterruptedException, UserNotFound {
-         IEMDBController.getInstance().setActive_user_null();
+    public void logout() throws IOException, MovieNotFound, InterruptedException {
+        try {
+            IEMDBController.getInstance().setActive_user_null();
+        } catch (IOException | MovieNotFound | InterruptedException e) {
+            return;
+        }
     }
 }

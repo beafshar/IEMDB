@@ -14,24 +14,38 @@ public class WatchlistController {
 
     @GetMapping("")
     public ArrayList<Movie> getWatchlist() throws IOException, MovieNotFound, InterruptedException {
-        User user = IEMDBController.getInstance().getActive_user();
-        if(user == null)
+        try {
+            User user = IEMDBController.getInstance().getActive_user();
+            if (user == null)
+                return null;
+            return user.getWatchlist();
+        }
+        catch ( IOException | MovieNotFound | InterruptedException e){
             return null;
-        return user.getWatchlist();
+        }
     }
 
     @GetMapping("/recommendations")
     public ArrayList<Movie> getRecommendationList() throws IOException, MovieNotFound, InterruptedException {
-        User user = IEMDBController.getInstance().getActive_user();
-        if(user == null)
+        try {
+            User user = IEMDBController.getInstance().getActive_user();
+            if (user == null)
+                return null;
+            return (ArrayList<Movie>) user.getRecommendationList();
+        }
+        catch ( IOException | MovieNotFound | InterruptedException e){
             return null;
-        return (ArrayList<Movie>) user.getRecommendationList();
+        }
     }
 
     @PostMapping("/{id}")
     public void removeMovieFromWatchlist(@PathVariable Integer id) throws IOException, MovieNotFound, InterruptedException {
-        System.out.println("Removing movie from watchlist");
-        User user = IEMDBController.getInstance().getActive_user();
-        user.removeFromWatchList(id);
+        try {
+            User user = IEMDBController.getInstance().getActive_user();
+            user.removeFromWatchList(id);
+        }
+        catch ( IOException | MovieNotFound | InterruptedException e){
+            return;
+        }
     }
 }

@@ -41,28 +41,22 @@ public class MovieHandler {
         return filteredMovies;
     }
 
-    public static ArrayList<Movie> getMovies(String filter, String sort_imdb, String sort_date) {
+    public static ArrayList<Movie> getMovies(String filter_name, String filter_genre, String sort_imdb, String sort_date) {
         List <Movie> movies_list = new ArrayList<>(movies.values());
-        if (filter != null) movies_list = filterMovies(filter, movies_list);
-        if (sort_imdb.equals("1")) movies_list.sort(Comparator.comparing(Movie::getImdbRate).reversed());
-        if (sort_date.equals("1")) movies_list.sort(Comparator.comparing(Movie::getReleaseDate).reversed());
+        if (filter_name != null) movies_list = filterMovies(filter_name, movies_list);
+//        System.out.println(filter_genre);
+        if (filter_genre != null) movies_list = getMovieByGenre(filter_genre, movies_list);
+        if (sort_imdb != null) movies_list.sort(Comparator.comparing(Movie::getImdbRate).reversed());
+        if (sort_date != null) movies_list.sort(Comparator.comparing(Movie::getReleaseDate).reversed());
         return (ArrayList<Movie>) movies_list;
     }
 
-    public static ArrayList<Movie> getMovieByGenre(String filter) {
+    public static ArrayList<Movie> getMovieByGenre(String filter, List<Movie> prev_movies) {
         List <Movie> movies_list = new ArrayList<>();
-        for (Movie movie : movies.values())
+        for (Movie movie : prev_movies)
             for (String genre : movie.getGenres())
                 if (genre.equalsIgnoreCase(filter))
                     movies_list.add(movie);
-        return (ArrayList<Movie>) movies_list;
-    }
-
-    public static ArrayList<Movie> getMovieByDate(String filter) {
-        List <Movie> movies_list = new ArrayList<>();
-        for (Movie movie : movies.values())
-            if (movie.getName().toLowerCase().contains(filter.toLowerCase()))
-                movies_list.add(movie);
         return (ArrayList<Movie>) movies_list;
     }
 

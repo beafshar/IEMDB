@@ -22,9 +22,13 @@ public class LoginController {
     }
 
     @GetMapping("/check")
-    public Boolean check_login() throws IOException, MovieNotFound, InterruptedException, UserNotFound {
-        if (IEMDBController.getInstance().getActive_user() == null)
+    public Boolean check_login() throws IOException, MovieNotFound, InterruptedException {
+        try {
+            if (IEMDBController.getInstance().getActive_user() == null)
+                return false;
+            return true;
+        } catch (IOException | MovieNotFound | InterruptedException e) {
             return false;
-        return true;
+        }
     }
 }
