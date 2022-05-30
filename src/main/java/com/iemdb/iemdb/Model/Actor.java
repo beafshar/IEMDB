@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Setter
 public class Actor {
     @Id
     private int id;
@@ -24,10 +23,9 @@ public class Actor {
     private String birthDate;
     private String nationality;
     private String image;
-    @OneToMany
-    private final List<Movie> movies = new ArrayList<>();
+    @ManyToMany(fetch= FetchType.EAGER)
+    private List<Movie> movies = new ArrayList<>();
     private Integer numberOfMovies = 0;
-
     @ConstructorProperties({"id","name","birthDate","nationality","image"})
     @JsonCreator
     public Actor(@JsonProperty(value = "id", required = true) int id,
@@ -64,5 +62,8 @@ public class Actor {
         this.movies.add(movie);
         this.numberOfMovies++;
     }
-    public ArrayList<Movie> getMovies() { return (ArrayList<Movie>) this.movies;}
+    public List<Movie> getMovies() { return this.movies;}
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
 }

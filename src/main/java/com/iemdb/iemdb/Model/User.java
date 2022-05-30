@@ -6,6 +6,8 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.iemdb.iemdb.Model.Error.AgeLimitError;
+import com.iemdb.iemdb.Model.Error.MovieAlreadyExists;
 import com.iemdb.iemdb.Model.Error.MovieNotFound;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -28,7 +31,7 @@ public class User {
     private  String name;
     private  String nickname;
     private  String birthDate;
-    @OneToMany
+    @OneToMany(fetch= FetchType.EAGER)
     private  List<Movie> WatchList = new ArrayList<>();
 
     @ConstructorProperties({"email","password","nickname","name","birthDate"})
@@ -65,18 +68,17 @@ public class User {
         return curDate.getYear() - birth.getYear();
     }
 
-//    public void addToWatchList(int movieId) throws MovieAlreadyExists, AgeLimitError, MovieNotFound {
-//        Movie movie = MovieHandler.findMovie(movieId);
-//        if(movie != null) {
-//            if(calculateUserAge() >= movie.getAgeLimit()) {
-//                if(WatchList.contains(movie.getId()))
-//                    throw new MovieAlreadyExists();
-//                else WatchList.add(movie.getId());
-//            }
-//            else throw new AgeLimitError();
-//        }
-//        else throw new MovieNotFound();
-//    }
+    public void addToWatchList(Movie movie) throws MovieAlreadyExists, AgeLimitError, MovieNotFound {
+        if(movie != null) {
+            if(calculateUserAge() >= movie.getAgeLimit()) {
+                if(WatchList.contains(movie.getId()))
+                    throw new MovieAlreadyExists();
+                else WatchList.add(movie);
+            }
+            else throw new AgeLimitError();
+        }
+        else throw new MovieNotFound();
+    }
 
     public void removeFromWatchList(Movie movie) throws MovieNotFound {
         if (WatchList.contains(movie))
@@ -84,25 +86,24 @@ public class User {
         else throw new MovieNotFound();
     }
 
-//    public List<Movie> getRecommendationList() throws MovieNotFound {
-//        List<Movie> recommended_movies = new ArrayList<>();
-//        TreeMap<Double, Movie> movie_score = new TreeMap<>();
-//        for(Movie movie: IEMDBController.movieHandler.movies.values()) {
-//            if(!this.WatchList.contains(movie.getId())){
-//                double score = movie.getRating() + movie.getImdbRate();
-//                int genre_similarity = 0;
-//                for(Integer id: this.WatchList){
-//                    Movie m = IEMDBController.movieHandler.findMovie(id);
-//                    genre_similarity += (int) m.getGenres().stream().filter(movie.getGenres()::contains).count();
-//                }
-//                score += genre_similarity*3;
-//                movie_score.put(score, movie);
-//            }
-//        }
-//        for(int i = 0; i < 3; i++) {
-//            recommended_movies.add(movie_score.lastEntry().getValue());
-//            movie_score.remove(movie_score.lastKey());
-//        }
-//        return recommended_movies;
-//    }
+    public List<Movie> getRecommendationList(List<Movie> movies) throws MovieNotFound {
+        List<Movie> recommended_movies = new ArrayList<>();
+        TreeMap<Double, Movie> movie_score = new TreeMap<>();
+        for(Movie movie: movies) {
+            if(!this.WatchList.contains(movie.getId())){
+                double score = movie.getRating() + movie.getImdbRate();
+                int genre_similarity = 0;
+                for(Movie m: this.WatchList){
+                    genre_similarity += (int) m.getGenres().stream().filter(movie.getGenres()::contains).count();
+                }
+                score += genre_similarity*3;
+                movie_score.put(score, movie);
+            }
+        }
+        for(int i = 0; i < 3; i++) {
+            recommended_movies.add(movie_score.lastEntry().getValue());
+            movie_score.remove(movie_score.lastKey());
+        }
+        return recommended_movies;
+    }
 }

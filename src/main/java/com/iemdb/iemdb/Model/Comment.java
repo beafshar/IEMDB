@@ -6,10 +6,10 @@ import com.iemdb.iemdb.Model.Error.InvalidVoteValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String text;
     private String userEmail;
@@ -24,6 +25,10 @@ public class Comment {
     private LocalDateTime recordTime;
 //    @Type( type = "json" )
 //    private final Map<String, Integer> map = new HashMap<>();
+    @ElementCollection
+    private List<String> emails;
+    @ElementCollection
+    private List<Integer> votes;
     private int likes = 0;
     private int dislikes = 0;
 
@@ -36,7 +41,6 @@ public class Comment {
         this.userEmail = userEmail;
         this.movieId = movieId;
         this.text = text;
-//        this.id = CommentHandler.comment_id;
         this.recordTime = LocalDateTime.now();
     }
 
@@ -50,20 +54,22 @@ public class Comment {
     public LocalDateTime getRecordTime() { return this.recordTime; }
 
     public void addVote(String userEmail, int vote) throws InvalidVoteValue {
-//        if (vote == 0 || vote == 1 || vote == -1) {
-//            if(map.containsKey(userEmail)) {
-//                if(map.get(userEmail) == 1)
-//                    likes--;
-//                if(map.get(userEmail) == -1)
-//                    dislikes--;
-//            }
-//            map.put(userEmail, vote);
-//            if(vote == 1)
-//                likes++;
-//            else if(vote == -1)
-//                dislikes++;
-//        }
-//        else throw new InvalidVoteValue();
+        if (vote == 0 || vote == 1 || vote == -1) {
+            if (emails.contains(userEmail)){
+                int index = emails.indexOf(userEmail);
+                if(votes.get(index) == 1)
+                    likes--;
+                if(votes.get(index) == -1)
+                    dislikes--;
+            }
+            emails.add(userEmail);
+            votes.add(vote);
+            if(vote == 1)
+                likes++;
+            else if(vote == -1)
+                dislikes++;
+        }
+        else throw new InvalidVoteValue();
     }
 
     public int getLikes() { return likes; }
