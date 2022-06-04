@@ -14,12 +14,28 @@ public class UserHandler {
             this.users.put(user.getEmail(), user);
     }
 
+    public void addUser(User user) {
+        this.users.put(user.getEmail(), user);
+    }
+
+    public boolean isUser(String email) {
+        return users.containsKey(email);
+    }
+
     public User findUser(String email, String password) throws UserNotFound {
         if(email.equals("")) return null;
         else if (users.containsKey(email)) {
             User user = users.get(email);
             if (user.getPassword().equals(password))
                 return users.get(email);
+        }
+        throw new UserNotFound();
+    }
+
+    public User findUserFromGit(String email) throws UserNotFound {
+        if(email.equals("")) return null;
+        else if (users.containsKey(email)) {
+            return users.get(email);
         }
         throw new UserNotFound();
     }

@@ -12,11 +12,11 @@ import com.iemdb.iemdb.Model.Error.MovieNotFound;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
-    private final String email;
-    private final String password;
-    private final String name;
-    private final String nickname;
-    private final String birthDate;
+    private String email;
+    private String password;
+    private String name;
+    private String nickname;
+    private String birthDate;
     private final List<Integer> WatchList = new ArrayList<>();
 
     @ConstructorProperties({"email","password","nickname","name","birthDate"})
@@ -36,7 +36,7 @@ public class User {
 
     public String getEmail() { return this.email; }
     public String getName() { return this.name; }
-    public String getBirthDate() {return this.birthDate;}
+    public String getBirthdate() {return this.birthDate;}
     public String getNickname() {return this.nickname;}
     public ArrayList<Movie> getWatchlist() throws MovieNotFound {
         ArrayList<Movie> watch = new ArrayList<>();
@@ -46,6 +46,14 @@ public class User {
         return watch;
     }
     public String getPassword() {return this.password;}
+
+    public void updateUser(String email, String password, String name, String nickname, String birthDate) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.nickname = nickname;
+        this.birthDate = birthDate;
+    }
 
     private int calculateUserAge() {
         LocalDate birth = LocalDate.parse(this.birthDate);
