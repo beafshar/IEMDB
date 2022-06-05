@@ -5,6 +5,7 @@ import com.iemdb.iemdb.Model.Error.UserNotFound;
 import com.iemdb.iemdb.Model.IEMDBController;
 import com.iemdb.iemdb.Model.User;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -14,15 +15,15 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/callback")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
 public class AuthController {
 
     public static String CLIENT_ID = "f6eb4e409157aef614cd";
-    public static String CLIENT_SECRET = "6b61bf341da6c84a4d718b6aece3a915db660d31";
+    public static String CLIENT_SECRET = "6d746db62109cad853c5def2beacdd400737216c";
     public String ACCESS_TOKEN = "";
 
     @GetMapping("/{code}")
-    public User getCode(@PathVariable("code") String code) throws IOException, InterruptedException, UserNotFound, MovieNotFound {
+    public String getCode(@PathVariable("code") String code) throws IOException, InterruptedException, UserNotFound, MovieNotFound {
         String url = "https://github.com/login/oauth/access_token?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&code=" + code;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -33,7 +34,8 @@ public class AuthController {
         ACCESS_TOKEN = response.body().split("&")[0].split("=")[1];
         User user = getUser();
         addUser(user);
-        return user;
+        IEMDBController.getInstance().token = IEMDBController.getInstance().getToken(user);
+        return IEMDBController.getInstance().token;
     }
 
     public User getUser() throws IOException, InterruptedException {
@@ -65,6 +67,7 @@ public class AuthController {
         } else {
             IEMDBController.userHandler.addUser(user);
         }
-        IEMDBController.getInstance().setActive_user(user.getEmail(), user.getPassword());
+        IEMDBController.getInstance().setActive_user_from_git(user.getEmail());
     }
+
 }

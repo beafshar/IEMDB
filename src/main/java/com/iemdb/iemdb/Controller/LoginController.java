@@ -9,13 +9,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/login")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
 public class LoginController {
 
     @PostMapping("")
-    public User login(@RequestBody Map<String, String> data ) throws IOException, MovieNotFound, InterruptedException, UserNotFound {
+    public String login(@RequestBody Map<String, String> data ) throws IOException, MovieNotFound, InterruptedException, UserNotFound {
         try {
-            return IEMDBController.getInstance().setActive_user(data.get("username"), data.get("password"));
+            IEMDBController.getInstance().setActive_user(data.get("username"), data.get("password"));
+            return IEMDBController.getInstance().token;
         } catch (IOException | MovieNotFound | InterruptedException | UserNotFound e) {
             return null;
         }

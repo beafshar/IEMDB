@@ -3,12 +3,17 @@ package com.iemdb.iemdb.Model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iemdb.iemdb.Model.Error.MovieNotFound;
 import com.iemdb.iemdb.Model.Error.UserNotFound;
-
+import io.jsonwebtoken.Jwts;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
+import java.util.Date;
 
 public class IEMDBController {
     private static final String SERVICE_API = "http://138.197.181.131:5000";
@@ -21,6 +26,10 @@ public class IEMDBController {
     public static final UserHandler userHandler = new UserHandler();
     public static final MovieHandler movieHandler = new MovieHandler();
     public static final CommentHandler commentHandler = new CommentHandler();
+
+    public static String KEY = "iemdb1401iemdb1401iemdb1401iemdb1401";
+
+    public String token = null;
 
     private User active_user = null;
 
@@ -42,7 +51,12 @@ public class IEMDBController {
 
     public User setActive_user(String active_user, String password) throws UserNotFound {
         this.active_user = userHandler.findUser(active_user, password);
+        this.token = this.getToken(this.active_user);
         return userHandler.findUser(active_user, password);
+    }
+    public User setActive_user_from_git(String active_user) throws UserNotFound {
+        this.active_user = userHandler.findUserFromGit(active_user);
+        return userHandler.findUserFromGit(active_user);
     }
 
     public void setActive_user_null() {
@@ -98,6 +112,22 @@ public class IEMDBController {
                 HttpResponse.BodyHandlers.ofString());
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(response.body(), Comment[].class);
+    }
+
+    public String getToken(User user) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        Date exp = c.getTime();
+
+        SecretKey key = new SecretKeySpec(KEY.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+        return Jwts.builder()
+                .signWith(key)
+                .setHeaderParam("typ", "JWT")
+                .setIssuer("iemdb.ir")
+                .setIssuedAt(new Date())
+                .setExpiration(exp)
+                .claim("user", user.getEmail())
+                .compact();
     }
 
 }

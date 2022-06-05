@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/movies")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
 public class MoviesController {
     String filter_name = null;
     String filter_genre = null;

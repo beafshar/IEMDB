@@ -18,6 +18,7 @@ public class User {
     private String nickname;
     private String birthDate;
     private final List<Integer> WatchList = new ArrayList<>();
+    private String token;
 
     @ConstructorProperties({"email","password","nickname","name","birthDate"})
     @JsonCreator

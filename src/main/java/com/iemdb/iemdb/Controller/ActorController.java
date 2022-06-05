@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/actors")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
 public class ActorController {
 
     @GetMapping("")

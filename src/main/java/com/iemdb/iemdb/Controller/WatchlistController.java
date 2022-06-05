@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/watchlist")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class WatchlistController {
 
     @GetMapping("")

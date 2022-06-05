@@ -39,4 +39,5 @@ public class UserHandler {
         }
         throw new UserNotFound();
     }
+
 }
